@@ -1,7 +1,7 @@
 env_setup
 ========
 
-Dotfiles based on those written by [kiasaki](https://github.com/kiasaki/dotfiles)
+Dotfiles based blatantly stolen from [kiasaki](https://github.com/kiasaki/dotfiles)
 
 ## Install on a new computer
 
