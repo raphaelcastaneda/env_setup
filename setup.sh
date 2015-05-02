@@ -25,15 +25,15 @@ if $osx; then
   # Install homebrew packages
   brew install coreutils curl wget git tmux tig tree graphviz vim
   brew install the_silver_searcher ssh-copy-id
-  brew install python virtualenv
+  brew install python
 else
   # Install debian packages
   sudo apt-get install -y git tig tree htop curl silversearcher-ag tmux
-  sudo apt-get install -y python python-pip vim python-virtualenv
+  sudo apt-get install -y python python-pip vim
 fi
 
 # Install python packages
-# none yet...
+pip install virtualenv
 
 # File symlinks
 for file in "bashrc" "bash_profile" "tmux.conf" "Xresources" "vimrc"; do
