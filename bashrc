@@ -28,7 +28,7 @@ fi
 # Aliases
 alias ll='ls -la'
 #alias clean='find . -name "*.DS_Store" -type f -delete'
-#alias tmux='tmux -2'
+alias tmux='tmux -2'
 #alias xclip='xclip -selection c'
 
 #####
