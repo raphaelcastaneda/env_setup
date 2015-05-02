@@ -25,6 +25,7 @@ if $osx; then
   # Install homebrew packages
   brew install coreutils curl wget git tmux tig tree graphviz vim
   brew install the_silver_searcher ssh-copy-id
+  brew install caskroom/cask/brew-cask
   brew install python
 else
   # Install debian packages
