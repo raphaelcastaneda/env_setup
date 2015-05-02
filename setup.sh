@@ -16,11 +16,16 @@ fi
 
 if $osx; then
   # Homebrew stuff
-  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-  brew install curl wget git tmux tig tree graphviz vim
+  if test ! $(which brew)
+  then
+    echo "  Installing Homebrew for you."
+    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  fi
+
+  # Install homebrew packages
+  brew install coreutils curl wget git tmux tig tree graphviz vim
   brew install the_silver_searcher ssh-copy-id
-  # According to the hitchhikers' guide, you must install XCode before this will work
-  #brew install python virtualenv
+  brew install python virtualenv
 else
   # Install debian packages
   sudo apt-get install -y git tig tree htop curl silversearcher-ag tmux
