@@ -94,7 +94,7 @@ syntax on
 
 let pymode = 1
 let pymode_breakpoint = 1
-let pymode_breakpoint_bind = 'b'
+let pymode_breakpoint_bind = 'B'
 let pymode_doc = 1
 let pymode_doc_bind = 'K'
 let pymode_folding = 0
