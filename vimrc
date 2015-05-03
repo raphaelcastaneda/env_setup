@@ -136,6 +136,8 @@ noremap <leader>sns :set nospell<CR>
 noremap <leader>sp :set paste<CR>
 noremap <leader>snp :set nopaste<CR>
 
+noremap <leader>pl :PymodeLint<CR>
+
 autocmd User GoyoEnter Limelight
 autocmd User GoyoLeave Limelight!
 nnoremap <Leader>z :Goyo<CR>
