@@ -27,7 +27,7 @@ if $osx; then
   brew install the_silver_searcher ssh-copy-id
   brew install caskroom/cask/brew-cask
   brew install python
-  brew cask install iterm2
+  brew cask install iterm2 spectacle
 else
   # Install debian packages
   sudo apt-get install -y git tig tree htop curl silversearcher-ag tmux
