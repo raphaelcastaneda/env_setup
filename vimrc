@@ -46,6 +46,15 @@ autocmd VimResized * :wincmd =
 set esckeys
 set timeoutlen=1000 ttimeoutlen=0
 
+" Send more characters for redraws
+set ttyfast
+
+" Enable mouse use in all modes
+set mouse=a
+
+" Set terminal name for mouse
+set ttymouse=xterm2
+
 " Show visual feedback when leader is pressed
 set showcmd
 
