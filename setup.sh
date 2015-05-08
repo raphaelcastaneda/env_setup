@@ -21,6 +21,8 @@ if $osx; then
     echo "  Installing Homebrew for you."
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
   fi
+  # Set up git line endings
+  git config --global core.autocrlf input
 
   # Install homebrew packages
   brew install python
@@ -57,5 +59,7 @@ if [ ! -f "$HOME/.gitconfig" ]; then
   cp "$env_setup/gitconfig" "$HOME/.gitconfig"
 fi
 
+# Set up fonts
+source ./fonts/install.sh
 
 echo "All done!"

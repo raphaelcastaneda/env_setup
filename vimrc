@@ -94,17 +94,17 @@ Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 Bundle 'tpope/vim-fugitive'
 
 " Languages
-Bundle 'fatih/vim-go' "go
-Bundle 'othree/yajs.vim' "javascript
-Bundle 'StanAngeloff/php.vim' "php
-Bundle 'digitaltoad/vim-jade' "Jade (node template engine)
-Bundle 'wavded/vim-stylus' "css
-Bundle 'Glench/Vim-Jinja2-Syntax' "jinja
-Bundle 'raichoo/haskell-vim' "haskell
-Bundle 'leafgarland/typescript-vim' "typescript (javascript superset)
-Bundle 'wting/rust.vim' "Rust
-Bundle 'klen/python-mode' "Python
-Bundle 'davidhalter/jedi-vim' "Python
+Bundle 'fatih/vim-go'
+Bundle 'othree/yajs.vim'
+Bundle 'StanAngeloff/php.vim'
+Bundle 'digitaltoad/vim-jade'
+Bundle 'wavded/vim-stylus'
+Bundle 'Glench/Vim-Jinja2-Syntax'
+Bundle 'raichoo/haskell-vim'
+Bundle 'leafgarland/typescript-vim'
+Bundle 'wting/rust.vim'
+Bundle 'klen/python-mode'
+Bundle 'davidhalter/jedi-vim'
 
 " Syntax highlighting, filetype indentation rules.
 filetype plugin indent on
