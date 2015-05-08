@@ -30,8 +30,8 @@ set visualbell t_vb=
 " Show hard tabs and trailing whitespace
 set list listchars=tab:>\ ,trail:·,nbsp:_
 
-" Show hard tabs as 4 side, use 2 space indentation rounded to multiples.
-set tabstop=4 expandtab shiftwidth=2 shiftround
+" Show hard tabs as 4 wide, use 2 space indentation rounded to multiples
+set tabstop=4 expandtab shiftwidth=4
 
 " Use mac clipboard
 set clipboard=unnamed
@@ -71,31 +71,40 @@ if executable('ag')
   set grepformat=%f:%l:%c%m
 endif
 
+" Powerline setup
+set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 9
+set laststatus=2
+
 filetype off
-call plug#begin()
+
+set rtp+/.vim/bundle/vundle/
+call vundle#rc()
+
+Bundle 'gmarik/vundle'
+
 " Plugins
-Plug 'gmarik/Vundle.vim'
-Plug 'airblade/vim-gitgutter'
-Plug 'junegunn/goyo.vim'
-Plug 'junegunn/limelight.vim'
-Plug 'scrooloose/nerdtree'
-Plug 'ervandew/supertab'
-Plug 'bufexplorer.zip'
-Plug 'ervandew/ag'
+Bundle 'airblade/vim-gitgutter'
+Bundle 'junegunn/goyo.vim'
+Bundle 'junegunn/limelight.vim'
+Bundle 'scrooloose/nerdtree'
+Bundle 'ervandew/supertab'
+Bundle 'bufexplorer.zip'
+Bundle 'ervandew/ag'
+Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
+Bundle 'tpope/vim-fugitive'
 
 " Languages
-Plug 'fatih/vim-go' "go
-Plug 'othree/yajs.vim' "javascript
-Plug 'StanAngeloff/php.vim' "php
-Plug 'digitaltoad/vim-jade' "Jade (node template engine)
-Plug 'wavded/vim-stylus' "css
-Plug 'Glench/Vim-Jinja2-Syntax' "jinja
-Plug 'raichoo/haskell-vim' "haskell
-Plug 'leafgarland/typescript-vim' "typescript (javascript superset)
-Plug 'wting/rust.vim' "Rust
-"Plug 'davidhalter/jedi-vim' "Python
-Plug 'klen/python-mode' "Python
-call plug#end()
+Bundle 'fatih/vim-go' "go
+Bundle 'othree/yajs.vim' "javascript
+Bundle 'StanAngeloff/php.vim' "php
+Bundle 'digitaltoad/vim-jade' "Jade (node template engine)
+Bundle 'wavded/vim-stylus' "css
+Bundle 'Glench/Vim-Jinja2-Syntax' "jinja
+Bundle 'raichoo/haskell-vim' "haskell
+Bundle 'leafgarland/typescript-vim' "typescript (javascript superset)
+Bundle 'wting/rust.vim' "Rust
+Bundle 'klen/python-mode' "Python
+Bundle 'davidhalter/jedi-vim' "Python
 
 " Syntax highlighting, filetype indentation rules.
 filetype plugin indent on
@@ -122,7 +131,7 @@ let pymode_options = 1
 
 let pymode_quickfix_maxheight = 6
 let pymode_quickfix_minheight = 3
-let pymode_rope = 1
+let pymode_rope = 0
 let pymode_run = 1
 let pymode_run_bind = 'r'
 let pymode_trim_whitespaces = 1
@@ -152,11 +161,7 @@ autocmd User GoyoLeave Limelight!
 nnoremap <Leader>z :Goyo<CR>
 
 let g:bufExplorerShowRelativePath=1
-autocmd BufNewFile,BufRead *.sl set filetype=solo
 autocmd BufNewFile,BufRead *.md setlocal spell
-noremap <Leader>gl :GoLint<CR>
-autocmd BufWritePost *.go :GoBuild
-autocmd BufWritePost *.ts :make
 autocmd QuickFixCmdPost [^l]* nested cwindow
 autocmd QuickFixCmdPost    l* nested lwindow
 
