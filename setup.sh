@@ -37,6 +37,9 @@ fi
 # Install python packages
 pip install virtualenv
 
+# Set up Vundle
+git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
+
 # File symlinks
 for file in "bashrc" "bash_profile" "tmux.conf" "Xresources" "vimrc"; do
   rm -rf "$HOME/.$file"
