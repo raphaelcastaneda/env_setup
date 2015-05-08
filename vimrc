@@ -31,7 +31,7 @@ set visualbell t_vb=
 set list listchars=tab:>\ ,trail:·,nbsp:_
 
 " Show hard tabs as 4 wide, use 2 space indentation rounded to multiples
-set tabstop=4 expandtab shiftwidth=4
+set tabstop=4 expandtab shiftwidth=2 shiftround
 
 " Use mac clipboard
 set clipboard=unnamed
