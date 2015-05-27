@@ -114,7 +114,7 @@ let pymode = 1
 let pymode_breakpoint = 1
 let pymode_breakpoint_bind = 'B'
 let pymode_doc = 1
-let pymode_doc_bind = 'K'
+"let pymode_doc_bind = 'K'
 let pymode_folding = 0
 let pymode_indent = 1
 let pymode_lint = 1
@@ -132,19 +132,22 @@ let pymode_options = 1
 let pymode_quickfix_maxheight = 6
 let pymode_quickfix_minheight = 3
 let pymode_rope = 0
-let pymode_run = 1
-let pymode_run_bind = 'r'
+let pymode_run = 0
+"let pymode_run_bind = 'r'
 let pymode_trim_whitespaces = 1
 let pymode_virtualenv = 1
 let pymode_virtualenv_enabled = ''
 let pymode_virtualenv_path = ''
-let g:pymode_options_max_line_length=95
+let g:pymode_options_max_line_length=120
 
+" jedi-vim configuration
+let g:jedi#usages_command = '<leader>u'
+let g:jedi#use_tabs_not_buffers = 0
 
 colorscheme hybrid
 
 " Leader commands
-nmap <leader>n :nohlsearch<CR>
+noremap <leader>n :nohlsearch<CR>
 noremap <leader>W :w !sudo tee % > /dev/null<CR> " save a file as root (,W)
 noremap <leader>nt :NERDTreeToggle<CR>
 noremap <leader>be :BufExplorerHorizontalSplit<CR>

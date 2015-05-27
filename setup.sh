@@ -37,7 +37,7 @@ else
 fi
 
 # Install python packages
-pip install virtualenv
+pip install virtualenv jedi
 
 # Set up Vundle
 git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
