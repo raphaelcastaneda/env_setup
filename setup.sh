@@ -49,9 +49,6 @@ for file in "bashrc" "bash_profile" "tmux.conf" "Xresources" "vimrc"; do
 done
 
 # File copies
-if [ ! -f "$HOME/.vim/autoload/plug.vim" ]; then
-  cp "$env_setup/vim/plug.vim" "$HOME/.vim/autoload/plug.vim"
-fi
 if [ ! -f "$HOME/.vim/colors/hybrid.vim" ]; then
   cp "$env_setup/vim/hybrid.vim" "$HOME/.vim/colors/hybrid.vim"
 fi
