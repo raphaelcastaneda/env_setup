@@ -41,7 +41,7 @@ alias glog="git log --graph --pretty=format:'%Cred%h%Creset %an: %s - %Creset %C
 alias gco='git checkout'
 alias gcl='git checkout -'
 alias gcm='git checkout master'
-
+alias gdel='git push origin --delete'
 #####
 # Ansible aliases
 #alias asv='ansible-vault '
@@ -68,7 +68,7 @@ alias venvd='deactivate'
 source $HOME/env_setup/prompt.sh
 
 # Those are computer specific config / secrets
-#source $HOME/.env
+source $HOME/.env
 
 # Have a bin folder in my home directory
 export PATH="$PATH:$HOME/.bin"
