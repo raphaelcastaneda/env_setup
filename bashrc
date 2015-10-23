@@ -47,22 +47,6 @@ alias gdel='git push origin --delete'
 #alias asv='ansible-vault '
 #alias asp='ansible-playbook --ask-vault-pass -v '
 
-
-#####
-# Python helpers
-# New virtual env
-export VENV_PYTHON=`which python`
-export VENV_HOME=$HOME/code/venv
-function venvn {
-  (cd $VENV_HOME && virtualenv --python=$VENV_PYTHON $1)
-}
-# Activate specific virtual env
-function venva {
-  . "$HOME/code/venv/$1/bin/activate"
-}
-# Deactivate shortcut
-alias venvd='deactivate'
-
 #####
 # Shell PS1 line & base dir & .env
 source $HOME/env_setup/prompt.sh
@@ -77,3 +61,5 @@ export PATH="$PATH:$HOME/.bin"
 source $HOME/env_setup/completion/git.sh
 source $HOME/env_setup/completion/hub.sh
 
+# Virtualenvwrapper
+source /usr/local/bin/virtualenvwrapper.sh
