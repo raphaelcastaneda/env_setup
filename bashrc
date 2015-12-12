@@ -62,4 +62,5 @@ source $HOME/env_setup/completion/git.sh
 source $HOME/env_setup/completion/hub.sh
 
 # Virtualenvwrapper
+export WORKON_HOME=$HOME/code/venv
 source /usr/local/bin/virtualenvwrapper.sh
