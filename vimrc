@@ -105,6 +105,8 @@ Bundle 'leafgarland/typescript-vim'
 Bundle 'wting/rust.vim'
 Bundle 'klen/python-mode'
 Bundle 'davidhalter/jedi-vim'
+Bundle 'mfukar/robotframework-vim'
+Bundle 'vim-scripts/DrawIt'
 
 " Syntax highlighting, filetype indentation rules.
 filetype plugin indent on
