@@ -120,7 +120,7 @@ let pymode_doc = 1
 let pymode_folding = 0
 let pymode_indent = 1
 let pymode_lint = 1
-let pymode_lint_checkers = ['pylint', 'pyflakes', 'pep8', 'mccabe']
+let pymode_lint_checkers = ['pyflakes', 'pep8', 'pep257', 'mccabe']
 let pymode_lint_cwindow = 1
 let pymode_lint_ignore = ''
 let pymode_lint_message = 1
@@ -141,6 +141,7 @@ let pymode_virtualenv = 1
 let pymode_virtualenv_enabled = ''
 let pymode_virtualenv_path = ''
 let g:pymode_options_max_line_length=120
+let g:pymode_lint_ignore = "E501"
 
 " jedi-vim configuration
 let g:jedi#usages_command = '<leader>u'
