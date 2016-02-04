@@ -107,6 +107,7 @@ Bundle 'klen/python-mode'
 Bundle 'davidhalter/jedi-vim'
 Bundle 'mfukar/robotframework-vim'
 Bundle 'vim-scripts/DrawIt'
+Bundle 'scrooloose/syntastic'
 
 " Syntax highlighting, filetype indentation rules.
 filetype plugin indent on
@@ -119,15 +120,15 @@ let pymode_doc = 1
 "let pymode_doc_bind = 'K'
 let pymode_folding = 0
 let pymode_indent = 1
-let pymode_lint = 1
-let pymode_lint_checkers = ['pyflakes', 'pep8', 'pep257', 'mccabe']
-let pymode_lint_cwindow = 1
-let pymode_lint_ignore = ''
-let pymode_lint_message = 1
-let pymode_lint_on_fly = 0
-let pymode_lint_on_write = 1
-let pymode_lint_select = ''
-let pymode_lint_signs = 1
+let pymode_lint = 0
+"let pymode_lint_checkers = ['pyflakes', 'pep8', 'pep257', 'mccabe', 'pylint']
+"let pymode_lint_cwindow = 1
+"let pymode_lint_ignore = ''
+"let pymode_lint_message = 1
+"let pymode_lint_on_fly = 0
+"let pymode_lint_on_write = 1
+"let pymode_lint_select = ''
+"let pymode_lint_signs = 1
 let pymode_motion = 1
 let pymode_options = 1
 
@@ -141,7 +142,30 @@ let pymode_virtualenv = 1
 let pymode_virtualenv_enabled = ''
 let pymode_virtualenv_path = ''
 let g:pymode_options_max_line_length=120
-let g:pymode_lint_ignore = "E501"
+"let g:pymode_lint_ignore = "E501"
+"let g:pymode_lint_options_pylint = {'max-line-length': 120}
+
+" Syntastic config
+function! ToggleErrors()
+    let old_last_winnr = winnr('$')
+    lclose
+    if old_last_winnr == winnr('$')
+        " Nothing was closed, open syntastic error location panel
+        SyntasticCheck
+        Errors
+    endif
+endfunction
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_python_checkers = ['flake8', 'pyflakes', 'python']
+let g:syntastic_python_flake8_args = '--ignore=E501'
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_enable_signs=1
 
 " jedi-vim configuration
 let g:jedi#usages_command = '<leader>u'
@@ -160,7 +184,10 @@ noremap <leader>sns :set nospell<CR>
 noremap <leader>sp :set paste<CR>
 noremap <leader>snp :set nopaste<CR>
 
-noremap <leader>pl :PymodeLint<CR>
+"noremap <leader>pl :PymodeLint<CR>
+noremap <leader>e :<C-u>call ToggleErrors()<CR>
+noremap <leader>] :lnext<CR>
+noremap <leader>[ :lprevious<CR>
 
 autocmd User GoyoEnter Limelight
 autocmd User GoyoLeave Limelight!
