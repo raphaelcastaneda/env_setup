@@ -29,7 +29,7 @@ if $osx; then
   brew install coreutils curl wget git tmux tig tree graphviz vim
   brew install the_silver_searcher ssh-copy-id
   brew install caskroom/cask/brew-cask
-  brew cask install iterm2 spectacle nosleep cinch hyperswitch
+  brew cask install iterm2 nosleep hyperswitch hyperdock slack adium skitch sublime-text
 else
   # Install debian packages
   sudo apt-get install -y git tig tree htop curl silversearcher-ag tmux
