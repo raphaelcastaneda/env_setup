@@ -59,4 +59,7 @@ fi
 # Set up fonts
 source ./fonts/install.sh
 
+# Install vim plugins
+vim +PluginInstall +qall
+
 echo "All done!"
