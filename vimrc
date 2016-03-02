@@ -120,15 +120,15 @@ let pymode_doc = 1
 "let pymode_doc_bind = 'K'
 let pymode_folding = 0
 let pymode_indent = 1
-let pymode_lint = 0
-"let pymode_lint_checkers = ['pyflakes', 'pep8', 'pep257', 'mccabe', 'pylint']
-"let pymode_lint_cwindow = 1
-"let pymode_lint_ignore = ''
-"let pymode_lint_message = 1
-"let pymode_lint_on_fly = 0
-"let pymode_lint_on_write = 1
-"let pymode_lint_select = ''
-"let pymode_lint_signs = 1
+let pymode_lint = 1
+let pymode_lint_checkers = ['pyflakes', 'pep8', 'pep257', 'mccabe', 'pylint']
+let pymode_lint_cwindow = 1
+let pymode_lint_ignore = ''
+let pymode_lint_message = 1
+let pymode_lint_on_fly = 0
+let pymode_lint_on_write = 0
+let pymode_lint_select = ''
+let pymode_lint_signs = 1
 let pymode_motion = 1
 let pymode_options = 1
 
@@ -142,8 +142,8 @@ let pymode_virtualenv = 1
 let pymode_virtualenv_enabled = ''
 let pymode_virtualenv_path = ''
 let g:pymode_options_max_line_length=120
-"let g:pymode_lint_ignore = "E501"
-"let g:pymode_lint_options_pylint = {'max-line-length': 120}
+let g:pymode_lint_ignore = "E501"
+let g:pymode_lint_options_pylint = {'max-line-length': 120}
 
 " Syntastic config
 function! ToggleErrors()
@@ -184,7 +184,7 @@ noremap <leader>sns :set nospell<CR>
 noremap <leader>sp :set paste<CR>
 noremap <leader>snp :set nopaste<CR>
 
-"noremap <leader>pl :PymodeLint<CR>
+noremap <leader>pl :PymodeLint<CR>
 noremap <leader>e :<C-u>call ToggleErrors()<CR>
 noremap <leader>] :lnext<CR>
 noremap <leader>[ :lprevious<CR>
