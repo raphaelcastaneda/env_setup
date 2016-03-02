@@ -24,11 +24,7 @@ Mostly config for the following:
 - tmux
 - Python
 
-## Vim setup
-The first time you launch vim, you must do the following to install the selected plugins:
-```
-:PluginInstall
-```
-Also note that this installs [Powerline](https://github.com/powerline/powerline). setup.sh will handle
+## A note about powerline for vim
+This will install [Powerline](https://github.com/powerline/powerline) for vim but you may find that the symbols are not properly rendered by the system default font. setup.sh will handle
 installing the fonts for you, but you must enable one of the patched powerline fonts as the non-ascii font in your terminal.
 I recommend DejaVu Sans Mono for powerline
