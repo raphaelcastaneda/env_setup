@@ -135,7 +135,7 @@ let pymode_options = 1
 let pymode_quickfix_maxheight = 6
 let pymode_quickfix_minheight = 3
 let pymode_rope = 0
-let pymode_run = 0
+"let pymode_run = 1
 "let pymode_run_bind = 'r'
 let pymode_trim_whitespaces = 1
 let pymode_virtualenv = 1
@@ -162,7 +162,7 @@ set statusline+=%*
 let g:syntastic_python_checkers = ['flake8', 'pyflakes', 'python']
 let g:syntastic_python_flake8_args = '--ignore=E501'
 let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
+let g:syntastic_auto_loc_list = 0
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_enable_signs=1
