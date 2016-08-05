@@ -28,12 +28,14 @@ if $osx; then
   brew install python
   brew install coreutils curl wget git tmux tig tree graphviz vim
   brew install the_silver_searcher ssh-copy-id
+  brew install ctags-exuberant
   brew install caskroom/cask/brew-cask
   brew cask install iterm2 nosleep hyperswitch hyperdock slack adium skitch sublime-text
 else
   # Install debian packages
   sudo apt-get install -y git tig tree htop curl silversearcher-ag tmux
   sudo apt-get install -y python python-pip vim
+  sudo apt-get install -y exuberant-ctags
 fi
 
 # Install python packages

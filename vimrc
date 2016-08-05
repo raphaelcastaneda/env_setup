@@ -92,6 +92,8 @@ Bundle 'bufexplorer.zip'
 Bundle 'ervandew/ag'
 Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 Bundle 'tpope/vim-fugitive'
+Bundle 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Bundle 'majutsushi/tagbar'
 
 " Languages
 Bundle 'fatih/vim-go'
@@ -108,6 +110,7 @@ Bundle 'davidhalter/jedi-vim'
 Bundle 'mfukar/robotframework-vim'
 Bundle 'vim-scripts/DrawIt'
 Bundle 'scrooloose/syntastic'
+
 
 " Syntax highlighting, filetype indentation rules.
 filetype plugin indent on
@@ -177,6 +180,7 @@ colorscheme hybrid
 noremap <leader>n :nohlsearch<CR>
 noremap <leader>W :w !sudo tee % > /dev/null<CR> " save a file as root (,W)
 noremap <leader>nt :NERDTreeToggle<CR>
+noremap <leader>tb :TagbarToggle<CR>
 noremap <leader>be :BufExplorerHorizontalSplit<CR>
 
 noremap <leader>ss :set spell<CR>
@@ -192,6 +196,7 @@ noremap <leader>[ :lprevious<CR>
 autocmd User GoyoEnter Limelight
 autocmd User GoyoLeave Limelight!
 nnoremap <Leader>z :Goyo<CR>
+
 
 let g:bufExplorerShowRelativePath=1
 autocmd BufNewFile,BufRead *.md setlocal spell
