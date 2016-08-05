@@ -9,6 +9,8 @@ Dotfiles inspired by [kiasaki](https://github.com/kiasaki/dotfiles) and [mathias
 cd ~
 git clone git@github.com:raphaelcastaneda/env_setup.git
 cd env_setup
+git submodule init
+git submodule update --recursive
 ./setup.sh
 ```
 
