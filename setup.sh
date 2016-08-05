@@ -59,6 +59,10 @@ fi
 # Set up fonts
 source ./fonts/install.sh
 
+# Install fuzzy searcher fzf
+git clone --depth 1 https://github.com/junegunn/fzf.git $HOME/.fzf
+$HOME/.fzf/install
+
 # Install vim plugins
 vim +PluginInstall +qall
 
