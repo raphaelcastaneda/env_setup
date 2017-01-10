@@ -94,6 +94,11 @@ Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 Bundle 'tpope/vim-fugitive'
 Bundle 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Bundle 'majutsushi/tagbar'
+Bundle 'vim-scripts/ingo-library'
+Bundle 'vim-scripts/SyntaxRange'
+Bundle 'tpope/vim-dispatch'
+Bundle 'tpope/vim-tbone'
+
 
 " Languages
 Bundle 'fatih/vim-go'
@@ -110,6 +115,7 @@ Bundle 'davidhalter/jedi-vim'
 Bundle 'mfukar/robotframework-vim'
 Bundle 'vim-scripts/DrawIt'
 Bundle 'scrooloose/syntastic'
+Bundle 'tpope/vim-markdown'
 
 
 " Syntax highlighting, filetype indentation rules.
@@ -145,7 +151,6 @@ let pymode_virtualenv = 1
 let pymode_virtualenv_enabled = ''
 let pymode_virtualenv_path = ''
 let g:pymode_options_max_line_length=120
-let g:pymode_lint_ignore = "E501"
 let g:pymode_lint_options_pylint = {'max-line-length': 120}
 
 " Syntastic config
@@ -174,6 +179,9 @@ let g:syntastic_enable_signs=1
 let g:jedi#usages_command = '<leader>u'
 let g:jedi#use_tabs_not_buffers = 0
 
+" goyo configuration
+let g:goyo_width = 120
+
 colorscheme hybrid
 
 " Leader commands
@@ -199,7 +207,7 @@ nnoremap <Leader>z :Goyo<CR>
 
 
 let g:bufExplorerShowRelativePath=1
-autocmd BufNewFile,BufRead *.md setlocal spell
+"autocmd BufNewFile,BufRead *.md setlocal spell
 autocmd QuickFixCmdPost [^l]* nested cwindow
 autocmd QuickFixCmdPost    l* nested lwindow
 
@@ -217,3 +225,11 @@ imap <Up> <NOP>
 imap <Down> <NOP>
 imap <Left> <NOP>
 imap <Right> <NOP>
+
+" dispatch config
+noremap <F9> :Dispatch<CR>
+autocmd FileType python let b:dispatch = 'tox'
+
+" tbone config
+noremap <leader>j :Twrite last<CR>:Tmux last-pane<CR>
+noremap <leader>k :Twrite<CR>
