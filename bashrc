@@ -67,7 +67,7 @@ export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python
 source /usr/local/bin/virtualenvwrapper.sh
 
 # Set alias for thefuck
-eval "$(thefuck --alias crap)"
+eval "$(thefuck --alias oops)"
 
 # FZF
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
