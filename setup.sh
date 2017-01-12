@@ -35,11 +35,15 @@ else
   # Install debian packages
   sudo apt-get install -y git tig tree htop curl silversearcher-ag tmux
   sudo apt-get install -y python python-pip vim python-dev thefuck
-  sudo apt-get install -y exuberant-ctags
+  sudo apt-get install -y exuberant-ctags libncurses-dev golang
 fi
 
 # Install python packages
-pip install virtualenv virtualenvwrapper jedi
+if $osx; then
+  pip install virtualenv virtualenvwrapper jedi
+else
+  sudo pip install virtualenv virtualenvwrapper jedi
+fi
 
 # Set up Vundle
 git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
