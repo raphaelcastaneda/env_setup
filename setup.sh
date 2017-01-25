@@ -26,6 +26,7 @@ if $osx; then
 
   # Install homebrew packages
   brew install python
+  brew install pyenv pyenv-virtualenv
   brew install coreutils curl wget git tmux tig tree graphviz vim
   brew install the_silver_searcher ssh-copy-id thefuck
   brew install ctags-exuberant
