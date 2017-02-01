@@ -87,6 +87,7 @@ Bundle 'airblade/vim-gitgutter'
 Bundle 'junegunn/goyo.vim'
 Bundle 'junegunn/limelight.vim'
 Bundle 'scrooloose/nerdtree'
+Bundle 'Xuyuanp/nerdtree-git-plugin'
 Bundle 'ervandew/supertab'
 Bundle 'bufexplorer.zip'
 Bundle 'ervandew/ag'
@@ -187,6 +188,18 @@ function! SyncTree()
 endfunction
 
 autocmd BufEnter * call SyncTree()
+
+let g:NERDTreeIndicatorMapCustom = {
+    \ "Modified"  : "✹",
+    \ "Staged"    : "✚",
+    \ "Untracked" : "✭",
+    \ "Renamed"   : "➜",
+    \ "Unmerged"  : "═",
+    \ "Deleted"   : "✖",
+    \ "Dirty"     : "✗",
+    \ "Clean"     : "✔︎",
+    \ "Unknown"   : "?"
+    \ }
 
 " syntastic configuration
 let g:syntastic_python_checkers = ['flake8', 'pyflakes', 'python']
