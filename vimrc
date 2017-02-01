@@ -167,6 +167,28 @@ set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
+"NerdTree Config
+let NERDTreeIgnore = ['\.pyc$']
+let NERDTreeDirArrows = 1
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+"
+" returns true iff is NERDTree open/active
+function! IsNTOpen()        
+  return exists("t:NERDTreeBufName") && (bufwinnr(t:NERDTreeBufName) != -1)
+endfunction
+
+" calls NERDTreeFind iff NERDTree is active, current window contains a modifiable file, and we're not in vimdiff
+function! SyncTree()
+  if &modifiable && IsNTOpen() && strlen(expand('%')) > 0 && !&diff
+    let l:curwinnr = winnr()
+    NERDTreeFind
+    exec l:curwinnr . "wincmd w"
+  endif
+endfunction
+
+autocmd BufEnter * call SyncTree()
+
+" syntastic configuration
 let g:syntastic_python_checkers = ['flake8', 'pyflakes', 'python']
 let g:syntastic_python_flake8_args = '--ignore=E501'
 let g:syntastic_always_populate_loc_list = 1
