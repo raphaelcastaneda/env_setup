@@ -169,6 +169,9 @@ set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
+"Diff confog for fugitive Gdiff
+set diffopt+=vertical
+
 "NerdTree Config
 let NERDTreeIgnore = ['\.pyc$']
 let NERDTreeDirArrows = 1
