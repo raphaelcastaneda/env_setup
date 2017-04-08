@@ -28,7 +28,7 @@ set shortmess=atI
 set visualbell t_vb=
 
 " Show hard tabs and trailing whitespace
-set list listchars=tab:>\ ,trail:�,nbsp:_
+set list listchars=tab:>\ ,trail:·,nbsp:_
 
 " Show hard tabs as 4 wide, use 2 space indentation rounded to multiples
 set tabstop=4 expandtab shiftwidth=2 shiftround
@@ -87,6 +87,7 @@ Bundle 'airblade/vim-gitgutter'
 Bundle 'junegunn/goyo.vim'
 Bundle 'junegunn/limelight.vim'
 Bundle 'scrooloose/nerdtree'
+Bundle 'Xuyuanp/nerdtree-git-plugin'
 Bundle 'ervandew/supertab'
 Bundle 'bufexplorer.zip'
 Bundle 'ervandew/ag'
@@ -98,6 +99,7 @@ Bundle 'vim-scripts/ingo-library'
 Bundle 'vim-scripts/SyntaxRange'
 Bundle 'tpope/vim-dispatch'
 Bundle 'tpope/vim-tbone'
+Bundle 'tpope/vim-obsession'
 
 
 " Languages
@@ -167,13 +169,58 @@ set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
-let g:syntastic_python_checkers = ['flake8', 'pyflakes', 'python']
+"Diff confog for fugitive Gdiff
+set diffopt+=vertical
+
+"NerdTree Config
+let NERDTreeIgnore = ['\.pyc$']
+let NERDTreeDirArrows = 1
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+"
+" returns true iff is NERDTree open/active
+function! IsNTOpen()        
+  return exists("t:NERDTreeBufName") && (bufwinnr(t:NERDTreeBufName) != -1)
+endfunction
+
+" calls NERDTreeFind iff NERDTree is active, current window contains a modifiable file, and we're not in vimdiff
+function! SyncTree()
+  if &modifiable && IsNTOpen() && strlen(expand('%')) > 0 && !&diff
+    let l:curwinnr = winnr()
+    NERDTreeFind
+    exec l:curwinnr . "wincmd w"
+  endif
+endfunction
+
+autocmd BufEnter * call SyncTree()
+
+let g:NERDTreeIndicatorMapCustom = {
+    \ "Modified"  : "Δ",
+    \ "Staged"    : "✚",
+    \ "Untracked" : "✭",
+    \ "Renamed"   : "➜",
+    \ "Unmerged"  : "═",
+    \ "Deleted"   : "✖",
+    \ "Dirty"     : "✗",
+    \ "Clean"     : "✔︎",
+    \ "Unknown"   : "?"
+    \ }
+" Speed improvements
+set nocursorcolumn
+"set nocursorline
+syntax sync minlines=256
+set re=1
+
+" syntastic configuration
+let g:syntastic_python_checkers = ['flake8']
 let g:syntastic_python_flake8_args = '--ignore=E501'
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 0
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_enable_signs=1
+let g:syntastic_enable_highlighting=0
+"let g:syntastic_echo_current_error = 0
+let g:syntastic_cursor_column = 0
 
 " jedi-vim configuration
 let g:jedi#usages_command = '<leader>u'
@@ -184,10 +231,24 @@ let g:goyo_width = 120
 
 colorscheme hybrid
 
+" Location List browsing
+function! ToggleLocation()
+    let old_last_winnr = winnr('$')
+    lclose
+    if old_last_winnr == winnr('$')
+        lopen
+    endif
+endfunction
+
+noremap <leader>l :<C-u>call ToggleLocation()<CR>
+noremap <leader>j :lnext<CR>
+noremap <leader>k :lprev<CR>
+
 " Leader commands
 noremap <leader>n :nohlsearch<CR>
 noremap <leader>W :w !sudo tee % > /dev/null<CR> " save a file as root (,W)
 noremap <leader>nt :NERDTreeToggle<CR>
+
 noremap <leader>tb :TagbarToggle<CR>
 noremap <leader>be :BufExplorerHorizontalSplit<CR>
 
@@ -231,5 +292,4 @@ noremap <F9> :Dispatch<CR>
 autocmd FileType python let b:dispatch = 'tox'
 
 " tbone config
-noremap <leader>j :Twrite last<CR>:Tmux last-pane<CR>
-noremap <leader>k :Twrite<CR>
+noremap <leader>b :Twrite last<CR> :Tmux last-pane<CR>
