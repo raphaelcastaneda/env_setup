@@ -204,15 +204,23 @@ let g:NERDTreeIndicatorMapCustom = {
     \ "Clean"     : "✔︎",
     \ "Unknown"   : "?"
     \ }
+" Speed improvements
+set nocursorcolumn
+"set nocursorline
+syntax sync minlines=256
+set re=1
 
 " syntastic configuration
-let g:syntastic_python_checkers = ['flake8', 'pyflakes', 'python']
+let g:syntastic_python_checkers = ['flake8']
 let g:syntastic_python_flake8_args = '--ignore=E501'
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 0
-let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
-let g:syntastic_enable_signs=1
+let g:syntastic_enable_signs=0
+let g:syntastic_enable_highlighting=1
+"let g:syntastic_echo_current_error = 0
+let g:syntastic_cursor_column = 0
 
 " jedi-vim configuration
 let g:jedi#usages_command = '<leader>u'
