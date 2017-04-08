@@ -231,10 +231,24 @@ let g:goyo_width = 120
 
 colorscheme hybrid
 
+" Location List browsing
+function! ToggleLocation()
+    let old_last_winnr = winnr('$')
+    lclose
+    if old_last_winnr == winnr('$')
+        lopen
+    endif
+endfunction
+
+noremap <leader>l :<C-u>call ToggleLocation()<CR>
+noremap <leader>j :lnext<CR>
+noremap <leader>k :lprev<CR>
+
 " Leader commands
 noremap <leader>n :nohlsearch<CR>
 noremap <leader>W :w !sudo tee % > /dev/null<CR> " save a file as root (,W)
 noremap <leader>nt :NERDTreeToggle<CR>
+
 noremap <leader>tb :TagbarToggle<CR>
 noremap <leader>be :BufExplorerHorizontalSplit<CR>
 
@@ -278,5 +292,4 @@ noremap <F9> :Dispatch<CR>
 autocmd FileType python let b:dispatch = 'tox'
 
 " tbone config
-noremap <leader>j :Twrite last<CR>:Tmux last-pane<CR>
-noremap <leader>k :Twrite<CR>
+noremap <leader>b :Twrite last<CR> :Tmux last-pane<CR>
