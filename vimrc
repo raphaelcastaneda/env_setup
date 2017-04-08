@@ -99,6 +99,7 @@ Bundle 'vim-scripts/ingo-library'
 Bundle 'vim-scripts/SyntaxRange'
 Bundle 'tpope/vim-dispatch'
 Bundle 'tpope/vim-tbone'
+Bundle 'tpope/vim-obsession'
 
 
 " Languages
