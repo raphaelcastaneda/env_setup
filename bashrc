@@ -87,11 +87,6 @@ _fzf_compgen_path() {
 
 
 # Pyenv config. See https://github.com/yyuu/pyenv
-if [ -z `which pyenv` ]
-  then
-    echo "pyenv is not installed, go to https://github.com/yyuu/pyenv to install it."
-  else
-    export PYENV_ROOT="$HOME/.pyenv"
-    export PATH="$PYENV_ROOT/bin:$PATH:"
-    eval "$(pyenv init -)"
-fi
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH:"
+eval "$(pyenv init -)"
