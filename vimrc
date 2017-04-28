@@ -151,7 +151,7 @@ let pymode_rope = 0
 let pymode_trim_whitespaces = 1
 let pymode_virtualenv = 1
 let pymode_virtualenv_enabled = ''
-let pymode_virtualenv_path = ''
+let pymode_virtualenv_path = $VIRTUAL_ENV
 let g:pymode_options_max_line_length=120
 let g:pymode_lint_options_pylint = {'max-line-length': 120}
 
