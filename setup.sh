@@ -72,5 +72,6 @@ $HOME/.fzf/install
 
 # Install vim plugins
 vim +PluginInstall +qall
+python ~/.vim/bundle/YouCompleteMe/install.py
 
 echo "All done!"
