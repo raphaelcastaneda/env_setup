@@ -114,6 +114,7 @@ Bundle 'leafgarland/typescript-vim'
 Bundle 'wting/rust.vim'
 Bundle 'klen/python-mode'
 Bundle 'davidhalter/jedi-vim'
+Bundle 'Valloric/YouCompleteMe'
 Bundle 'mfukar/robotframework-vim'
 Bundle 'vim-scripts/DrawIt'
 Bundle 'scrooloose/syntastic'
@@ -151,7 +152,7 @@ let pymode_rope = 0
 let pymode_trim_whitespaces = 1
 let pymode_virtualenv = 1
 let pymode_virtualenv_enabled = ''
-let pymode_virtualenv_path = ''
+let pymode_virtualenv_path = $VIRTUAL_ENV
 let g:pymode_options_max_line_length=120
 let g:pymode_lint_options_pylint = {'max-line-length': 120}
 
@@ -223,8 +224,12 @@ let g:syntastic_enable_highlighting=0
 let g:syntastic_cursor_column = 0
 
 " jedi-vim configuration
+let g:jedi#completions_enabled = 0
 let g:jedi#usages_command = '<leader>u'
 let g:jedi#use_tabs_not_buffers = 0
+
+" YouCompleteMe Configuration
+let g:ycm_autoclose_preview_window_after_completion=1
 
 " goyo configuration
 let g:goyo_width = 120
@@ -266,6 +271,7 @@ autocmd User GoyoEnter Limelight
 autocmd User GoyoLeave Limelight!
 nnoremap <Leader>z :Goyo<CR>
 
+noremap <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
 let g:bufExplorerShowRelativePath=1
 "autocmd BufNewFile,BufRead *.md setlocal spell
