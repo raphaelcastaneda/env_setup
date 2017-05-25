@@ -41,9 +41,9 @@ fi
 
 # Install python packages
 if $osx; then
-  pip install virtualenv virtualenvwrapper jedi
+  pip install virtualenv virtualenvwrapper jedi pudb
 else
-  sudo pip install virtualenv virtualenvwrapper jedi
+  sudo pip install virtualenv virtualenvwrapper jedi pudb
 fi
 
 # Set up Vundle

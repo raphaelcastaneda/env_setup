@@ -30,6 +30,7 @@ alias ll='ls -la'
 #alias clean='find . -name "*.DS_Store" -type f -delete'
 alias tmux='tmux -2'
 #alias xclip='xclip -selection c'
+alias pudb='python -m pudb'  # make sure pudb works even in a virtualenv
 
 #####
 # Git aliases
