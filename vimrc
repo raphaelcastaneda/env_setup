@@ -43,8 +43,10 @@ set wildmenu wildmode=list:longest
 autocmd VimResized * :wincmd =
 
 " Remove timeouts from esc
-set esckeys
-set timeoutlen=1000 ttimeoutlen=0
+if !has('nvim')
+  set esckeys
+  set timeoutlen=1000 ttimeoutlen=0
+endif
 
 " Send more characters for redraws
 set ttyfast
@@ -53,7 +55,9 @@ set ttyfast
 set mouse=a
 
 " Set terminal name for mouse
-set ttymouse=xterm2
+if !has('nvim')
+  set ttymouse=xterm2
+endif
 
 " Show visual feedback when leader is pressed
 set showcmd
@@ -72,8 +76,19 @@ if executable('ag')
 endif
 
 " Powerline setup
-set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 9
-set laststatus=2
+"set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 9
+"set laststatus=2
+
+" Airline setup
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#buffer_nr_show = 1
+let g:airline_theme = 'powerlineish'
+
+if has('nvim')
+    let g:python_host_prog  = 'python2'
+    let g:python3_host_prog = 'python3'
+endif
 
 filetype off
 
@@ -91,7 +106,7 @@ Bundle 'Xuyuanp/nerdtree-git-plugin'
 Bundle 'ervandew/supertab'
 Bundle 'bufexplorer.zip'
 Bundle 'ervandew/ag'
-Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
+"Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 Bundle 'tpope/vim-fugitive'
 Bundle 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Bundle 'majutsushi/tagbar'
@@ -100,6 +115,10 @@ Bundle 'vim-scripts/SyntaxRange'
 Bundle 'tpope/vim-dispatch'
 Bundle 'tpope/vim-tbone'
 Bundle 'tpope/vim-obsession'
+Bundle 'vimwiki/vimwiki'
+Bundle 'tpope/vim-surround'
+Bundle 'vim-airline/vim-airline'
+Bundle 'vim-airline/vim-airline-themes'
 
 
 " Languages
@@ -118,7 +137,7 @@ Bundle 'Valloric/YouCompleteMe'
 Bundle 'mfukar/robotframework-vim'
 Bundle 'vim-scripts/DrawIt'
 Bundle 'scrooloose/syntastic'
-Bundle 'tpope/vim-markdown'
+"Bundle 'tpope/vim-markdown'
 
 
 " Syntax highlighting, filetype indentation rules.
@@ -179,7 +198,7 @@ let NERDTreeDirArrows = 1
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 "
 " returns true iff is NERDTree open/active
-function! IsNTOpen()        
+function! IsNTOpen()
   return exists("t:NERDTreeBufName") && (bufwinnr(t:NERDTreeBufName) != -1)
 endfunction
 
@@ -235,6 +254,11 @@ let g:ycm_autoclose_preview_window_after_completion=1
 let g:goyo_width = 120
 
 colorscheme hybrid
+
+" vimwiki/vimwiki
+let g:vimwiki_list = [{'path': '~/vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]
+autocmd FileType vimwiki nmap <buffer> <Enter> <Plug>VimwikiFollowLink
+let g:vimwiki_table_mappings = 0
 
 " Location List browsing
 function! ToggleLocation()

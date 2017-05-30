@@ -5,7 +5,7 @@
 env_setup=$HOME/env_setup
 for directory in \
   "$HOME/code" "$HOME/.vim" "$HOME/.vim/autoload" "$HOME/.vim/swaps" \
-  "$HOME/.vim/backups" "$HOME/.vim/undo" "$HOME/.vim/colors"; do
+  "$HOME/.vim/backups" "$HOME/.vim/undo" "$HOME/.vim/colors" "$HOME/vimwiki"; do
    mkdir -p $directory
 done
 
