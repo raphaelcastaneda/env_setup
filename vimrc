@@ -137,7 +137,7 @@ Bundle 'Valloric/YouCompleteMe'
 Bundle 'mfukar/robotframework-vim'
 Bundle 'vim-scripts/DrawIt'
 Bundle 'scrooloose/syntastic'
-"Bundle 'tpope/vim-markdown'
+Bundle 'tpope/vim-markdown'
 
 
 " Syntax highlighting, filetype indentation rules.
@@ -256,9 +256,11 @@ let g:goyo_width = 120
 colorscheme hybrid
 
 " vimwiki/vimwiki
-let g:vimwiki_list = [{'path': '~/vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]
+let g:vimwiki_list = [{'path': '~/vimwiki/', 'syntax': 'markdown', 'ext': '.md', 'auto_tags': 1 }]
 autocmd FileType vimwiki nmap <buffer> <Enter> <Plug>VimwikiFollowLink
 let g:vimwiki_table_mappings = 0
+let g:vimwiki_hl_cb_checked = 1
+let g:vimwiki_global_ext = 0
 
 " Location List browsing
 function! ToggleLocation()
