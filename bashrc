@@ -1,4 +1,4 @@
-export EDITOR=vim
+export EDITOR=nvim
 export PATH=".:$HOME/bin:$PATH"
 
 if [ -n "$DISPLAY" -a "$TERM" == "xterm" ]; then
@@ -31,6 +31,7 @@ alias ll='ls -la'
 alias tmux='tmux -2'
 #alias xclip='xclip -selection c'
 alias pudb='python -m pudb'  # make sure pudb works even in a virtualenv
+alias vim='nvim'
 
 #####
 # Git aliases
