@@ -66,7 +66,10 @@ set showcmd
 let mapleader=" "
 
 " Centralize swaps in one folder
-set backupdir=~/.vim/backups directory=~/.vim/swaps
+set backupdir=~/.vim/backups directory=~/.vim/swaps//
+
+" But no no backups for crontab
+autocmd filetype crontab setlocal nobackup nowritebackup
 
 " Use silver searcher for vim :grep
 if executable('ag')
@@ -119,7 +122,6 @@ Bundle 'vimwiki/vimwiki'
 Bundle 'tpope/vim-surround'
 Bundle 'vim-airline/vim-airline'
 Bundle 'vim-airline/vim-airline-themes'
-
 
 " Languages
 Bundle 'fatih/vim-go'
