@@ -115,11 +115,11 @@ Bundle 'junegunn/limelight.vim'
 Bundle 'scrooloose/nerdtree'
 Bundle 'Xuyuanp/nerdtree-git-plugin'
 Bundle 'ervandew/supertab'
-Bundle 'bufexplorer.zip'
 Bundle 'ervandew/ag'
 "Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 Bundle 'tpope/vim-fugitive'
 Bundle 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Bundle 'junegunn/fzf.vim'
 Bundle 'majutsushi/tagbar'
 Bundle 'vim-scripts/ingo-library'
 Bundle 'vim-scripts/SyntaxRange'
@@ -262,6 +262,21 @@ let g:ycm_autoclose_preview_window_after_completion=1
 let g:ycm_server_python_interpreter = 'python3'
 let g:ycm_python_binary_path = 'python3'
 
+" FZF configuration
+" Mapping selecting mappings
+nmap <leader><tab> <plug>(fzf-maps-n)
+xmap <leader><tab> <plug>(fzf-maps-x)
+omap <leader><tab> <plug>(fzf-maps-o)
+
+" Insert mode completion
+imap <c-x><c-k> <plug>(fzf-complete-word)
+imap <c-x><c-f> <plug>(fzf-complete-path)
+imap <c-x><c-j> <plug>(fzf-complete-file-ag)
+imap <c-x><c-l> <plug>(fzf-complete-line)
+
+
+" Advanced customization using autoload functions
+inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'left': '15%'})"
 " goyo configuration
 let g:goyo_width = 120
 
@@ -293,7 +308,11 @@ noremap <leader>W :w !sudo tee % > /dev/null<CR> " save a file as root (,W)
 noremap <leader>nt :NERDTreeToggle<CR>
 
 noremap <leader>tb :TagbarToggle<CR>
-noremap <leader>be :BufExplorerHorizontalSplit<CR>
+
+noremap <leader>be :Buffers<CR>
+noremap <leader>f :Files<CR>
+noremap <leader>f :Files<CR>
+noremap <leader>g :GitFiles<CR>
 
 noremap <leader>ss :set spell<CR>
 noremap <leader>sns :set nospell<CR>
