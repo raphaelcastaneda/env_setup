@@ -28,7 +28,15 @@ set shortmess=atI
 set visualbell t_vb=
 
 " Show hard tabs and trailing whitespace
-set list listchars=tab:>\ ,trail:·,nbsp:_
+"set list listchars=tab:>\ ,trail:·,nbsp:_
+
+" Fancy istchars
+if &encoding == "utf-8"
+  exe "set listchars=trail:·,eol:\u00ac,nbsp:\u2423,conceal:\u22ef,tab:\u25b8\u2014,precedes:\u2026,extends:\u2026"
+else
+  set listchars=trail:·,eol:$,tab:>-,extends:>,precedes:<,conceal:+
+endif
+set list
 
 " Show hard tabs as 4 wide, use 2 space indentation rounded to multiples
 set tabstop=4 expandtab shiftwidth=2 shiftround
