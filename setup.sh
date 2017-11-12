@@ -27,16 +27,25 @@ if $osx; then
   # Install homebrew packages
   brew install python
   brew install pyenv pyenv-virtualenv
-  brew install coreutils curl wget git tmux tig tree graphviz vim
+  brew install coreutils curl wget git tmux tig tree graphviz vim neovim
   brew install the_silver_searcher ssh-copy-id thefuck
   brew install ctags-exuberant
   brew install caskroom/cask/brew-cask
   brew cask install iterm2 nosleep hyperswitch hyperdock slack adium skitch sublime-text
 else
+  # Add extra repos
+  sudo add-apt-repository -y ppa:neovim-ppa/stable
+  sudo add-apt-repository -y ppa:neovim-ppa/unstable  # just in case your version is not supported
+
+  # Get the latest stuff
+  sudo apt-get update
+
   # Install debian packages
+  sudo apt-get install -y build-essential gcc cmake zlib1g-dev
   sudo apt-get install -y git tig tree htop curl silversearcher-ag tmux
-  sudo apt-get install -y python python-pip vim python-dev thefuck
+  sudo apt-get install -y python python-pip vim neovim python-dev thefuck
   sudo apt-get install -y exuberant-ctags libncurses-dev golang
+  git clone https://github.com/pyenv/pyenv.git ~/.pyenv
 fi
 
 # Install python packages
