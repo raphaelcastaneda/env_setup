@@ -31,12 +31,14 @@ if $osx; then
   brew install the_silver_searcher ssh-copy-id thefuck
   brew install ctags-exuberant
   brew install caskroom/cask/brew-cask
+  brew install go
   brew cask install iterm2 nosleep hyperswitch hyperdock slack adium skitch sublime-text
 else
   # Install debian packages
   sudo apt-get install -y git tig tree htop curl silversearcher-ag tmux
   sudo apt-get install -y python python-pip vim python-dev thefuck
   sudo apt-get install -y exuberant-ctags libncurses-dev golang
+  sudo apt-get install -y golang-go
 fi
 
 # Install python packages
@@ -71,7 +73,7 @@ git clone --depth 1 https://github.com/junegunn/fzf.git $HOME/.fzf
 $HOME/.fzf/install
 
 # Install vim plugins
-vim +PluginInstall +qall
-python ~/.vim/bundle/YouCompleteMe/install.py
+nvim +PluginInstall +qall
+python ~/.vim/bundle/YouCompleteMe/install.py --clang-completer --go-completer
 
 echo "All done!"

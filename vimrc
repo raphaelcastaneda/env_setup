@@ -130,9 +130,11 @@ Bundle 'vimwiki/vimwiki'
 Bundle 'tpope/vim-surround'
 Bundle 'vim-airline/vim-airline'
 Bundle 'vim-airline/vim-airline-themes'
+Bundle 'jiangmiao/auto-pairs'
 
 " Languages
 Bundle 'fatih/vim-go'
+Bundle 'nsf/gocode', {'rtp': 'nvim/'}
 Bundle 'othree/yajs.vim'
 Bundle 'StanAngeloff/php.vim'
 Bundle 'digitaltoad/vim-jade'
@@ -261,6 +263,9 @@ let g:jedi#use_tabs_not_buffers = 0
 let g:ycm_autoclose_preview_window_after_completion=1
 let g:ycm_server_python_interpreter = 'python3'
 let g:ycm_python_binary_path = 'python3'
+
+" AutoPairs config
+let g:AutoPairsShortcutFastWrap = '<c-e>'
 
 " FZF configuration
 " Mapping selecting mappings
