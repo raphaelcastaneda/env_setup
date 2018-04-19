@@ -37,8 +37,15 @@ else
   # Install debian packages
   sudo apt-get install -y git tig tree htop curl silversearcher-ag tmux
   sudo apt-get install -y python python-pip vim python-dev thefuck
+  sudo apt-get install -y  make build-essential libssl-dev zlib1g-dev libbz2-dev \
+libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev \
+xz-utils tk-dev
   sudo apt-get install -y exuberant-ctags libncurses-dev golang
   sudo apt-get install -y golang-go
+
+  # Clone pyenv
+  git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+
 fi
 
 # Install python packages
