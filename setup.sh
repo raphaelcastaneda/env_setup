@@ -80,7 +80,10 @@ git clone --depth 1 https://github.com/junegunn/fzf.git $HOME/.fzf
 $HOME/.fzf/install
 
 # Install vim plugins
-nvim +PluginInstall +qall
+vim +PluginInstall +qall
 python ~/.vim/bundle/YouCompleteMe/install.py --clang-completer --go-completer
+
+# Make sure .env exists if it didn't already
+touch $HOME/.env
 
 echo "All done!"
