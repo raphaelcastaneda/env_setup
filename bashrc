@@ -1,4 +1,4 @@
-export EDITOR=nvim
+export EDITOR=vim
 export PATH=".:$HOME/bin:$PATH"
 
 if [ -n "$DISPLAY" -a "$TERM" == "xterm" ]; then
@@ -31,7 +31,6 @@ alias ll='ls -la'
 alias tmux='tmux -2'
 #alias xclip='xclip -selection c'
 alias pudb='python -m pudb'  # make sure pudb works even in a virtualenv
-alias vim='nvim'
 
 #####
 # Git aliases
@@ -67,7 +66,8 @@ source $HOME/env_setup/completion/hub.sh
 
 # Virtualenvwrapper
 export WORKON_HOME=$HOME/code/venv
-export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python
+[ -f /usr/local/bin/python ] && export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python
+[ -f /usr/bin/python ] && export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python
 source /usr/local/bin/virtualenvwrapper.sh
 
 # Set alias for thefuck
