@@ -66,9 +66,10 @@ source $HOME/env_setup/completion/hub.sh
 
 # Virtualenvwrapper
 export WORKON_HOME=$HOME/code/venv
-[ -f /usr/local/bin/python ] && export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python
-[ -f /usr/bin/python ] && export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python
-source /usr/local/bin/virtualenvwrapper.sh
+export VIRTUALENVWRAPPER_PYTHON=python
+#[ -f /usr/local/bin/python ] && export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python
+#[ -f /usr/bin/python ] && export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python
+source `which virtualenvwrapper.sh`
 
 # Set alias for thefuck
 eval "$(thefuck --alias oops)"
