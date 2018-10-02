@@ -113,6 +113,7 @@ Bundle 'airblade/vim-gitgutter'
 Bundle 'junegunn/goyo.vim'
 Bundle 'junegunn/limelight.vim'
 Bundle 'scrooloose/nerdtree'
+Bundle 'scrooloose/nerdcommenter'
 Bundle 'Xuyuanp/nerdtree-git-plugin'
 Bundle 'ervandew/supertab'
 Bundle 'ervandew/ag'
@@ -135,7 +136,6 @@ Bundle 'jiangmiao/auto-pairs'
 " Languages
 Bundle 'fatih/vim-go'
 Bundle 'nsf/gocode', {'rtp': 'nvim/'}
-Bundle 'othree/yajs.vim'
 Bundle 'StanAngeloff/php.vim'
 Bundle 'digitaltoad/vim-jade'
 Bundle 'wavded/vim-stylus'
@@ -151,6 +151,8 @@ Bundle 'vim-scripts/DrawIt'
 Bundle 'scrooloose/syntastic'
 Bundle 'tpope/vim-markdown'
 Bundle 'JamshedVesuna/vim-markdown-preview'
+Bundle 'pangloss/vim-javascript'
+Bundle 'mxw/vim-jsx'
 
 
 " Syntax highlighting, filetype indentation rules.
@@ -187,6 +189,17 @@ let pymode_virtualenv_enabled = ''
 let pymode_virtualenv_path = $VIRTUAL_ENV
 let g:pymode_options_max_line_length=120
 let g:pymode_lint_options_pylint = {'max-line-length': 120}
+
+" Golang settings
+let g:go_highlight_types=1
+let g:go_highlight_fields=1
+let g:go_highlight_functions=1
+let g:go_highlight_function_calls=1
+let g:go_highlight_operators=1
+let g:go_highlight_extra_types=1
+let g:go_highlight_build_constraints=1
+let g:go_def_mode = "guru"
+autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4 
 
 " Syntastic config
 function! ToggleErrors()
