@@ -32,6 +32,7 @@ if $osx; then
   brew install caskroom/cask/brew-cask
   brew install go
   brew install node
+  brew install lnav
   brew cask install iterm2 nosleep hyperswitch hyperdock slack adium skitch sublime-text
 else
   # Add extra repos
