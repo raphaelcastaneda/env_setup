@@ -1,4 +1,4 @@
-#!/bin/bash 
+!/bin/bash 
 
 
 # Directories
@@ -52,6 +52,18 @@ xz-utils tk-dev
   sudo apt-get install -y exuberant-ctags libncurses-dev golang
   sudo apt-get install -y golang-go
   sudo apt-get install -y nodejs npm
+  sudo apt-get install -y lnav
+
+  # Clone pyenv
+  git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+
+fi
+
+# Install python packages
+if $osx; then
+  pip install virtualenv virtualenvwrapper jedi pudb
+else
+  sudo pip install virtualenv virtualenvwrapper jedi pudb
 fi
 
 # Set up Vundle
