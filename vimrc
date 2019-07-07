@@ -299,8 +299,8 @@ let g:jedi#use_tabs_not_buffers = 0
 
 " YouCompleteMe Configuration
 let g:ycm_autoclose_preview_window_after_completion=1
-let g:ycm_server_python_interpreter = '/usr/local/opt/python@2/bin/python2.7'
-let g:ycm_python_binary_path = '/usr/local/opt/python@2/bin/python2.7'
+let g:ycm_server_python_interpreter = 'python3'
+let g:ycm_python_binary_path = 'python3'
 
 " AutoPairs config
 let g:AutoPairsShortcutFastWrap = '<c-e>'
