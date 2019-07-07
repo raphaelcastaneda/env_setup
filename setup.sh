@@ -85,7 +85,7 @@ $HOME/.fzf/install --all
 
 # Install vim plugins
 vim +PluginInstall +qall
-python ~/.vim/bundle/YouCompleteMe/install.py --clang-completer --go-completer --ts-completer --java-completer
+python ~/.vim/bundle/YouCompleteMe/install.py --all
 
 # Make sure .env exists if it didn't already
 touch $HOME/.env
