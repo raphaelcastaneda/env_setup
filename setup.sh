@@ -32,6 +32,7 @@ if $osx; then
   brew install ctags-exuberant
   brew install caskroom/cask/brew-cask
   brew install go
+  brew install node
   brew cask install iterm2 nosleep hyperswitch hyperdock slack adium skitch sublime-text
 else
   # Install debian packages
@@ -42,6 +43,7 @@ libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev \
 xz-utils tk-dev
   sudo apt-get install -y exuberant-ctags libncurses-dev golang
   sudo apt-get install -y golang-go
+  sudo apt-get install -y nodejs npm
 
   # Clone pyenv
   git clone https://github.com/pyenv/pyenv.git ~/.pyenv
@@ -77,11 +79,11 @@ source ./fonts/install.sh
 
 # Install fuzzy searcher fzf
 git clone --depth 1 https://github.com/junegunn/fzf.git $HOME/.fzf
-$HOME/.fzf/install
+$HOME/.fzf/install --all
 
 # Install vim plugins
 vim +PluginInstall +qall
-python ~/.vim/bundle/YouCompleteMe/install.py --clang-completer --go-completer
+python ~/.vim/bundle/YouCompleteMe/install.py --clang-completer --go-completer --ts-completer --java-completer
 
 # Make sure .env exists if it didn't already
 touch $HOME/.env
