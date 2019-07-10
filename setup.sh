@@ -74,8 +74,24 @@ if [ ! -f "$HOME/.gitconfig" ]; then
   cp "$env_setup/gitconfig" "$HOME/.gitconfig"
 fi
 
+# Use our new bashrc
+source ~/.bashrc
+
+# Install pyenv
+git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
+export PYTHON_CONFIGURE_OPTS="--enable-shared"  # Make sure ycm can compile against this python
+pyenv install --skip-existing 3.7.3
+pyenv install --skip-existing 2.7.16
+pyenv global 3.7.3
+
+# Install python packages
+python -m pip install virtualenv virtualenvwrapper jedi pudb
+
 # Set up fonts
-source ./fonts/install.sh
+cd fonts
+bash install.sh
+cd ..
 
 # Install fuzzy searcher fzf
 git clone --depth 1 https://github.com/junegunn/fzf.git $HOME/.fzf
@@ -83,7 +99,9 @@ $HOME/.fzf/install --all
 
 # Install vim plugins
 vim +PluginInstall +qall
-python ~/.vim/bundle/YouCompleteMe/install.py --clang-completer --go-completer --ts-completer --java-completer
+cd ~/.vim/bundle/YouCompleteMe
+git submodule update --init --recursive
+python ~/.vim/bundle/YouCompleteMe/install.py --all
 
 # Make sure .env exists if it didn't already
 touch $HOME/.env
