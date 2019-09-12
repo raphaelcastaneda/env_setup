@@ -162,6 +162,7 @@ Bundle 'mxw/vim-jsx'
 Bundle 'prettier/vim-prettier', {'do': 'yarn install'}
 Bundle 'w0rp/ale'
 Bundle 'othree/xml.vim'
+Bundle 'martinda/Jenkinsfile-vim-syntax'
 
 
 " Syntax highlighting, filetype indentation rules.
