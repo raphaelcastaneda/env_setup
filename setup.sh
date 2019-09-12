@@ -1,4 +1,4 @@
-!/bin/bash 
+#!/bin/bash 
 
 
 # Directories
@@ -24,16 +24,22 @@ if $osx; then
   # Set up git line endings
   git config --global core.autocrlf input
 
+  # Install OSX 10.14 headers
+  sudo installer -pkg /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg -target /
+
   # Install homebrew packages
   brew install python
   brew install coreutils curl wget git tmux tig tree graphviz vim
   brew install the_silver_searcher ssh-copy-id thefuck
   brew install ctags-exuberant
-  brew install caskroom/cask/brew-cask
+  brew install caskroom/cask/cask
   brew install go
   brew install node
+  brew install rust
   brew install lnav
-  brew cask install iterm2 nosleep hyperswitch hyperdock slack adium skitch sublime-text
+  brew install cmake
+  brew install mono # used for building omnisharp for C# completion in YCM
+  brew cask install iterm2 hyperswitch hyperdock slack franz skitch sublime-text bowtie
 else
   # Add extra repos
   sudo add-apt-repository -y ppa:neovim-ppa/stable
@@ -52,6 +58,7 @@ xz-utils tk-dev
   sudo apt-get install -y exuberant-ctags libncurses-dev golang
   sudo apt-get install -y golang-go
   sudo apt-get install -y nodejs npm
+  curl https://sh.rustup.rs -sSf | sh -s -- -y
   sudo apt-get install -y lnav
 
   # Clone pyenv
@@ -110,7 +117,9 @@ $HOME/.fzf/install --all
 vim +PluginInstall +qall
 cd ~/.vim/bundle/YouCompleteMe
 git submodule update --init --recursive
-python ~/.vim/bundle/YouCompleteMe/install.py --all
+npm install -g xbuild # required to build Omnisharp for ycm
+python ~/.vim/bundle/YouCompleteMe/install.py --go-completer --all
+vim +'silent :GoInstallBinaries' +qall
 
 # Make sure .env exists if it didn't already
 touch $HOME/.env
