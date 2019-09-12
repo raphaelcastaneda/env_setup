@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 
 # Directories
@@ -25,14 +25,13 @@ if $osx; then
   git config --global core.autocrlf input
 
   # Install OSX 10.14 headers
-  sudo installer -pkg /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg -target /
+  #sudo installer -pkg /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg -target /
 
   # Install homebrew packages
   brew install python
   brew install coreutils curl wget git tmux tig tree graphviz vim
   brew install the_silver_searcher ssh-copy-id thefuck
   brew install ctags-exuberant
-  brew install caskroom/cask/cask
   brew install go
   brew install node
   brew install rust
@@ -60,17 +59,6 @@ xz-utils tk-dev
   sudo apt-get install -y nodejs npm
   curl https://sh.rustup.rs -sSf | sh -s -- -y
   sudo apt-get install -y lnav
-
-  # Clone pyenv
-  git clone https://github.com/pyenv/pyenv.git ~/.pyenv
-
-fi
-
-# Install python packages
-if $osx; then
-  pip install virtualenv virtualenvwrapper jedi pudb
-else
-  sudo pip install virtualenv virtualenvwrapper jedi pudb
 fi
 
 # Set up Vundle
@@ -90,16 +78,19 @@ if [ ! -f "$HOME/.gitconfig" ]; then
   cp "$env_setup/gitconfig" "$HOME/.gitconfig"
 fi
 
+
+# Clone pyenv
+git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
+
 # Use our new bashrc
 source ~/.bashrc
 
-# Install pyenv
-git clone https://github.com/pyenv/pyenv.git ~/.pyenv
-git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
-export PYTHON_CONFIGURE_OPTS="--enable-shared"  # Make sure ycm can compile against this python
-pyenv install --skip-existing 3.7.3
+# Set up pyenv
+export PYTHON_CONFIGURE_OPTS="--enable-framework"  # Make sure ycm can compile against this python
+pyenv install --skip-existing 3.7.4
 pyenv install --skip-existing 2.7.16
-pyenv global 3.7.3
+pyenv global 3.7.4
 
 # Install python packages
 python -m pip install virtualenv virtualenvwrapper jedi pudb
