@@ -111,6 +111,8 @@ git submodule update --init --recursive
 npm install -g xbuild # required to build Omnisharp for ycm
 python ~/.vim/bundle/YouCompleteMe/install.py --go-completer --all
 vim +'silent :GoInstallBinaries' +qall
+cd ~/.vim/bundle/YouCompleteMe/third_party/ycmd/third_party/go/src/golang.org/x/tools/cmd/gopls
+go build
 
 # Make sure .env exists if it didn't already
 touch $HOME/.env
