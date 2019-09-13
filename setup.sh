@@ -38,6 +38,7 @@ if $osx; then
   brew install lnav
   brew install cmake
   brew install mono # used for building omnisharp for C# completion in YCM
+  brew tap caskroom/cask
   brew cask install iterm2 hyperswitch hyperdock slack franz skitch sublime-text bowtie
 else
   # Add extra repos
