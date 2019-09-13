@@ -81,9 +81,14 @@ autocmd filetype crontab setlocal nobackup nowritebackup
 
 " Use silver searcher for vim :grep
 if executable('ag')
-  " Note that we want column as well as file and line number
-  set grepprg=ag\ --nogroup\ --nocolor\ --column
-  set grepformat=%f:%l:%c%m
+  " Use ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+  " ag is fast enough that CtrlP doesn't need to cache
+  let g:ctrlp_use_caching = 0
 endif
 
 " Powerline setup
@@ -113,6 +118,7 @@ Bundle 'airblade/vim-gitgutter'
 Bundle 'junegunn/goyo.vim'
 Bundle 'junegunn/limelight.vim'
 Bundle 'scrooloose/nerdtree'
+Bundle 'scrooloose/nerdcommenter'
 Bundle 'Xuyuanp/nerdtree-git-plugin'
 Bundle 'ervandew/supertab'
 Bundle 'ervandew/ag'
@@ -133,9 +139,8 @@ Bundle 'vim-airline/vim-airline-themes'
 Bundle 'jiangmiao/auto-pairs'
 
 " Languages
-Bundle 'fatih/vim-go'
-Bundle 'nsf/gocode', {'rtp': 'nvim/'}
-Bundle 'othree/yajs.vim'
+Bundle 'fatih/vim-go', {'do': ':GoUpdateBinaries'}
+Bundle 'mdempsky/gocode', {'rtp': 'nvim/'}
 Bundle 'StanAngeloff/php.vim'
 Bundle 'digitaltoad/vim-jade'
 Bundle 'wavded/vim-stylus'
@@ -151,6 +156,13 @@ Bundle 'vim-scripts/DrawIt'
 Bundle 'scrooloose/syntastic'
 Bundle 'tpope/vim-markdown'
 Bundle 'JamshedVesuna/vim-markdown-preview'
+Bundle 'pangloss/vim-javascript'
+Bundle 'mxw/vim-jsx'
+"Bundle 'maksimr/vim-jsbeautify'
+Bundle 'prettier/vim-prettier', {'do': 'yarn install'}
+Bundle 'w0rp/ale'
+Bundle 'othree/xml.vim'
+Bundle 'martinda/Jenkinsfile-vim-syntax'
 
 
 " Syntax highlighting, filetype indentation rules.
@@ -187,6 +199,32 @@ let pymode_virtualenv_enabled = ''
 let pymode_virtualenv_path = $VIRTUAL_ENV
 let g:pymode_options_max_line_length=120
 let g:pymode_lint_options_pylint = {'max-line-length': 120}
+
+" Golang settings
+let g:go_highlight_types=1
+let g:go_highlight_fields=1
+let g:go_highlight_functions=1
+let g:go_highlight_function_calls=1
+let g:go_highlight_operators=1
+let g:go_highlight_extra_types=1
+let g:go_highlight_build_constraints=1
+let g:go_def_mode = "guru"
+autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4 
+autocmd FileType go nnoremap <buffer> <leader>u :GoReferrers<CR>
+autocmd FileType go nnoremap <buffer> <leader>c :GoCallers<CR>
+autocmd FileType go nnoremap <buffer> <leader>d :GoDef<CR>
+autocmd FileType go nnoremap <buffer> <leader>e :GoLint<CR>
+
+" Prettier javascript settings
+let g:prettier#config#semi = 'false'
+let g:prettier#config#single_quote = 'true'
+let g:prettier#config#trailing_comma = 'all'
+let g:prettier#config#parser = 'flow'
+let g:prettier#config#bracket_spacing = 'true'
+
+" ALE lint engine config
+"let g:ale_set_loclist = 0
+"let g:ale_set_quickfix =1
 
 " Syntastic config
 function! ToggleErrors()
@@ -280,6 +318,16 @@ imap <c-x><c-f> <plug>(fzf-complete-path)
 imap <c-x><c-j> <plug>(fzf-complete-file-ag)
 imap <c-x><c-l> <plug>(fzf-complete-line)
 
+" JS Beautify
+autocmd FileType javascript noremap <buffer>  <c-f> :call JsBeautify()<cr>
+" for json
+autocmd FileType json noremap <buffer> <c-f> :call JsonBeautify()<cr>
+" for jsx
+autocmd FileType jsx noremap <buffer> <c-f> :call JsxBeautify()<cr>
+" for html
+autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
+" for css or scss
+autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
 
 " Advanced customization using autoload functions
 inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'left': '15%'})"
@@ -334,6 +382,7 @@ noremap <leader>pl :PymodeLint<CR>
 noremap <leader>e :<C-u>call ToggleErrors()<CR>
 noremap <leader>] :lnext<CR>
 noremap <leader>[ :lprevious<CR>
+noremap <leader>q :ccl<CR>
 
 autocmd User GoyoEnter Limelight
 autocmd User GoyoLeave Limelight!
@@ -352,6 +401,9 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
+" Map F to find work under cursor
+nnoremap F :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+
 map <Up> <NOP>
 map <Down> <NOP>
 map <Left> <NOP>
@@ -366,4 +418,4 @@ noremap <F9> :Dispatch<CR>
 autocmd FileType python let b:dispatch = 'tox'
 
 " tbone config
-noremap <leader>b :Twrite last<CR> :Tmux last-pane<CR>
+noremap <leader>b :Twrite .last<CR> :Tmux last-pane<CR>
