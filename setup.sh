@@ -38,6 +38,7 @@ if $osx; then
   brew install lnav
   brew install cmake
   brew install mono # used for building omnisharp for C# completion in YCM
+  brew install ncdu
   brew tap caskroom/cask
   brew cask install iterm2 hyperswitch hyperdock slack franz skitch sublime-text bowtie
 else
@@ -58,6 +59,7 @@ xz-utils tk-dev
   sudo apt-get install -y exuberant-ctags libncurses-dev golang
   sudo apt-get install -y golang-go
   sudo apt-get install -y nodejs npm
+  sudo apt-get install -y ncdu
   curl https://sh.rustup.rs -sSf | sh -s -- -y
   sudo apt-get install -y lnav
 fi
