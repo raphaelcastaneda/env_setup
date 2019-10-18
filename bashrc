@@ -74,9 +74,7 @@ source $HOME/env_setup/completion/hub.sh
 
 # Virtualenvwrapper
 export WORKON_HOME=$HOME/code/venv
-export VIRTUALENVWRAPPER_PYTHON=python
-#[ -f /usr/local/bin/python ] && export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python
-#[ -f /usr/bin/python ] && export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python
+export VIRTUALENVWRAPPER_PYTHON=`which python`
 source `which virtualenvwrapper.sh`
 
 # Set alias for thefuck
