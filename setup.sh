@@ -59,7 +59,7 @@ else
   sudo apt-get install -y  build-essential cmake gcc libssl-dev zlib1g-dev libbz2-dev \
 libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev \
 xz-utils tk-dev
-  sudo apt-get install -y git tig tree htop curl silversearcher-ag tmux
+  sudo apt-get install -y git tig tree htop curl silversearcher-ag
   sudo apt-get install -y python python-pip vim python-dev thefuck
   sudo apt-get install -y ruby2.5
   sudo apt-get install -y exuberant-ctags libncurses-dev golang
@@ -68,6 +68,9 @@ xz-utils tk-dev
   sudo apt-get install -y ncdu
   curl https://sh.rustup.rs -sSf | sh -s -- -y
   sudo apt-get install -y lnav
+
+  # Install tmux from source
+  source ./tmux_build_from_source.sh
   
   # Install tmuxinator via ruby
   sudo gem install tmuxinator
