@@ -30,6 +30,7 @@ if $osx; then
   # Install homebrew packages
   brew install python
   brew install coreutils curl wget git tmux tig tree graphviz vim
+  brew install tmuxinator
   brew install the_silver_searcher ssh-copy-id thefuck
   brew install ctags-exuberant
   brew install go
@@ -41,11 +42,15 @@ if $osx; then
   brew install ncdu
   brew tap caskroom/cask
   brew cask install iterm2 hyperswitch hyperdock slack franz skitch sublime-text bowtie
+  
+  # Make sure ycm can compile against this python
+  export PYTHON_CONFIGURE_OPTS="--enable-framework"  
 else
   # Add extra repos
-  sudo add-apt-repository -y ppa:neovim-ppa/stable
   sudo add-apt-repository -y ppa:gophers/archive
   sudo add-apt-repository -y ppa:longsleep/golang-backports
+  sudo add-apt-repository -y ppa:brightbox/ruby-ng
+  sudo apt-get install -y software-properties-common
 
   #Get the latest stuff
   sudo apt-get update
@@ -56,12 +61,19 @@ libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev \
 xz-utils tk-dev
   sudo apt-get install -y git tig tree htop curl silversearcher-ag tmux
   sudo apt-get install -y python python-pip vim python-dev thefuck
+  sudo apt-get install -y ruby2.5
   sudo apt-get install -y exuberant-ctags libncurses-dev golang
   sudo apt-get install -y golang-go
   sudo apt-get install -y nodejs npm
   sudo apt-get install -y ncdu
   curl https://sh.rustup.rs -sSf | sh -s -- -y
   sudo apt-get install -y lnav
+  
+  # Install tmuxinator via ruby
+  sudo gem install tmuxinator
+
+  # Make sure ycm can compile against this python
+  export PYTHON_CONFIGURE_OPTS="--enable-shared"  
 fi
 
 # Set up Vundle
@@ -85,12 +97,18 @@ fi
 # Clone pyenv
 git clone https://github.com/pyenv/pyenv.git ~/.pyenv
 git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
+pushd $(pyenv root)
+git pull
+popd
+
+# Make sure tmuxinator does not break things
+mkdir -p ~/.bin
+touch ~/.bin/tmuxinator.bash
 
 # Use our new bashrc
 source ~/.bashrc
 
 # Set up pyenv
-export PYTHON_CONFIGURE_OPTS="--enable-framework"  # Make sure ycm can compile against this python
 pyenv install --skip-existing 3.7.4
 pyenv install --skip-existing 2.7.16
 pyenv global 3.7.4
