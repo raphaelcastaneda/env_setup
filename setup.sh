@@ -83,7 +83,7 @@ fi
 git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
 
 # File symlinks
-for file in "bashrc" "bash_profile" "tmux.conf" "Xresources" "vimrc"; do
+for file in "bashrc" "bash_profile" "tmux.conf" "tmux.conf.sh" "Xresources" "vimrc"; do
   rm -rf "$HOME/.$file"
   ln -s "$env_setup/$file" "$HOME/.$file"
 done
