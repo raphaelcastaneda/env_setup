@@ -59,7 +59,7 @@ else
   sudo apt-get install -y  build-essential cmake gcc libssl-dev zlib1g-dev libbz2-dev \
 libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev \
 xz-utils tk-dev
-  sudo apt-get install -y git tig tree htop curl silversearcher-ag tmux
+  sudo apt-get install -y git tig tree htop curl silversearcher-ag
   sudo apt-get install -y python python-pip vim python-dev thefuck
   sudo apt-get install -y ruby2.5
   sudo apt-get install -y exuberant-ctags libncurses-dev golang
@@ -68,6 +68,9 @@ xz-utils tk-dev
   sudo apt-get install -y ncdu
   curl https://sh.rustup.rs -sSf | sh -s -- -y
   sudo apt-get install -y lnav
+
+  # Install tmux from source
+  source ./tmux_build_from_source.sh
   
   # Install tmuxinator via ruby
   sudo gem install tmuxinator
@@ -80,7 +83,7 @@ fi
 git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
 
 # File symlinks
-for file in "bashrc" "bash_profile" "tmux.conf" "Xresources" "vimrc"; do
+for file in "bashrc" "bash_profile" "tmux.conf" "tmux.conf.sh" "Xresources" "vimrc"; do
   rm -rf "$HOME/.$file"
   ln -s "$env_setup/$file" "$HOME/.$file"
 done
