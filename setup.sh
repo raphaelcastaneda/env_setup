@@ -166,6 +166,7 @@ python ~/.vim/bundle/YouCompleteMe/install.py --go-completer --all
 vim +'silent :GoInstallBinaries' +qall
 cd ~/.vim/bundle/YouCompleteMe/third_party/ycmd/third_party/go/src/golang.org/x/tools/cmd/gopls
 go build
+vim +'silent :call mkdp#util#install()' +qall
 
 # Make sure .env exists if it didn't already
 touch $HOME/.env

@@ -155,7 +155,7 @@ Bundle 'mfukar/robotframework-vim'
 Bundle 'vim-scripts/DrawIt'
 Bundle 'scrooloose/syntastic'
 Bundle 'tpope/vim-markdown'
-Bundle 'JamshedVesuna/vim-markdown-preview'
+Bundle 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'}
 Bundle 'pangloss/vim-javascript'
 Bundle 'mxw/vim-jsx'
 "Bundle 'maksimr/vim-jsbeautify'
@@ -337,9 +337,9 @@ let g:goyo_width = 120
 
 colorscheme hybrid
 
-" markdown preview
-let vim_markdown_preview_github=1
-let vim_markdown_preview_temp_file=0
+" iamcco/markdown-preview
+let g:mkdp_browser = 'Google Chrome'
+nmap <C-p> <Plug>MarkdownPreviewToggle
 
 " vimwiki/vimwiki
 let g:vimwiki_list = [{'path': '~/vimwiki/', 'syntax': 'markdown', 'ext': '.md', 'auto_tags': 1 }]
