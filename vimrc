@@ -262,6 +262,7 @@ function! SyncTree()
   endif
 endfunction
 
+autocmd vimenter * NERDTree
 autocmd BufEnter * call SyncTree()
 
 let g:NERDTreeIndicatorMapCustom = {
