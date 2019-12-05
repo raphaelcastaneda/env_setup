@@ -68,25 +68,52 @@ export PATH="$PATH:$HOME/.bin"
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 
-# Source completions
-source $HOME/env_setup/completion/git.sh
-source $HOME/env_setup/completion/hub.sh
-
 # Virtualenvwrapper
 export WORKON_HOME=$HOME/code/venv
 export VIRTUALENVWRAPPER_PYTHON=`which python`
 # source `which virtualenvwrapper.sh`
 
+# Make sure these statements execute before sourcing bash completion.
+export NVM_DIR="${HOME}/.nvm"
+if [[ -f /usr/local/opt/nvm/nvm.sh ]]; then
+   .  /usr/local/opt/nvm/nvm.sh
+fi
+
+if [[ -e "/usr/local/share/bash-completion/bash_completion" ]]; then
+	export BASH_COMPLETION_COMPAT_DIR="/usr/local/etc/bash_completion.d"
+	source "/usr/local/share/bash-completion/bash_completion"
+elif [[ -e "/usr/local/etc/profile.d/bash_completion.sh" ]]; then
+	source "/usr/local/etc/profile.d/bash_completion.sh"
+elif [[ -e "/etc/bash_completion" ]]; then
+	source "/etc/bash_completion"
+fi
+# Brew completions
+#if type brew &>/dev/null; then
+#  HOMEBREW_PREFIX="$(brew --prefix)"
+#  if [[ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]]; then
+#    source "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
+#  else
+#    for COMPLETION in "${HOMEBREW_PREFIX}/etc/bash_completion.d/"*; do
+#      [[ -r "$COMPLETION" ]] && source "$COMPLETION"
+#    done
+#  fi
+#fi
+
+## Source completions
+source $HOME/env_setup/completion/git.sh
+#source $HOME/env_setup/completion/hub.sh
+
 # Set alias for thefuck
 eval "$(thefuck --alias oops)"
 
 # FZF
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
-
 export FZF_COMPLETION_TRIGGER='**'
 
 # Options to fzf command
 export FZF_COMPLETION_OPTS='+c -x'
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
 
 # Use ag instead of the default find command for listing candidates.
 # - The first argument to the function is the base path to start traversal
