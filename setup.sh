@@ -15,6 +15,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 fi
 
 if $osx; then
+  #----------- START OSX section----------------------------
   # Homebrew stuff
   if test ! $(which brew)
   then
@@ -29,9 +30,18 @@ if $osx; then
 
   # Install homebrew packages
   brew install python
-  brew install coreutils curl wget git tmux tig tree graphviz vim
+  brew install coreutils
+  brew install curl wget
+  brew install git
+  brew install tmux
+  brew install tig
+  brew install tree
+  brew install graphviz
+  brew install vim
   brew install tmuxinator
-  brew install the_silver_searcher ssh-copy-id thefuck
+  brew install the_silver_searcher 
+  brew install ssh-copy-id 
+  brew install thefuck
   brew install ctags-exuberant
   brew install go
   brew install node
@@ -39,13 +49,30 @@ if $osx; then
   brew install lnav
   brew install cmake
   brew install mono # used for building omnisharp for C# completion in YCM
+  brew install bash-completion@2
   brew install ncdu
-  brew tap caskroom/cask
-  brew cask install iterm2 hyperswitch hyperdock slack franz skitch sublime-text bowtie
+  brew tap homebrew/cask
+  brew cask install iterm2
+  brew cask install hyperswitch
+  brew cask install hyperdock 
+  brew cask install slack
+  brew cask install franz
+  brew cask install skitch
+  brew cask install sublime-text
+  brew cask install bowtie
+  brew cask install foxitreader
   
   # Make sure ycm can compile against this python
   export PYTHON_CONFIGURE_OPTS="--enable-framework"  
+
+  # Switch to brew-installed bash
+  sudo bash -c 'echo /usr/local/bin/bash >> /etc/shells'
+  chsh -s /usr/local/bin/bash
+
+  #-------------- END OSX section-----------------------
+
 else
+  #----------- START Ubuntu section----------------------------
   # Add extra repos
   sudo add-apt-repository -y ppa:gophers/archive
   sudo add-apt-repository -y ppa:longsleep/golang-backports
@@ -68,6 +95,7 @@ xz-utils tk-dev
   sudo apt-get install -y ncdu
   curl https://sh.rustup.rs -sSf | sh -s -- -y
   sudo apt-get install -y lnav
+  sudo apt-get install -y bash-completion
 
   # Install tmux from source
   source ./tmux_build_from_source.sh
@@ -77,6 +105,7 @@ xz-utils tk-dev
 
   # Make sure ycm can compile against this python
   export PYTHON_CONFIGURE_OPTS="--enable-shared"  
+  #----------- END Ubuntu section----------------------------
 fi
 
 # Set up Vundle
