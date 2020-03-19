@@ -227,6 +227,9 @@ let g:prettier#config#bracket_spacing = 'true'
 "let g:ale_set_loclist = 0
 "let g:ale_set_quickfix =1
 
+" vue javascript
+autocmd BufEnter,BufRead *.vue set filetype=vue.javascript
+
 " Syntastic config
 function! ToggleErrors()
     let old_last_winnr = winnr('$')
@@ -391,6 +394,7 @@ autocmd User GoyoLeave Limelight!
 nnoremap <Leader>z :Goyo<CR>
 
 noremap <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
+noremap <leader>u  :YcmCompleter GoToReferences<CR>
 
 let g:bufExplorerShowRelativePath=1
 "autocmd BufNewFile,BufRead *.md setlocal spell
