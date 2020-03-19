@@ -48,9 +48,11 @@ if $osx; then
   brew install rust
   brew install lnav
   brew install cmake
+  brew install watch
   brew install mono # used for building omnisharp for C# completion in YCM
   brew install bash-completion@2
   brew install ncdu
+  brew install jq # command line json parser
   brew tap homebrew/cask
   brew cask install iterm2
   brew cask install hyperswitch
@@ -61,6 +63,7 @@ if $osx; then
   brew cask install sublime-text
   brew cask install bowtie
   brew cask install foxitreader
+  brew cask install gimp
   
   # Make sure ycm can compile against this python
   export PYTHON_CONFIGURE_OPTS="--enable-framework"  
