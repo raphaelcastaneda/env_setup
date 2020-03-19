@@ -68,10 +68,6 @@ export PATH="$PATH:$HOME/.bin"
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 
-# Virtualenvwrapper
-export WORKON_HOME=$HOME/code/venv
-export VIRTUALENVWRAPPER_PYTHON=`which python`
-# source `which virtualenvwrapper.sh`
 
 # Make sure these statements execute before sourcing bash completion.
 export NVM_DIR="${HOME}/.nvm"
@@ -128,6 +124,11 @@ _fzf_compgen_path() {
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH:"
 eval "$(pyenv init -)"
+
+# Virtualenvwrapper
+export WORKON_HOME=$HOME/code/venv
+export VIRTUALENVWRAPPER_PYTHON=`which python`
+pyenv virtualenvwrapper
 
 # Wrap aliases for autocompletion
 # wrap_alias takes three arguments:

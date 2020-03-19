@@ -141,12 +141,15 @@ touch ~/.bin/tmuxinator.bash
 source ~/.bashrc
 
 # Set up pyenv
-pyenv install --skip-existing 3.7.4
-pyenv install --skip-existing 2.7.16
-pyenv global 3.7.4
+pyenv install --skip-existing 3.8.2
+pyenv install --skip-existing 2.7.17
+pyenv global 3.8.2
 
 # Install python packages
-python -m pip install virtualenv virtualenvwrapper jedi pudb
+python -m pip install virtualenv jedi pudb
+
+# Install virtualenvwrapper pyenv plugin
+git clone https://github.com/pyenv/pyenv-virtualenvwrapper.git $(pyenv root)/plugins/pyenv-virtualenvwrapper
 
 # Set up fonts
 cd fonts
