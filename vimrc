@@ -163,6 +163,7 @@ Bundle 'prettier/vim-prettier', {'do': 'yarn install'}
 Bundle 'w0rp/ale'
 Bundle 'othree/xml.vim'
 Bundle 'martinda/Jenkinsfile-vim-syntax'
+Bundle 'hashivim/vim-terraform'
 
 
 " Syntax highlighting, filetype indentation rules.

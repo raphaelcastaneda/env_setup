@@ -98,6 +98,7 @@ fi
 ## Source completions
 source $HOME/env_setup/completion/git.sh
 #source $HOME/env_setup/completion/hub.sh
+source $HOME/env_setup/completion/terraform.sh
 
 # Set alias for thefuck
 eval "$(thefuck --alias oops)"
