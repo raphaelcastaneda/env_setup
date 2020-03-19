@@ -43,7 +43,7 @@ alias gco='git checkout'
 alias gcl='git checkout -'
 alias gcm='git checkout master'
 alias gdel='git push origin --delete'
-alias rebase-branch='git rebase -i `git merge-base master HEAD`'
+alias rebase-branch='git rebase -i `git merge-base master HEAD^^`'
 alias grb='rebase-branch'
 #####
 # Ansible aliases
