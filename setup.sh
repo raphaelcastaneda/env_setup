@@ -64,6 +64,8 @@ if $osx; then
   brew cask install bowtie
   brew cask install foxitreader
   brew cask install gimp
+
+  source ./helm-dev-osx.sh # Install helm and terraform tools
   
   # Make sure ycm can compile against this python
   export PYTHON_CONFIGURE_OPTS="--enable-framework"  
