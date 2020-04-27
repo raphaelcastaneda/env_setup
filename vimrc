@@ -165,6 +165,7 @@ Bundle 'w0rp/ale'
 Bundle 'othree/xml.vim'
 Bundle 'martinda/Jenkinsfile-vim-syntax'
 Bundle 'hashivim/vim-terraform'
+Bundle 'posva/vim-vue'
 
 
 " Syntax highlighting, filetype indentation rules.
@@ -229,7 +230,7 @@ let g:prettier#config#bracket_spacing = 'true'
 "let g:ale_set_quickfix =1
 
 " vue javascript
-autocmd BufEnter,BufRead *.vue set filetype=vue.javascript
+"autocmd BufEnter,BufRead *.vue set filetype=vue.javascript
 
 " Syntastic config
 function! ToggleErrors()
