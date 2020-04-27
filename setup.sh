@@ -64,6 +64,7 @@ if $osx; then
   brew cask install bowtie
   brew cask install foxitreader
   brew cask install gimp
+  brew cask install diffmerge
 
   source ./helm-dev-osx.sh # Install helm and terraform tools
   
