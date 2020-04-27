@@ -114,6 +114,7 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 
 " Plugins
+Bundle 'ctrlpvim/ctrlp.vim'
 Bundle 'airblade/vim-gitgutter'
 Bundle 'junegunn/goyo.vim'
 Bundle 'junegunn/limelight.vim'
