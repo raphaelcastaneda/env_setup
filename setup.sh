@@ -58,13 +58,14 @@ if $osx; then
   brew cask install hyperswitch
   brew cask install hyperdock 
   brew cask install slack
-  brew cask install franz
+  brew cask install ferdi
   brew cask install skitch
   brew cask install sublime-text
   brew cask install bowtie
   brew cask install foxitreader
   brew cask install gimp
   brew cask install diffmerge
+  brew cask install postman
 
   source ./helm-dev-osx.sh # Install helm and terraform tools
   
