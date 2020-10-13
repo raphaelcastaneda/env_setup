@@ -327,7 +327,7 @@ colorscheme hybrid
 
 " iamcco/markdown-preview
 let g:mkdp_browser = 'Google Chrome'
-nmap <C-p> <Plug>MarkdownPreviewToggle
+nmap mp <Plug>MarkdownPreviewToggle
 
 " vimwiki/vimwiki
 let g:vimwiki_list = [{'path': '~/vimwiki/', 'syntax': 'markdown', 'ext': '.md', 'auto_tags': 1 }]
