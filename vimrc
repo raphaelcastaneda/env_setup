@@ -368,7 +368,7 @@ noremap <leader>sp :set paste<CR>
 noremap <leader>snp :set nopaste<CR>
 
 noremap <leader>pl :PymodeLint<CR>
-noremap <leader>e :<C-u>call ToggleErrors()<CR>
+"noremap <leader>e :<C-u>call ToggleErrors()<CR>
 noremap <leader>] :lnext<CR>
 noremap <leader>[ :lprevious<CR>
 noremap <leader>q :ccl<CR>
