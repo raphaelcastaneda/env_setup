@@ -198,3 +198,5 @@ function ${wrapper_name}() {
 eval "$(alias -p | sed -e 's/alias \([^=][^=]*\)='\''\([^ ][^ ]*\) *\(.*\)'\''/wrap_alias \1 \2 '\''\3'\'' /')"
 
 unset wrap_alias
+
+eval "$(thefuck --alias)"
