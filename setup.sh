@@ -153,7 +153,7 @@ pyenv install --skip-existing 2.7.17
 pyenv global 3.8.2
 
 # Install python packages
-python -m pip install virtualenv jedi pudb
+python -m pip install virtualenv jedi pudb bpytop
 
 # Install virtualenvwrapper pyenv plugin
 git clone https://github.com/pyenv/pyenv-virtualenvwrapper.git $(pyenv root)/plugins/pyenv-virtualenvwrapper
