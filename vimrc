@@ -214,6 +214,7 @@ let g:ale_echo_msg_format = '[%linter%] %code: %%s [%severity%]'
 let g:ale_set_loclist = 1
 let g:ale_set_quickfix =0
 let g:ale_linters={'python': ['prospector']}
+let g:ale_python_prospector_options = '-P ~/.prospector.yml'
 
 " Golang settings
 let g:go_highlight_types=1
