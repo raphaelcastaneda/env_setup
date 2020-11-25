@@ -31,6 +31,7 @@ alias ll='ls -la'
 alias tmux='tmux -2'
 #alias xclip='xclip -selection c'
 alias pudb='python -m pudb'  # make sure pudb works even in a virtualenv
+alias bashtop='bpytop'  # python implementation of bashtop is the new bashtop
 
 #####
 # Git aliases
@@ -68,12 +69,6 @@ export PATH="$PATH:$HOME/.bin"
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 
-
-# Make sure these statements execute before sourcing bash completion.
-export NVM_DIR="${HOME}/.nvm"
-if [[ -f /usr/local/opt/nvm/nvm.sh ]]; then
-   .  /usr/local/opt/nvm/nvm.sh
-fi
 
 if [[ -e "/usr/local/share/bash-completion/bash_completion" ]]; then
 	export BASH_COMPLETION_COMPAT_DIR="/usr/local/etc/bash_completion.d"
@@ -130,6 +125,11 @@ eval "$(pyenv init -)"
 export WORKON_HOME=$HOME/code/venv
 export VIRTUALENVWRAPPER_PYTHON=`which python`
 pyenv virtualenvwrapper
+
+# Set up nvm, making sure to do this before sourcing completion scripts
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh"  ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion"  ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # Automatically add completion for all aliases to commands having completion functions
 function alias_completion {
@@ -200,6 +200,5 @@ function alias_completion {
     source "$tmp_file" && rm -f "$tmp_file"
 }; alias_completion
 
-
-
 eval "$(thefuck --alias)"
+

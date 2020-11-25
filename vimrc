@@ -207,9 +207,11 @@ let g:pymode_options_max_line_length=120
 "let g:pymode_lint_options_pep257 = {'ignore': 'D100,D101,D102,D103,D205,D400,D401'}
 
 " Ale settings
+let g:ale_enabled = 1
 "let g:ale_lint_on_text_changed = 'never' 
-"let g:ale_lint_on_enter = 0                                                                                                                                               
-"let g:ale_lint_on_save = 0
+"let g:ale_lint_on_enter = 0
+"
+let g:ale_lint_on_save = 0
 let g:ale_echo_msg_format = '[%linter%] %code: %%s [%severity%]'
 let g:ale_set_loclist = 1
 let g:ale_set_quickfix =0
