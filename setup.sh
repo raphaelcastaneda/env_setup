@@ -15,6 +15,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 fi
 
 if $osx; then
+  #----------- START OSX section----------------------------
   # Homebrew stuff
   if test ! $(which brew)
   then
@@ -29,23 +30,56 @@ if $osx; then
 
   # Install homebrew packages
   brew install python
-  brew install coreutils curl wget git tmux tig tree graphviz vim
+  brew install coreutils
+  brew install curl wget
+  brew install git
+  brew install tmux
+  brew install tig
+  brew install tree
+  brew install graphviz
+  brew install vim
   brew install tmuxinator
-  brew install the_silver_searcher ssh-copy-id thefuck
+  brew install the_silver_searcher 
+  brew install ssh-copy-id 
+  brew install thefuck
   brew install ctags-exuberant
   brew install go
   brew install node
   brew install rust
   brew install lnav
   brew install cmake
+  brew install watch
   brew install mono # used for building omnisharp for C# completion in YCM
+  brew install bash-completion@2
   brew install ncdu
-  brew tap caskroom/cask
-  brew cask install iterm2 hyperswitch hyperdock slack franz skitch sublime-text bowtie
+  brew install jq # command line json parser
+  brew tap homebrew/cask
+  brew cask install iterm2
+  brew cask install hyperswitch
+  brew cask install hyperdock 
+  brew cask install slack
+  brew cask install ferdi
+  brew cask install skitch
+  brew cask install sublime-text
+  brew cask install bowtie
+  brew cask install foxitreader
+  brew cask install gimp
+  brew cask install diffmerge
+  brew cask install postman
+
+  source ./helm-dev-osx.sh # Install helm and terraform tools
   
   # Make sure ycm can compile against this python
   export PYTHON_CONFIGURE_OPTS="--enable-framework"  
+
+  # Switch to brew-installed bash
+  sudo bash -c 'echo /usr/local/bin/bash >> /etc/shells'
+  chsh -s /usr/local/bin/bash
+
+  #-------------- END OSX section-----------------------
+
 else
+  #----------- START Ubuntu section----------------------------
   # Add extra repos
   sudo add-apt-repository -y ppa:gophers/archive
   sudo add-apt-repository -y ppa:longsleep/golang-backports
@@ -68,6 +102,7 @@ xz-utils tk-dev
   sudo apt-get install -y ncdu
   curl https://sh.rustup.rs -sSf | sh -s -- -y
   sudo apt-get install -y lnav
+  sudo apt-get install -y bash-completion
 
   # Install tmux from source
   source ./tmux_build_from_source.sh
@@ -77,6 +112,7 @@ xz-utils tk-dev
 
   # Make sure ycm can compile against this python
   export PYTHON_CONFIGURE_OPTS="--enable-shared"  
+  #----------- END Ubuntu section----------------------------
 fi
 
 # Set up Vundle
@@ -112,12 +148,15 @@ touch ~/.bin/tmuxinator.bash
 source ~/.bashrc
 
 # Set up pyenv
-pyenv install --skip-existing 3.7.4
-pyenv install --skip-existing 2.7.16
-pyenv global 3.7.4
+pyenv install --skip-existing 3.8.2
+pyenv install --skip-existing 2.7.17
+pyenv global 3.8.2
 
 # Install python packages
-python -m pip install virtualenv virtualenvwrapper jedi pudb
+python -m pip install virtualenv jedi pudb bpytop prospector[with_everythying]
+
+# Install virtualenvwrapper pyenv plugin
+git clone https://github.com/pyenv/pyenv-virtualenvwrapper.git $(pyenv root)/plugins/pyenv-virtualenvwrapper
 
 # Set up fonts
 cd fonts
@@ -137,6 +176,7 @@ python ~/.vim/bundle/YouCompleteMe/install.py --go-completer --all
 vim +'silent :GoInstallBinaries' +qall
 cd ~/.vim/bundle/YouCompleteMe/third_party/ycmd/third_party/go/src/golang.org/x/tools/cmd/gopls
 go build
+vim +'silent :call mkdp#util#install()' +qall
 
 # Make sure .env exists if it didn't already
 touch $HOME/.env

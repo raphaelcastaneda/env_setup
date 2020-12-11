@@ -100,6 +100,7 @@ let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline_theme = 'powerlineish'
+let g:airline#extensions#ale#enabled = 1
 
 if has('nvim')
     let g:python_host_prog  = 'python2'
@@ -114,6 +115,7 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 
 " Plugins
+Bundle 'ctrlpvim/ctrlp.vim'
 Bundle 'airblade/vim-gitgutter'
 Bundle 'junegunn/goyo.vim'
 Bundle 'junegunn/limelight.vim'
@@ -153,9 +155,9 @@ Bundle 'davidhalter/jedi-vim'
 Bundle 'Valloric/YouCompleteMe'
 Bundle 'mfukar/robotframework-vim'
 Bundle 'vim-scripts/DrawIt'
-Bundle 'scrooloose/syntastic'
+"Bundle 'scrooloose/syntastic'
 Bundle 'tpope/vim-markdown'
-Bundle 'JamshedVesuna/vim-markdown-preview'
+Bundle 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'}
 Bundle 'pangloss/vim-javascript'
 Bundle 'mxw/vim-jsx'
 "Bundle 'maksimr/vim-jsbeautify'
@@ -163,42 +165,61 @@ Bundle 'prettier/vim-prettier', {'do': 'yarn install'}
 Bundle 'w0rp/ale'
 Bundle 'othree/xml.vim'
 Bundle 'martinda/Jenkinsfile-vim-syntax'
+Bundle 'hashivim/vim-terraform'
+Bundle 'posva/vim-vue'
 
 
 " Syntax highlighting, filetype indentation rules.
 filetype plugin indent on
 syntax on
 
-let pymode = 1
-let pymode_breakpoint = 1
-let pymode_breakpoint_bind = 'B'
-let pymode_doc = 1
+let g:pymode = 1
+let g:pymode_breakpoint = 1
+let g:pymode_breakpoint_bind = 'B'
+let g:pymode_doc = 1
 "let pymode_doc_bind = 'K'
-let pymode_folding = 0
-let pymode_indent = 1
-let pymode_lint = 1
-let pymode_lint_checkers = ['pyflakes', 'pep8', 'pep257', 'mccabe', 'pylint']
-let pymode_lint_cwindow = 1
-let pymode_lint_ignore = ''
-let pymode_lint_message = 1
-let pymode_lint_on_fly = 0
-let pymode_lint_on_write = 0
-let pymode_lint_select = ''
-let pymode_lint_signs = 1
-let pymode_motion = 1
-let pymode_options = 1
+let g:pymode_folding = 0
+let g:pymode_indent = 1
+let g:pymode_lint = 0
+let g:pymode_lint_checkers = [] " 'pyflakes', 'pep8', 'pep257', 'mccabe', 'pylint']
+let g:pymode_lint_cwindow = 1
+let g:pymode_lint_message = 1
+let g:pymode_lint_on_fly = 0
+let g:pymode_lint_on_write = 0
+let g:pymode_lint_select = ''
+let g:pymode_lint_signs = 1
+let g:pymode_motion = 1
+let g:pymode_options = 1
 
-let pymode_quickfix_maxheight = 6
-let pymode_quickfix_minheight = 3
-let pymode_rope = 0
+let g:pymode_quickfix_maxheight = 6
+let g:pymode_quickfix_minheight = 3
+let g:pymode_rope = 0
 "let pymode_run = 1
 "let pymode_run_bind = 'r'
-let pymode_trim_whitespaces = 1
-let pymode_virtualenv = 1
-let pymode_virtualenv_enabled = ''
-let pymode_virtualenv_path = $VIRTUAL_ENV
+let g:pymode_trim_whitespaces = 1
+let g:pymode_virtualenv = 1
+let g:pymode_virtualenv_enabled = ''
+let g:pymode_virtualenv_path = $VIRTUAL_ENV
 let g:pymode_options_max_line_length=120
-let g:pymode_lint_options_pylint = {'max-line-length': 120}
+"let g:pymode_lint_ignore = ['E126', 'D100', 'D101', 'D102', 'D103', 'D205', 'D400', 'D401']
+"let g:pymode_lint_options_pep8 = {'max-line-length': g:pymode_options_max_line_length}
+"let g:pymode_lint_options_pylint = {'max-line-length': g:pymode_options_max_line_length}
+"let g:pymode_lint_options_pep257 = {'ignore': 'D100,D101,D102,D103,D205,D400,D401'}
+
+" Ale settings
+let g:ale_enabled = 1
+"let g:ale_lint_on_text_changed = 'never' 
+"let g:ale_lint_on_enter = 0
+"
+let g:ale_lint_on_save = 0
+let g:ale_echo_msg_format = '[%linter%] %code: %%s [%severity%]'
+let g:ale_set_loclist = 1
+let g:ale_set_quickfix =0
+let g:ale_linters={'python': ['prospector']}
+let g:ale_python_prospector_options = '-P ~/.prospector.yml'
+let g:ale_fixers = {
+  \     'python': ['yapf'],
+  \}
 
 " Golang settings
 let g:go_highlight_types=1
@@ -222,49 +243,35 @@ let g:prettier#config#trailing_comma = 'all'
 let g:prettier#config#parser = 'flow'
 let g:prettier#config#bracket_spacing = 'true'
 
-" ALE lint engine config
-"let g:ale_set_loclist = 0
-"let g:ale_set_quickfix =1
-
-" Syntastic config
-function! ToggleErrors()
-    let old_last_winnr = winnr('$')
-    lclose
-    if old_last_winnr == winnr('$')
-        " Nothing was closed, open syntastic error location panel
-        SyntasticCheck
-        Errors
-    endif
-endfunction
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+" vue javascript
+"autocmd BufEnter,BufRead *.vue set filetype=vue.javascript
 
 "Diff confog for fugitive Gdiff
 set diffopt+=vertical
 
 "NerdTree Config
-let NERDTreeIgnore = ['\.pyc$']
+let NERDTreeIgnore = ['\.pyc$', '__pycache__$']
 let NERDTreeDirArrows = 1
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 "
-" returns true iff is NERDTree open/active
-function! IsNTOpen()
+" Check if NERDTree is open or active
+function! IsNERDTreeOpen()        
   return exists("t:NERDTreeBufName") && (bufwinnr(t:NERDTreeBufName) != -1)
 endfunction
 
-" calls NERDTreeFind iff NERDTree is active, current window contains a modifiable file, and we're not in vimdiff
+" Call NERDTreeFind iff NERDTree is active, current window contains a modifiable
+" file, and we're not in vimdiff
 function! SyncTree()
-  if &modifiable && IsNTOpen() && strlen(expand('%')) > 0 && !&diff
-    let l:curwinnr = winnr()
+  if &modifiable && IsNERDTreeOpen() && strlen(expand('%')) > 0 && !&diff
     NERDTreeFind
-    exec l:curwinnr . "wincmd w"
+    wincmd p
   endif
 endfunction
 
-autocmd BufEnter * call SyncTree()
+"autocmd vimenter * NERDTree " Automatically open nerdtree on vim launch
+autocmd BufRead * call SyncTree()
 
-let g:NERDTreeIndicatorMapCustom = {
+let g:NERDTreeGitStatusIndicatorMapCustom = {
     \ "Modified"  : "Δ",
     \ "Staged"    : "✚",
     \ "Untracked" : "✭",
@@ -280,18 +287,6 @@ set nocursorcolumn
 "set nocursorline
 syntax sync minlines=256
 set re=1
-
-" syntastic configuration
-let g:syntastic_python_checkers = ['flake8']
-let g:syntastic_python_flake8_args = '--ignore=E501'
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 0
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_enable_signs=1
-let g:syntastic_enable_highlighting=0
-"let g:syntastic_echo_current_error = 0
-let g:syntastic_cursor_column = 0
 
 " jedi-vim configuration
 let g:jedi#completions_enabled = 0
@@ -336,9 +331,9 @@ let g:goyo_width = 120
 
 colorscheme hybrid
 
-" markdown preview
-let vim_markdown_preview_github=1
-let vim_markdown_preview_temp_file=0
+" iamcco/markdown-preview
+let g:mkdp_browser = 'Google Chrome'
+nmap mp <Plug>MarkdownPreviewToggle
 
 " vimwiki/vimwiki
 let g:vimwiki_list = [{'path': '~/vimwiki/', 'syntax': 'markdown', 'ext': '.md', 'auto_tags': 1 }]
@@ -379,7 +374,7 @@ noremap <leader>sp :set paste<CR>
 noremap <leader>snp :set nopaste<CR>
 
 noremap <leader>pl :PymodeLint<CR>
-noremap <leader>e :<C-u>call ToggleErrors()<CR>
+"noremap <leader>e :<C-u>call ToggleErrors()<CR>
 noremap <leader>] :lnext<CR>
 noremap <leader>[ :lprevious<CR>
 noremap <leader>q :ccl<CR>
@@ -389,6 +384,7 @@ autocmd User GoyoLeave Limelight!
 nnoremap <Leader>z :Goyo<CR>
 
 noremap <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
+noremap <leader>u  :YcmCompleter GoToReferences<CR>
 
 let g:bufExplorerShowRelativePath=1
 "autocmd BufNewFile,BufRead *.md setlocal spell
