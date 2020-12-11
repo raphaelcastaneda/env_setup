@@ -54,18 +54,18 @@ if $osx; then
   brew install ncdu
   brew install jq # command line json parser
   brew tap homebrew/cask
-  brew cask install iterm2
-  brew cask install hyperswitch
-  brew cask install hyperdock 
-  brew cask install slack
-  brew cask install ferdi
-  brew cask install skitch
-  brew cask install sublime-text
-  brew cask install bowtie
-  brew cask install foxitreader
-  brew cask install gimp
-  brew cask install diffmerge
-  brew cask install postman
+  brew install --cask iterm2
+  brew install --cask hyperswitch
+  brew install --cask hyperdock 
+  brew install --cask slack
+  brew install --cask ferdi
+  brew install --cask skitch
+  brew install --cask sublime-text
+  brew install --cask bowtie
+  brew install --cask foxitreader
+  brew install --cask gimp
+  brew install --cask diffmerge
+  brew install --cask postman
 
   source ./helm-dev-osx.sh # Install helm and terraform tools
   
