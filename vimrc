@@ -217,6 +217,9 @@ let g:ale_set_loclist = 1
 let g:ale_set_quickfix =0
 let g:ale_linters={'python': ['prospector']}
 let g:ale_python_prospector_options = '-P ~/.prospector.yml'
+let g:ale_fixers = {
+  \     'python': ['yapf'],
+  \}
 
 " Golang settings
 let g:go_highlight_types=1
