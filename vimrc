@@ -139,6 +139,8 @@ Bundle 'tpope/vim-surround'
 Bundle 'vim-airline/vim-airline'
 Bundle 'vim-airline/vim-airline-themes'
 Bundle 'jiangmiao/auto-pairs'
+Bundle 'tmux-plugins/vim-tmux-focus-events'
+Bundle 'roxma/vim-tmux-clipboard'
 
 " Languages
 Bundle 'fatih/vim-go', {'do': ':GoUpdateBinaries'}
