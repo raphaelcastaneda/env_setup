@@ -65,9 +65,8 @@ source ~/.bin/tmuxinator.bash
 export PATH="$PATH:$HOME/.bin"
 
 # Set up Go vars and path
-# export GOROOT=/usr/local/opt/go/libexec
-export GOPATH=$HOME/go
-export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+export PATH="$(go env GOPATH)/bin:$PATH"
+export GOPATH=$(go env GOPATH)
 
 
 if [[ -e "/usr/local/share/bash-completion/bash_completion" ]]; then
