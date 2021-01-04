@@ -22,8 +22,9 @@ if $osx; then
     echo "  Installing Homebrew for you."
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
   fi
-  # Set up git line endings
-  git config --global core.autocrlf input
+  # Set up some sane git global config
+  git config --global core.autocrlf input  # Leave line endings as-is
+  git config --global pull.ff only  #  Abort git pull if it isn't a fast-forward
 
   # Install OSX 10.14 headers
   #sudo installer -pkg /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg -target /
