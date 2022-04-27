@@ -142,7 +142,7 @@ Bundle 'jiangmiao/auto-pairs'
 
 " Languages
 Bundle 'fatih/vim-go', {'do': ':GoUpdateBinaries'}
-Bundle 'mdempsky/gocode', {'rtp': 'nvim/'}
+Bundle 'sebdah/vim-delve'
 Bundle 'StanAngeloff/php.vim'
 Bundle 'digitaltoad/vim-jade'
 Bundle 'wavded/vim-stylus'
@@ -211,11 +211,11 @@ let g:ale_enabled = 1
 "let g:ale_lint_on_text_changed = 'never' 
 "let g:ale_lint_on_enter = 0
 "
-let g:ale_lint_on_save = 0
+let g:ale_lint_on_save = 1
 let g:ale_echo_msg_format = '[%linter%] %code: %%s [%severity%]'
 let g:ale_set_loclist = 1
 let g:ale_set_quickfix =0
-let g:ale_linters={'python': ['prospector']}
+let g:ale_linters={'python': ['prospector'], 'go': ['gometalinter']}
 let g:ale_python_prospector_options = '-P ~/.prospector.yml'
 let g:ale_fixers = {
   \     'python': ['yapf'],
@@ -229,12 +229,24 @@ let g:go_highlight_function_calls=1
 let g:go_highlight_operators=1
 let g:go_highlight_extra_types=1
 let g:go_highlight_build_constraints=1
-let g:go_def_mode = "guru"
+let g:go_def_mode = "gopls"
+let g:go_info_mode = "gopls"
+" Launch gopls when Go files are in use
+let g:LanguageClient_serverCommands = {
+       \ 'go': ['gopls']
+       \ }
+" Run gofmt on save
+autocmd BufWritePre *.go :call LanguageClient#textDocument_formatting_sync()
+" Ale use gopls
+let g:ale_linters = {
+  \ 'go': ['gopls'],
+  \}
+
 autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4 
 autocmd FileType go nnoremap <buffer> <leader>u :GoReferrers<CR>
 autocmd FileType go nnoremap <buffer> <leader>c :GoCallers<CR>
 autocmd FileType go nnoremap <buffer> <leader>d :GoDef<CR>
-autocmd FileType go nnoremap <buffer> <leader>e :GoLint<CR>
+autocmd FileType go nnoremap <buffer> <leader>e :GoMetaLinter<CR>
 
 " Prettier javascript settings
 let g:prettier#config#semi = 'false'

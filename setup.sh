@@ -39,8 +39,13 @@ if $osx; then
   brew install tree
   brew install graphviz
   brew install vim
+  brew install --HEAD neovim
   brew install tmuxinator
   brew install the_silver_searcher 
+  brew install ripgrep  # used with fzf-vim-commands for awesome find-in-files text search
+  brew install fd  # like silver searcher but for find instead of grep
+  brew install bat # github.com/sharkdp/bat syntax highlighted previews for fzf, git diff and others
+  brew install task tasksh # taskwarrior - better task management
   brew install ssh-copy-id 
   brew install thefuck
   brew install ctags-exuberant
@@ -50,24 +55,33 @@ if $osx; then
   brew install lnav
   brew install cmake
   brew install watch
+  brew install figlet # used to render text into ascii text e.g. in presenting.vim
   brew install mono # used for building omnisharp for C# completion in YCM
   brew install bash-completion@2
-  brew install ncdu
+  brew install ncdu  # powerful disk usage tool
   brew install jq # command line json parser
   brew tap homebrew/cask
-  brew install --cask iterm2
+  #brew install --cask iterm2
+  brew install kitty  # terminal emulator with powerful font support
+  brew install imagemagick  # command line image tool, allows kitty to display images
   brew install --cask hyperswitch
   brew install --cask hyperdock 
   brew install --cask slack
   brew install --cask ferdi
   brew install --cask skitch
   brew install --cask sublime-text
-  brew install --cask bowtie
+  brew install --cask beardedspice  # mac os media key forwarder (for spotify)
   brew install --cask foxitreader
   brew install --cask gimp
   brew install --cask diffmerge
   brew install --cask postman
-
+  brew install --cask dotnet-sdk
+  brew install --cask joshjon-nocturnal  # sets nightshift to also affect external display
+  brew install --cask cyberduck  # cloud server browser (ftp, amazon s3 etc)
+  brew install --cask lens  # kubernetes IDE
+  brew tap isen-ng/dotnet-sdk-versions
+  brew install dotnet-sdk3-1-300
+  brew install lua-language-server # LSP server for LUA (helps with neovim configs)
   source ./helm-dev-osx.sh # Install helm and terraform tools
   
   # Make sure ycm can compile against this python
@@ -86,6 +100,7 @@ else
   sudo add-apt-repository -y ppa:longsleep/golang-backports
   sudo add-apt-repository -y ppa:brightbox/ruby-ng
   sudo apt-get install -y software-properties-common
+  sudo apt-get install -y taskwarrior  # task management
 
   #Get the latest stuff
   sudo apt-get update
@@ -95,6 +110,7 @@ else
 libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev \
 xz-utils tk-dev
   sudo apt-get install -y git tig tree htop curl silversearcher-ag
+  sudo apt-get install -y ripgrep bat
   sudo apt-get install -y python python-pip vim python-dev thefuck
   sudo apt-get install -y ruby2.5
   sudo apt-get install -y exuberant-ctags libncurses-dev golang
@@ -133,6 +149,12 @@ if [ ! -f "$HOME/.gitconfig" ]; then
   cp "$env_setup/gitconfig" "$HOME/.gitconfig"
 fi
 
+# Set up bat color theme
+mkdir -p "$(bat --config-dir)/themes"
+cp "$env_setup/colors/Tomorrow-Night-Eighties.tmTheme" "$(bat --config-dir)/themes/"
+bat cache --build
+
+
 
 # Clone pyenv
 git clone https://github.com/pyenv/pyenv.git ~/.pyenv
@@ -155,12 +177,13 @@ pyenv global 3.8.2
 
 # Install python packages
 python -m pip install virtualenv jedi pudb bpytop prospector[with_everythying]
+python -m pip install tasklib  # for taskwarrior integration with vimwiki
 
 # Install virtualenvwrapper pyenv plugin
 git clone https://github.com/pyenv/pyenv-virtualenvwrapper.git $(pyenv root)/plugins/pyenv-virtualenvwrapper
 
 # Set up fonts
-cd fonts
+cd nerd-fonts
 bash install.sh
 cd ..
 

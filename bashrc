@@ -1,9 +1,14 @@
 export EDITOR=vim
 export PATH=".:$HOME/bin:$PATH"
+export LANG="en_US.UTF-8"
 
-if [ -n "$DISPLAY" -a "$TERM" == "xterm" ]; then
+if [ "$TERM" == "xterm" ]; then
     export TERM=xterm-256color
 fi
+export BAT_THEME="base16-256"
+
+# truncate prompt.sh \w output
+export PROMPT_DIRTRIM=3
 
 #stty start undef
 #stty stop undef
@@ -11,7 +16,7 @@ fi
 # History
 export HISTSIZE=5000
 export HISTFILESIZE=10000
-export HISTCONTROL=ignoreboth:erasedups # no duplicate entries
+export HISTCONTROL=ignoredups:erasedups # no duplicate entries
 shopt -s histappend                     # append history file
 export PROMPT_COMMAND="history -a"      # update histfile after every command
 
@@ -32,6 +37,10 @@ alias tmux='tmux -2'
 #alias xclip='xclip -selection c'
 alias pudb='python -m pudb'  # make sure pudb works even in a virtualenv
 alias bashtop='bpytop'  # python implementation of bashtop is the new bashtop
+if [ -x "$(command -v nvim)" ]; then
+  export EDITOR=nvim
+  alias vim='nvim'
+fi
 
 #####
 # Git aliases
@@ -63,19 +72,21 @@ source ~/.bin/tmuxinator.bash
 
 # Have a bin folder in my home directory
 export PATH="$PATH:$HOME/.bin"
+export PATH="$PATH:$HOME/.local/bin"
 
 # Set up Go vars and path
 export PATH="$(go env GOPATH)/bin:$PATH"
 export GOPATH=$(go env GOPATH)
+#export GOROOT=$(go env GOROOT)
 
 
 if [[ -e "/usr/local/share/bash-completion/bash_completion" ]]; then
-	export BASH_COMPLETION_COMPAT_DIR="/usr/local/etc/bash_completion.d"
-	source "/usr/local/share/bash-completion/bash_completion"
+    export BASH_COMPLETION_COMPAT_DIR="/usr/local/etc/bash_completion.d"
+    source "/usr/local/share/bash-completion/bash_completion"
 elif [[ -e "/usr/local/etc/profile.d/bash_completion.sh" ]]; then
-	source "/usr/local/etc/profile.d/bash_completion.sh"
+    source "/usr/local/etc/profile.d/bash_completion.sh"
 elif [[ -e "/etc/bash_completion" ]]; then
-	source "/etc/bash_completion"
+    source "/etc/bash_completion"
 fi
 # Brew completions
 #if type brew &>/dev/null; then
@@ -89,10 +100,9 @@ fi
 #  fi
 #fi
 
-## Source completions
+## Source completions (pre alias)
 source $HOME/env_setup/completion/git.sh
 #source $HOME/env_setup/completion/hub.sh
-source $HOME/env_setup/completion/terraform.sh
 
 # Set alias for thefuck
 eval "$(thefuck --alias oops)"
@@ -198,6 +208,11 @@ function alias_completion {
     done < <(alias -p | sed -Ene "s/$alias_regex/\1 '\2' '\3'/p")
     source "$tmp_file" && rm -f "$tmp_file"
 }; alias_completion
+
+
+## Source completions (post alias)
+source $HOME/env_setup/completion/tmux.sh
+source $HOME/env_setup/completion/terraform.sh
 
 eval "$(thefuck --alias)"
 
