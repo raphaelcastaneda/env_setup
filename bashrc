@@ -1,11 +1,9 @@
 export EDITOR=vim
 export PATH=".:$HOME/bin:$PATH"
-export LANG="en_US.UTF-8"
+export LANG='en_US.UTF-8'
 
-if [ "$TERM" == "xterm" ]; then
-    export TERM=xterm-256color
-fi
-export BAT_THEME="base16-256"
+#export TERM=screen-256color-bce
+export BAT_THEME='base16-256'
 
 # truncate prompt.sh \w output
 export PROMPT_DIRTRIM=3
@@ -18,7 +16,7 @@ export HISTSIZE=5000
 export HISTFILESIZE=10000
 export HISTCONTROL=ignoredups:erasedups # no duplicate entries
 shopt -s histappend                     # append history file
-export PROMPT_COMMAND="history -a"      # update histfile after every command
+export PROMPT_COMMAND='history -a'      # update histfile after every command
 
 # Ls
 platform=`uname`
@@ -32,7 +30,7 @@ fi
 #####
 # Aliases
 alias ll='ls -la'
-#alias clean='find . -name "*.DS_Store" -type f -delete'
+#alias clean='find . -name '*.DS_Store' -type f -delete'
 alias tmux='tmux -2'
 #alias xclip='xclip -selection c'
 alias pudb='python -m pudb'  # make sure pudb works even in a virtualenv
@@ -62,10 +60,10 @@ alias grb='rebase-branch'
 
 #####
 # Shell PS1 line & base dir & .env
-source $HOME/env_setup/prompt.sh
+source "$HOME"/env_setup/prompt.sh
 
 # Those are computer specific config / secrets
-source $HOME/.env
+source "$HOME"/.env
 
 # Tmuxinator
 source ~/.bin/tmuxinator.bash
@@ -90,7 +88,7 @@ elif [[ -e "/etc/bash_completion" ]]; then
 fi
 # Brew completions
 #if type brew &>/dev/null; then
-#  HOMEBREW_PREFIX="$(brew --prefix)"
+#  HOMEBREW_PREFIX='$(brew --prefix)'
 #  if [[ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]]; then
 #    source "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
 #  else
@@ -101,7 +99,7 @@ fi
 #fi
 
 ## Source completions (pre alias)
-source $HOME/env_setup/completion/git.sh
+source "$HOME/env_setup/completion/git.sh"
 #source $HOME/env_setup/completion/hub.sh
 
 # Set alias for thefuck
@@ -111,10 +109,17 @@ eval "$(thefuck --alias oops)"
 export FZF_COMPLETION_TRIGGER='**'
 
 # Options to fzf command
+#export FZF_COMPLETION_OPTS='--border --info=inline'
 export FZF_COMPLETION_OPTS='+c -x'
 
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+[ -f ~/.fzf.bash ] && source "$HOME/.fzf.bash"
+_fzf_setup_completion path ag git
+#
 
+# Kube
+source <(kubectl completion bash)
+alias k=kubectl
+complete -o default -F __start_kubectl k
 
 # Use ag instead of the default find command for listing candidates.
 # - The first argument to the function is the base path to start traversal
@@ -124,7 +129,6 @@ _fzf_compgen_path() {
   ag -g "" "$1"
 }
 
-
 # Pyenv config. See https://github.com/yyuu/pyenv
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH:"
@@ -132,13 +136,8 @@ eval "$(pyenv init -)"
 
 # Virtualenvwrapper
 export WORKON_HOME=$HOME/code/venv
-export VIRTUALENVWRAPPER_PYTHON=`which python`
+export VIRTUALENVWRAPPER_PYTHON=$(which python)
 pyenv virtualenvwrapper
-
-# Set up nvm, making sure to do this before sourcing completion scripts
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh"  ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion"  ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # Automatically add completion for all aliases to commands having completion functions
 function alias_completion {
@@ -177,7 +176,7 @@ function alias_completion {
                 eval "$completion_loader $alias_cmd"
                 # 124 means completion loader was successful
                 [[ $? -eq 124 ]] || continue
-                completions+=($alias_cmd)
+                completions+=("$alias_cmd")
             else
                 continue
             fi
@@ -211,8 +210,14 @@ function alias_completion {
 
 
 ## Source completions (post alias)
-source $HOME/env_setup/completion/tmux.sh
-source $HOME/env_setup/completion/terraform.sh
+source "$HOME"/env_setup/completion/tmux.sh
+source "$HOME"/env_setup/completion/terraform.sh
 
-eval "$(thefuck --alias)"
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh"  ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion"  ] && \. "$NVM_DIR/bash_completion"
+eval "$(rbenv init -)"
+export JAVA_HOME="$(/usr/libexec/java_home -v20.0.1)"
 
+source /Users/racastaneda/.docker/init-bash.sh || true # Added by Docker Desktop

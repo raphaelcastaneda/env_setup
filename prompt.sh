@@ -48,8 +48,16 @@ function is_git_repository {
  
 # Determine the branch/state information for this git repository.
 function set_git_branch {
-  # Capture the output of the "git status" command.
-  git_status="$(git status 2> /dev/null)"
+    git_dir="$(git rev-parse --git-dir)"
+    git_dir_size="$(du -s $git_dir| awk '{print $1}')"
+  if [ "$git_dir_size" -lt "900000" ]; then
+    # Capture the output of the "git status" command.
+    git_status="$(git status 2> /dev/null)"
+  else
+    # Don't go looking for untracked files in giant repos.
+    git_status="$(git status -uno 2> /dev/null)"
+  fi
+
  
   # Set color based on clean/staged/dirty.
   if [[ ${git_status} =~ "nothing to commit" ]]; then

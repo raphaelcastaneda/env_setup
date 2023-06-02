@@ -6,7 +6,7 @@ env_setup=$HOME/env_setup
 for directory in \
   "$HOME/code" "$HOME/.vim" "$HOME/.vim/autoload" "$HOME/.vim/swaps" \
   "$HOME/.vim/backups" "$HOME/.vim/undo" "$HOME/.vim/colors" "$HOME/vimwiki"; do
-   mkdir -p $directory
+   mkdir -p "$directory"
 done
 
 osx=false
@@ -14,10 +14,10 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   osx=true
 fi
 
-if $osx; then
+if "$osx"; then
   #----------- START OSX section----------------------------
   # Homebrew stuff
-  if test ! $(which brew)
+  if test ! "$(which brew)"
   then
     echo "  Installing Homebrew for you."
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
@@ -46,6 +46,7 @@ if $osx; then
   brew install fd  # like silver searcher but for find instead of grep
   brew install bat # github.com/sharkdp/bat syntax highlighted previews for fzf, git diff and others
   brew install task tasksh # taskwarrior - better task management
+  brew install grandperspective # hard disk usage auditor
   brew install ssh-copy-id 
   brew install thefuck
   brew install ctags-exuberant
@@ -67,7 +68,7 @@ if $osx; then
   brew install --cask hyperswitch
   brew install --cask hyperdock 
   brew install --cask slack
-  brew install --cask ferdi
+  brew install --cask ferdium  #  all-in-one chat app for browser-based chat
   brew install --cask skitch
   brew install --cask sublime-text
   brew install --cask beardedspice  # mac os media key forwarder (for spotify)
@@ -81,7 +82,7 @@ if $osx; then
   brew install --cask lens  # kubernetes IDE
   brew tap isen-ng/dotnet-sdk-versions
   brew install dotnet-sdk3-1-300
-  brew install lua-language-server # LSP server for LUA (helps with neovim configs)
+  brew install lua-language-server # LSP server for LUA (helps with neovim configs0
   source ./helm-dev-osx.sh # Install helm and terraform tools
   
   # Make sure ycm can compile against this python
@@ -158,8 +159,7 @@ bat cache --build
 
 # Clone pyenv
 git clone https://github.com/pyenv/pyenv.git ~/.pyenv
-git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
-pushd $(pyenv root)
+pushd "$(pyenv root)"
 git pull
 popd
 
@@ -171,38 +171,41 @@ touch ~/.bin/tmuxinator.bash
 source ~/.bashrc
 
 # Set up pyenv
-pyenv install --skip-existing 3.8.2
-pyenv install --skip-existing 2.7.17
-pyenv global 3.8.2
+pyenv install --skip-existing 3.9.15
+#pyenv install --skip-existing 2.7.17  # python is dead! long live python!
+pyenv global 3.9.15
 
 # Install python packages
-python -m pip install virtualenv jedi pudb bpytop prospector[with_everythying]
-python -m pip install tasklib  # for taskwarrior integration with vimwiki
+python -m pip install virtualenv pynvim pudb bpytop python-lsp-server[yapf]
+python -m pip install tasklib taskwarrior packaging # for taskwarrior integration with vimwiki
 
 # Install virtualenvwrapper pyenv plugin
-git clone https://github.com/pyenv/pyenv-virtualenvwrapper.git $(pyenv root)/plugins/pyenv-virtualenvwrapper
+git clone https://github.com/pyenv/pyenv-virtualenvwrapper.git "$(pyenv root)"/plugins/pyenv-virtualenvwrapper
 
 # Set up fonts
 cd nerd-fonts
 bash install.sh
 cd ..
 
-# Install fuzzy searcher fzf
-git clone --depth 1 https://github.com/junegunn/fzf.git $HOME/.fzf
-$HOME/.fzf/install --all
+# Install fuzzy searcher fzf and kube plugin
+git clone --depth 1 https://github.com/junegunn/fzf.git "$HOME"/.fzf
+"$HOME"/.fzf/install --all
+wget https://raw.githubusercontent.com/bonnefoa/kubectl-fzf/main/shell/kubectl_fzf.bash -O ~/.kubectl_fzf.bash
+go install github.com/bonnefoa/kubectl-fzf/v3/cmd/kubectl-fzf-completion@main
+go install github.com/bonnefoa/kubectl-fzf/v3/cmd/kubectl-fzf-server@main#
 
 # Install vim plugins
 vim +PluginInstall +qall
-cd ~/.vim/bundle/YouCompleteMe
-git submodule update --init --recursive
-npm install -g xbuild # required to build Omnisharp for ycm
-python ~/.vim/bundle/YouCompleteMe/install.py --go-completer --all
-vim +'silent :GoInstallBinaries' +qall
-cd ~/.vim/bundle/YouCompleteMe/third_party/ycmd/third_party/go/src/golang.org/x/tools/cmd/gopls
-go build
+#cd ~/.vim/bundle/YouCompleteMe
+#git submodule update --init --recursive
+#npm install -g xbuild # required to build Omnisharp for ycm
+#python ~/.vim/bundle/YouCompleteMe/install.py --go-completer --all
+#vim +'silent :GoInstallBinaries' +qall
+#cd ~/.vim/bundle/YouCompleteMe/third_party/ycmd/third_party/go/src/golang.org/x/tools/cmd/gopls
+#go build
 vim +'silent :call mkdp#util#install()' +qall
 
 # Make sure .env exists if it didn't already
-touch $HOME/.env
+touch "$HOME"/.env
 
 echo "All done!"
