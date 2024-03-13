@@ -38,9 +38,10 @@ if "$osx"; then
   brew install tig
   brew install tree
   brew install graphviz
-  brew install vim
+  #brew install vim
   brew install --HEAD neovim
   brew install tmuxinator
+  brew install ranger  # terminal file manager with vim bindings
   brew install the_silver_searcher 
   brew install ripgrep  # used with fzf-vim-commands for awesome find-in-files text search
   brew install fd  # like silver searcher but for find instead of grep
@@ -79,11 +80,17 @@ if "$osx"; then
   brew install --cask dotnet-sdk
   brew install --cask joshjon-nocturnal  # sets nightshift to also affect external display
   brew install --cask cyberduck  # cloud server browser (ftp, amazon s3 etc)
-  brew install --cask lens  # kubernetes IDE
+  brew install derailed/k9s/k9s  # cli GUI for kubernetes management
+  #brew install --cask lens  # kubernetes IDE
   brew tap isen-ng/dotnet-sdk-versions
   brew install dotnet-sdk3-1-300
-  brew install lua-language-server # LSP server for LUA (helps with neovim configs0
+  brew install lua-language-server # LSP server for LUA (helps with neovim configs)
   source ./helm-dev-osx.sh # Install helm and terraform tools
+  
+  # Install fancy programming fonts
+  brew tap homebrew/cask-fonts
+  brew install --cask font-victor-mono-nerd-font
+  brew install --cask font-fira-code-nerd-font
   
   # Make sure ycm can compile against this python
   export PYTHON_CONFIGURE_OPTS="--enable-framework"  
@@ -101,12 +108,14 @@ else
   sudo add-apt-repository -y ppa:longsleep/golang-backports
   sudo add-apt-repository -y ppa:brightbox/ruby-ng
   sudo apt-get install -y software-properties-common
-  sudo apt-get install -y taskwarrior  # task management
 
   #Get the latest stuff
   sudo apt-get update
 
   # Install debian packages
+  sudo apt-get install -y neovim python-3-neovim
+  sudo apt-get install -y taskwarrior  # task management
+  sudo apt-get install -y ranger-fm
   sudo apt-get install -y  build-essential cmake gcc libssl-dev zlib1g-dev libbz2-dev \
 libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev \
 xz-utils tk-dev
@@ -133,8 +142,6 @@ xz-utils tk-dev
   #----------- END Ubuntu section----------------------------
 fi
 
-# Set up Vundle
-git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
 
 # File symlinks
 for file in "bashrc" "bash_profile" "tmux.conf" "tmux.conf.sh" "Xresources" "vimrc"; do
@@ -152,16 +159,16 @@ fi
 
 # Set up bat color theme
 mkdir -p "$(bat --config-dir)/themes"
-cp "$env_setup/colors/Tomorrow-Night-Eighties.tmTheme" "$(bat --config-dir)/themes/"
+cp "$env_setup/colors/Tomorrow-Night.tmTheme" "$(bat --config-dir)/themes/"
 bat cache --build
 
 
 
 # Clone pyenv
 git clone https://github.com/pyenv/pyenv.git ~/.pyenv
-pushd "$(pyenv root)"
+pushd "$(pyenv root)" || echo "failed to enter pyenv root" && exit 1
 git pull
-popd
+popd || echo "failed to exit pyenv root" && exit 1
 
 # Make sure tmuxinator does not break things
 mkdir -p ~/.bin
@@ -171,21 +178,22 @@ touch ~/.bin/tmuxinator.bash
 source ~/.bashrc
 
 # Set up pyenv
-pyenv install --skip-existing 3.9.15
+pyenv install --skip-existing 3.9.16
 #pyenv install --skip-existing 2.7.17  # python is dead! long live python!
-pyenv global 3.9.15
+pyenv global 3.9.16
 
 # Install python packages
-python -m pip install virtualenv pynvim pudb bpytop python-lsp-server[yapf]
+python -m pip install --upgrade pip
+python -m pip install virtualenv pynvim pudb bpytop
 python -m pip install tasklib taskwarrior packaging # for taskwarrior integration with vimwiki
 
 # Install virtualenvwrapper pyenv plugin
 git clone https://github.com/pyenv/pyenv-virtualenvwrapper.git "$(pyenv root)"/plugins/pyenv-virtualenvwrapper
 
 # Set up fonts
-cd nerd-fonts
+pushd nerd-fonts || echo "failed to enter nerd fonts dir" && exit 1
 bash install.sh
-cd ..
+popd || echo "failed to exit nerd fonts dir" && exit 1
 
 # Install fuzzy searcher fzf and kube plugin
 git clone --depth 1 https://github.com/junegunn/fzf.git "$HOME"/.fzf
@@ -194,15 +202,11 @@ wget https://raw.githubusercontent.com/bonnefoa/kubectl-fzf/main/shell/kubectl_f
 go install github.com/bonnefoa/kubectl-fzf/v3/cmd/kubectl-fzf-completion@main
 go install github.com/bonnefoa/kubectl-fzf/v3/cmd/kubectl-fzf-server@main#
 
+# Install go environment manager
+git clone https://github.com/go-nv/goenv.git ~/.goenv
+
 # Install vim plugins
 vim +PluginInstall +qall
-#cd ~/.vim/bundle/YouCompleteMe
-#git submodule update --init --recursive
-#npm install -g xbuild # required to build Omnisharp for ycm
-#python ~/.vim/bundle/YouCompleteMe/install.py --go-completer --all
-#vim +'silent :GoInstallBinaries' +qall
-#cd ~/.vim/bundle/YouCompleteMe/third_party/ycmd/third_party/go/src/golang.org/x/tools/cmd/gopls
-#go build
 vim +'silent :call mkdp#util#install()' +qall
 
 # Make sure .env exists if it didn't already

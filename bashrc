@@ -1,9 +1,14 @@
-export EDITOR=vim
-export PATH=".:$HOME/bin:$PATH"
-export LANG='en_US.UTF-8'
+# Benchmarking
+#PS4='+ $(date "+%s.%N")\011 '
+#exec 3>&2 2>/tmp/bashstart.$$.log
+#set -x
 
+export EDITOR=vim
+[ "${PATH#*$HOME/bin:}" == "$PATH" ] && export PATH="$HOME/bin:$PATH"
+export LANG='en_US.UTF-8'
+export XDG_CONFIG_HOME="$HOME/.config"
 #export TERM=screen-256color-bce
-export BAT_THEME='base16-256'
+export BAT_THEME='Tomorrow-Night'
 
 # truncate prompt.sh \w output
 export PROMPT_DIRTRIM=3
@@ -16,10 +21,12 @@ export HISTSIZE=5000
 export HISTFILESIZE=10000
 export HISTCONTROL=ignoredups:erasedups # no duplicate entries
 shopt -s histappend                     # append history file
-export PROMPT_COMMAND='history -a'      # update histfile after every command
+# Save and reload the history after each command finishes
+export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+#export PROMPT_COMMAND='history -a'      # update histfile after every command
 
 # Ls
-platform=`uname`
+platform=$(uname)
 if [[ $platform == 'Linux' ]]; then
   alias ls='ls --color=auto -p'
 elif [[ $platform == 'Darwin' ]]; then
@@ -39,6 +46,11 @@ if [ -x "$(command -v nvim)" ]; then
   export EDITOR=nvim
   alias vim='nvim'
 fi
+alias ssh="TERM=xterm-256color ssh"
+# if this is kitty, set up image previewing
+if [[ $KITTY_WINDOW_ID ]]; then
+    alias icat='kitten icat'
+fi
 
 #####
 # Git aliases
@@ -53,6 +65,7 @@ alias gcm='git checkout master'
 alias gdel='git push origin --delete'
 alias rebase-branch='git rebase -i `git merge-base master HEAD^^`'
 alias grb='rebase-branch'
+
 #####
 # Ansible aliases
 #alias asv='ansible-vault '
@@ -60,22 +73,24 @@ alias grb='rebase-branch'
 
 #####
 # Shell PS1 line & base dir & .env
-source "$HOME"/env_setup/prompt.sh
+source "${HOME}/env_setup/prompt.sh"
 
 # Those are computer specific config / secrets
-source "$HOME"/.env
+source "${HOME}/.env"
 
 # Tmuxinator
-source ~/.bin/tmuxinator.bash
+#source ~/.bin/tmuxinator.bash
 
 # Have a bin folder in my home directory
-export PATH="$PATH:$HOME/.bin"
-export PATH="$PATH:$HOME/.local/bin"
+[ "${PATH#*$HOME/.bin:}" == "$PATH" ] && export PATH="$PATH:$HOME/.bin"
+[ "${PATH#*$HOME/.local/bin:}" == "$PATH" ] && export PATH="$PATH:$HOME/.local/bin"
 
-# Set up Go vars and path
-export PATH="$(go env GOPATH)/bin:$PATH"
-export GOPATH=$(go env GOPATH)
+# Set up Go vars and path -- DEPRECATED: using goenv
+#export GOPATH=$(go env GOPATH)
 #export GOROOT=$(go env GOROOT)
+
+# Add rust path
+[ "${PATH#*$HOME/.cargo/bin:}" == "$PATH" ] && export PATH="${HOME}/.cargo/bin:$PATH"
 
 
 if [[ -e "/usr/local/share/bash-completion/bash_completion" ]]; then
@@ -86,6 +101,7 @@ elif [[ -e "/usr/local/etc/profile.d/bash_completion.sh" ]]; then
 elif [[ -e "/etc/bash_completion" ]]; then
     source "/etc/bash_completion"
 fi
+
 # Brew completions
 #if type brew &>/dev/null; then
 #  HOMEBREW_PREFIX='$(brew --prefix)'
@@ -105,119 +121,55 @@ source "$HOME/env_setup/completion/git.sh"
 # Set alias for thefuck
 eval "$(thefuck --alias oops)"
 
-# FZF
-export FZF_COMPLETION_TRIGGER='**'
-
-# Options to fzf command
-#export FZF_COMPLETION_OPTS='--border --info=inline'
-export FZF_COMPLETION_OPTS='+c -x'
-
-[ -f ~/.fzf.bash ] && source "$HOME/.fzf.bash"
-_fzf_setup_completion path ag git
-#
-
 # Kube
 source <(kubectl completion bash)
 alias k=kubectl
 complete -o default -F __start_kubectl k
 
-# Use ag instead of the default find command for listing candidates.
-# - The first argument to the function is the base path to start traversal
-# - Note that ag only lists files not directories
+# Use fd (https://github.com/sharkdp/fd) instead of the default find
+# command for listing path candidates.
+# - The first argument to the function ($1) is the base path to start traversal
 # - See the source code (completion.{bash,zsh}) for the details.
 _fzf_compgen_path() {
-  ag -g "" "$1"
+  fd --type f --color always --hidden --follow --exclude ".git" . "$1"
 }
 
-# Pyenv config. See https://github.com/yyuu/pyenv
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH:"
-eval "$(pyenv init -)"
+# Use fd to generate the list for directory completion
+_fzf_compgen_dir() {
+  fd  --color always --type d --hidden --follow --exclude ".git" . "$1"
+}
+#
+# Advanced customization of fzf options via _fzf_comprun function
+# - The first argument to the function is the name of the command.
+# - You should make sure to pass the rest of the arguments to fzf.
+_fzf_comprun() {
+  local command=$1
+  shift
 
-# Virtualenvwrapper
-export WORKON_HOME=$HOME/code/venv
-export VIRTUALENVWRAPPER_PYTHON=$(which python)
-pyenv virtualenvwrapper
-
-# Automatically add completion for all aliases to commands having completion functions
-function alias_completion {
-    local namespace="alias_completion"
-
-    # parse function based completion definitions, where capture group 2 => function and 3 => trigger
-    local compl_regex='complete( +[^ ]+)* -F ([^ ]+) ("[^"]+"|[^ ]+)'
-    # parse alias definitions, where capture group 1 => trigger, 2 => command, 3 => command arguments
-    local alias_regex="alias ([^=]+)='(\"[^\"]+\"|[^ ]+)(( +[^ ]+)*)'"
-
-    # create array of function completion triggers, keeping multi-word triggers together
-    eval "local completions=($(complete -p | sed -Ene "/$compl_regex/s//'\3'/p"))"
-    (( ${#completions[@]} == 0 )) && return 0
-
-    # create temporary file for wrapper functions and completions
-    rm -f "/tmp/${namespace}-*.tmp" # preliminary cleanup
-    local tmp_file; tmp_file="$(mktemp "/tmp/${namespace}-${RANDOM}XXX.tmp")" || return 1
-
-    local completion_loader; completion_loader="$(complete -p -D 2>/dev/null | sed -Ene 's/.* -F ([^ ]*).*/\1/p')"
-
-    # read in "<alias> '<aliased command>' '<command args>'" lines from defined aliases
-    local line; while read line; do
-        eval "local alias_tokens; alias_tokens=($line)" 2>/dev/null || continue # some alias arg patterns cause an eval parse error
-        local alias_name="${alias_tokens[0]}" alias_cmd="${alias_tokens[1]}" alias_args="${alias_tokens[2]# }"
-
-        # skip aliases to pipes, boolean control structures and other command lists
-        # (leveraging that eval errs out if $alias_args contains unquoted shell metacharacters)
-        eval "local alias_arg_words; alias_arg_words=($alias_args)" 2>/dev/null || continue
-        # avoid expanding wildcards
-        read -a alias_arg_words <<< "$alias_args"
-
-        # skip alias if there is no completion function triggered by the aliased command
-        if [[ ! " ${completions[*]} " =~ " $alias_cmd " ]]; then
-            if [[ -n "$completion_loader" ]]; then
-                # force loading of completions for the aliased command
-                eval "$completion_loader $alias_cmd"
-                # 124 means completion loader was successful
-                [[ $? -eq 124 ]] || continue
-                completions+=("$alias_cmd")
-            else
-                continue
-            fi
-        fi
-        local new_completion="$(complete -p "$alias_cmd")"
-
-        # create a wrapper inserting the alias arguments if any
-        if [[ -n $alias_args ]]; then
-            local compl_func="${new_completion/#* -F /}"; compl_func="${compl_func%% *}"
-            # avoid recursive call loops by ignoring our own functions
-            if [[ "${compl_func#_$namespace::}" == $compl_func ]]; then
-                local compl_wrapper="_${namespace}::${alias_name}"
-                    echo "function $compl_wrapper {
-                        (( COMP_CWORD += ${#alias_arg_words[@]} ))
-                        COMP_WORDS=($alias_cmd $alias_args \${COMP_WORDS[@]:1})
-                        (( COMP_POINT -= \${#COMP_LINE} ))
-                        COMP_LINE=\${COMP_LINE/$alias_name/$alias_cmd $alias_args}
-                        (( COMP_POINT += \${#COMP_LINE} ))
-                        $compl_func
-                    }" >> "$tmp_file"
-                    new_completion="${new_completion/ -F $compl_func / -F $compl_wrapper }"
-            fi
-        fi
-
-        # replace completion trigger by alias
-        new_completion="${new_completion% *} $alias_name"
-        echo "$new_completion" >> "$tmp_file"
-    done < <(alias -p | sed -Ene "s/$alias_regex/\1 '\2' '\3'/p")
-    source "$tmp_file" && rm -f "$tmp_file"
-}; alias_completion
-
+  case "$command" in
+    #cd)           fzf --preview 'tree -C {} | head -200'   "$@" ;;
+    export|unset) fzf --ansi --multi --preview "eval 'echo \$'{}"         "$@" ;;
+    ssh)          fzf --ansi --multi --preview 'dig {}'                   "$@" ;;
+    *)            fzf --ansi --multi --preview 'bash fzf-preview.sh {}' "$@" ;;
+  esac
+}
+#
+# Support completion on aliased commands
+source "$HOME"/env_setup/completion/aliases.sh
 
 ## Source completions (post alias)
 source "$HOME"/env_setup/completion/tmux.sh
 source "$HOME"/env_setup/completion/terraform.sh
 
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+[ "${PATH#*$HOME/.yarn/bin:}" == "$PATH" ] && export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh"  ] && \. "$NVM_DIR/nvm.sh"
-[ -s "$NVM_DIR/bash_completion"  ] && \. "$NVM_DIR/bash_completion"
-eval "$(rbenv init -)"
+#[ -s "$NVM_DIR/nvm.sh"  ] && \. "$NVM_DIR/nvm.sh"
+#[ -s "$NVM_DIR/bash_completion"  ] && \. "$NVM_DIR/bash_completion"
+# eval "$(rbenv init -)"
 export JAVA_HOME="$(/usr/libexec/java_home -v20.0.1)"
 
-source /Users/racastaneda/.docker/init-bash.sh || true # Added by Docker Desktop
+#source /Users/racastaneda/.docker/init-bash.sh || true # Added by Docker Desktop
+
+# Benchmarking
+#set +x
+#exec 2>&3 3>&-

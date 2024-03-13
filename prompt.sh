@@ -75,14 +75,14 @@ function set_git_branch {
   remote_pattern="^(# )?Your branch is (ahead|behind)+ "
   if [[ ${git_status} =~ ${remote_pattern} ]]; then
     if [[ ${BASH_REMATCH[2]} == "ahead" ]]; then
-      remote="↑"
+      remote="󱦲"
     else
-      remote="↓"
+      remote="󱦳"
     fi
   fi
   diverge_pattern="Your branch and (.*) have diverged"
   if [[ ${git_status} =~ ${diverge_pattern} ]]; then
-    remote="↕"
+    remote="󰹹"
   fi
  
   # Get the name of the branch.
@@ -110,7 +110,7 @@ function set_virtualenv () {
   if test -z "$VIRTUAL_ENV" ; then
       PYTHON_VIRTUALENV=""
   else
-      PYTHON_VIRTUALENV="${LIGHT_GREEN} [`basename \"$VIRTUAL_ENV\"`]${COLOR_NONE}  "
+      PYTHON_VIRTUALENV="${LIGHT_GREEN} [`basename \"$VIRTUAL_ENV\"`]${COLOR_NONE}  "
   fi
 }
  
