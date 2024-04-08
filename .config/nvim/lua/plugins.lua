@@ -62,7 +62,7 @@ return require('packer').startup(function(use)
   use({ "onsails/lspkind.nvim" })
   use({
     "nvimdev/lspsaga.nvim",
-    commit = "2198c07124bef27ef81335be511c8abfd75db933",
+    --commit = "2198c07124bef27ef81335be511c8abfd75db933",
     after = 'nvim-lspconfig',
     config = function()
       require("lspsaga").setup({

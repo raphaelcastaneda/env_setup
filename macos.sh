@@ -643,7 +643,7 @@ sudo mdutil -E / > /dev/null
 defaults write com.apple.terminal StringEncodings -array 4
 
 # Use Hybrid theme by default in Terminal.app
-mkdir "$HOME/init"
+mkdir -p "$HOME/init"
 cp "$HOME/env_setup/colors/Hybrid.terminal" "$HOME/init/Hybrid.terminal"
 osascript <<EOD
 
