@@ -2,6 +2,10 @@
 #exec 3>&2 2>/tmp/bashstart.$$.log
 #set -x
 
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  eval $(/opt/homebrew/bin/brew shellenv)
+fi
+
 source "$HOME/.bashrc"
 
 

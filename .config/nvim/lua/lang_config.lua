@@ -673,7 +673,6 @@ local servers = {
       "pom.xml",
     })
   },
-  jcan_ls = {},
   jsonls = {
     settings = {
       json = {
@@ -700,16 +699,16 @@ local servers = {
   }
 }
 -- Add custom lsp via lspconfig
-local jcan = require("jcan_ls")
-if jcan then
-  local configs = require "lspconfig.configs"
-  configs["jcan_ls"] = jcan
-
-  lspconfig.jcan_ls.setup({
-    on_attach = on_attach,
-    capabilities = capabilities
-  })
-end
+-- local jcan = require("jcan_ls")
+-- if jcan then
+--   local configs = require "lspconfig.configs"
+--   configs["jcan_ls"] = jcan
+-- 
+--   lspconfig.jcan_ls.setup({
+--     on_attach = on_attach,
+--     capabilities = capabilities
+--   })
+-- end
 
 require("mason").setup({
   ui = {

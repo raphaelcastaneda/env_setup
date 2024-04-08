@@ -101,10 +101,10 @@ return require('packer').startup(function(use)
   use({ "jose-elias-alvarez/null-ls.nvim" })                    -- Allows lsp support for prettier
 
   -- CUSTOM PLUGINS - install things that we don't want in the dotfiles repo
-  local private_plugins = require('private_plugins')
-  if private_plugins then
-    private_plugins(use)
-  end
+  -- local private_plugins = require('private_plugins')
+  -- if private_plugins then
+  --   private_plugins(use)
+  -- end
 
   -- use({ "martinda/Jenkinsfile-vim-syntax"})
   -- use({ "hashivim/vim-terraform" })

@@ -118,12 +118,10 @@ fi
 source "$HOME/env_setup/completion/git.sh"
 #source $HOME/env_setup/completion/hub.sh
 
-# Set alias for thefuck
-eval "$(thefuck --alias oops)"
 
 # Kube
 source <(kubectl completion bash)
-alias k=kubectl
+alias k='kubectl'
 complete -o default -F __start_kubectl k
 
 # Use fd (https://github.com/sharkdp/fd) instead of the default find
@@ -161,6 +159,9 @@ source "$HOME"/env_setup/completion/aliases.sh
 source "$HOME"/env_setup/completion/tmux.sh
 source "$HOME"/env_setup/completion/terraform.sh
 
+# Set alias for thefuck
+eval "$(thefuck --alias oops)"
+
 [ "${PATH#*$HOME/.yarn/bin:}" == "$PATH" ] && export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 export NVM_DIR="$HOME/.nvm"
 #[ -s "$NVM_DIR/nvm.sh"  ] && \. "$NVM_DIR/nvm.sh"
@@ -168,8 +169,8 @@ export NVM_DIR="$HOME/.nvm"
 # eval "$(rbenv init -)"
 export JAVA_HOME="$(/usr/libexec/java_home -v20.0.1)"
 
-#source /Users/racastaneda/.docker/init-bash.sh || true # Added by Docker Desktop
-
 # Benchmarking
 #set +x
 #exec 2>&3 3>&-
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
