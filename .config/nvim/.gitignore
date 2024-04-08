@@ -1,0 +1,5 @@
+bundle
+bundle.zip
+packer_compiled.lua
+private_*.lua
+**.bak

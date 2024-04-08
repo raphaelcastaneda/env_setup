@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/local/bin/bash
 
 bind_copy=(bind-key -T copy-mode-vi MouseDragEnd1Pane)
 

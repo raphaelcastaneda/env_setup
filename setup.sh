@@ -1,12 +1,15 @@
 #!/bin/bash
 
 
+echo "Grabbing sudo creds because installs will need them"
+sudo echo "muahahahaha"
+
 # Directories
 env_setup=$HOME/env_setup
 for directory in \
   "$HOME/code" "$HOME/.vim" "$HOME/.vim/autoload" "$HOME/.vim/swaps" \
-  "$HOME/.vim/backups" "$HOME/.vim/undo" "$HOME/.vim/colors" "$HOME/vimwiki"; do
-   mkdir -p $directory
+  "$HOME/.vim/backups" "$HOME/.vim/undo" "$HOME/.vim/colors" "$HOME/vimwiki" "$HOME/bin"; do
+   mkdir -p "$directory"
 done
 
 osx=false
@@ -14,13 +17,15 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   osx=true
 fi
 
-if $osx; then
+if "$osx"; then
   #----------- START OSX section----------------------------
   # Homebrew stuff
-  if test ! $(which brew)
+  if test ! "$(which brew)"
   then
     echo "  Installing Homebrew for you."
-    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    echo 'eval $(/opt/homebrew/bin/brew shellenv)' >> $HOME/.bash_profile
+    eval "$(/opt/homebrew/bin/brew shellenv)"
   fi
   # Set up some sane git global config
   git config --global core.autocrlf input  # Leave line endings as-is
@@ -31,6 +36,7 @@ if $osx; then
 
   # Install homebrew packages
   brew install python
+  brew install temurin  # java runtime
   brew install coreutils
   brew install curl wget
   brew install git
@@ -38,9 +44,16 @@ if $osx; then
   brew install tig
   brew install tree
   brew install graphviz
-  brew install vim
+  #brew install vim
+  brew install --HEAD neovim
   brew install tmuxinator
+  brew install ranger  # terminal file manager with vim bindings
   brew install the_silver_searcher 
+  brew install ripgrep  # used with fzf-vim-commands for awesome find-in-files text search
+  brew install fd  # like silver searcher but for find instead of grep
+  brew install bat # github.com/sharkdp/bat syntax highlighted previews for fzf, git diff and others
+  brew install task tasksh # taskwarrior - better task management
+  brew install grandperspective # hard disk usage auditor
   brew install ssh-copy-id 
   brew install thefuck
   brew install ctags-exuberant
@@ -50,32 +63,41 @@ if $osx; then
   brew install lnav
   brew install cmake
   brew install watch
+  brew install figlet # used to render text into ascii text e.g. in presenting.vim
   brew install mono # used for building omnisharp for C# completion in YCM
   brew install bash-completion@2
-  brew install ncdu
+  brew install ncdu  # powerful disk usage tool
   brew install jq # command line json parser
-  brew tap homebrew/cask
-  brew install --cask iterm2
+  brew install kitty  # terminal emulator with powerful font support
+  brew install imagemagick  # command line image tool, allows kitty to display images
   brew install --cask hyperswitch
   brew install --cask hyperdock 
   brew install --cask slack
-  brew install --cask ferdi
+  brew install --cask ferdium  #  all-in-one chat app for browser-based chat
   brew install --cask skitch
   brew install --cask sublime-text
-  brew install --cask bowtie
+  brew install --cask beardedspice  # mac os media key forwarder (for spotify)
   brew install --cask foxitreader
   brew install --cask gimp
   brew install --cask diffmerge
   brew install --cask postman
-
-  source ./helm-dev-osx.sh # Install helm and terraform tools
+  brew install --cask dotnet-sdk
+  brew install --cask joshjon-nocturnal  # sets nightshift to also affect external display
+  brew install --cask cyberduck  # cloud server browser (ftp, amazon s3 etc)
+  brew tap isen-ng/dotnet-sdk-versions
+  brew install dotnet-sdk3-1-300
+  brew install lua-language-server # LSP server for LUA (helps with neovim configs)
+  
+  # Install fancy programming fonts
+  brew tap homebrew/cask-fonts
+  brew install --cask font-victor-mono-nerd-font
+  brew install --cask font-fira-code-nerd-font
   
   # Make sure ycm can compile against this python
   export PYTHON_CONFIGURE_OPTS="--enable-framework"  
 
-  # Switch to brew-installed bash
-  sudo bash -c 'echo /usr/local/bin/bash >> /etc/shells'
-  chsh -s /usr/local/bin/bash
+
+  #source ./helm-dev-osx.sh # Install helm and terraform tools
 
   #-------------- END OSX section-----------------------
 
@@ -91,10 +113,14 @@ else
   sudo apt-get update
 
   # Install debian packages
+  sudo apt-get install -y neovim python-3-neovim
+  sudo apt-get install -y taskwarrior  # task management
+  sudo apt-get install -y ranger-fm
   sudo apt-get install -y  build-essential cmake gcc libssl-dev zlib1g-dev libbz2-dev \
-libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev \
-xz-utils tk-dev
+  libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev \
+  xz-utils tk-dev
   sudo apt-get install -y git tig tree htop curl silversearcher-ag
+  sudo apt-get install -y ripgrep bat
   sudo apt-get install -y python python-pip vim python-dev thefuck
   sudo apt-get install -y ruby2.5
   sudo apt-get install -y exuberant-ctags libncurses-dev golang
@@ -116,14 +142,20 @@ xz-utils tk-dev
   #----------- END Ubuntu section----------------------------
 fi
 
-# Set up Vundle
-git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
 
 # File symlinks
 for file in "bashrc" "bash_profile" "tmux.conf" "tmux.conf.sh" "Xresources" "vimrc"; do
   rm -rf "$HOME/.$file"
   ln -s "$env_setup/$file" "$HOME/.$file"
 done
+
+# Symlink .config folder
+if [ -d "$HOME/.config" ]; then
+  echo "Existing config folder present. Backing up to .config-backup"
+  mv "$HOME/.config" "$HOME/.config-backup"
+fi
+ln -s "$env_setup/.config" "$HOME/.config"
+
 
 # File copies
 if [ ! -f "$HOME/.vim/colors/hybrid.vim" ]; then
@@ -133,13 +165,23 @@ if [ ! -f "$HOME/.gitconfig" ]; then
   cp "$env_setup/gitconfig" "$HOME/.gitconfig"
 fi
 
+# Set up bat color theme
+mkdir -p "$(bat --config-dir)/themes"
+cp "$env_setup/colors/Tomorrow-Night.tmTheme" "$(bat --config-dir)/themes/"
+bat cache --build
+
+
 
 # Clone pyenv
-git clone https://github.com/pyenv/pyenv.git ~/.pyenv
-git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
-pushd $(pyenv root)
-git pull
-popd
+if [ ! -d "$HOME/.pyenv" ]; then
+  git clone https://github.com/pyenv/pyenv.git "$HOME/.pyenv"
+  pushd "$HOME/.pyenv"
+  git pull
+  popd
+fi
+
+# Make sure .env exists if it didn't already
+touch "$HOME"/.env
 
 # Make sure tmuxinator does not break things
 mkdir -p ~/.bin
@@ -149,37 +191,38 @@ touch ~/.bin/tmuxinator.bash
 source ~/.bashrc
 
 # Set up pyenv
-pyenv install --skip-existing 3.8.2
-pyenv install --skip-existing 2.7.17
-pyenv global 3.8.2
+pyenv install --skip-existing 3.9.16
+#pyenv install --skip-existing 2.7.17  # python is dead! long live python!
+pyenv global 3.9.16
 
 # Install python packages
-python -m pip install virtualenv jedi pudb bpytop prospector[with_everythying]
+python -m pip install --upgrade pip
+python -m pip install virtualenv pynvim pudb bpytop
+python -m pip install tasklib taskwarrior packaging # for taskwarrior integration with vimwiki
 
 # Install virtualenvwrapper pyenv plugin
-git clone https://github.com/pyenv/pyenv-virtualenvwrapper.git $(pyenv root)/plugins/pyenv-virtualenvwrapper
+git clone https://github.com/pyenv/pyenv-virtualenvwrapper.git "$(pyenv root)"/plugins/pyenv-virtualenvwrapper
 
-# Set up fonts
-cd fonts
-bash install.sh
-cd ..
+# Install fuzzy searcher fzf and kube plugin
+git clone --depth 1 https://github.com/junegunn/fzf.git "$HOME"/.fzf
+"$HOME"/.fzf/install --all
+wget https://raw.githubusercontent.com/bonnefoa/kubectl-fzf/main/shell/kubectl_fzf.bash -O ~/.kubectl_fzf.bash
+go install github.com/bonnefoa/kubectl-fzf/v3/cmd/kubectl-fzf-completion@main
+go install github.com/bonnefoa/kubectl-fzf/v3/cmd/kubectl-fzf-server@main#
 
-# Install fuzzy searcher fzf
-git clone --depth 1 https://github.com/junegunn/fzf.git $HOME/.fzf
-$HOME/.fzf/install --all
+# Install go environment manager
+git clone https://github.com/go-nv/goenv.git ~/.goenv
 
-# Install vim plugins
-vim +PluginInstall +qall
-cd ~/.vim/bundle/YouCompleteMe
-git submodule update --init --recursive
-npm install -g xbuild # required to build Omnisharp for ycm
-python ~/.vim/bundle/YouCompleteMe/install.py --go-completer --all
-vim +'silent :GoInstallBinaries' +qall
-cd ~/.vim/bundle/YouCompleteMe/third_party/ycmd/third_party/go/src/golang.org/x/tools/cmd/gopls
-go build
-vim +'silent :call mkdp#util#install()' +qall
+# Install neovim plugins
+if [ -d "$HOME/local/share/nvim/site/pack/packer" ]; then
+  git clone --depth 1 https://github.com/wbthomason/packer.nvim\
+   "$HOME/.local/share/nvim/site/pack/packer/start/packer.nvim"
+fi
+nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 
-# Make sure .env exists if it didn't already
-touch $HOME/.env
+
+# Switch to brew-installed bash
+sudo bash -c 'echo "$(which bash)" >> /etc/shells'
+chsh -s "$(which bash)"
 
 echo "All done!"
