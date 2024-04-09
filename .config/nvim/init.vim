@@ -149,7 +149,7 @@ filetype off
 "   PlugInstall
 " endif
 
-" Appearance options
+" Apperance options
 set termguicolors
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
@@ -162,15 +162,19 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 let g:enable_bold_font = 1
 let g:enable_italic_font = 1
 set background=dark
-colorscheme hybrid
+"colorscheme leaf
+"colorscheme catppuccin
+"colorscheme hybrid
 "colorscheme base16-tomorrow-night-eighties
 "let g:hybrid_use_iTerm_colors = 1
 "transparent background
 au ColorScheme * hi Normal ctermbg=none guibg=none
 au ColorScheme * hi NonText ctermbg=none guibg=none ctermfg=239 guifg=#585c63
-"au ColorScheme * hi Normal ctermbg=none guibg=none
 hi Normal ctermbg=none guibg=none
 hi NonText ctermbg=none guibg=none ctermfg=239 guifg=#585c63
+
+" Nvim tree transparent background
+hi NvimTreeNormal guibg=none
 
 " Limelight / Goyo appearance
 let g:limelight_conceal_ctermfg = 'DarkGray'
@@ -198,7 +202,7 @@ let g:airline#extensions#branch#displayed_head_limit = 30
 let g:airline#extensions#nvimlsp#enabled = 1
 let airline#extensions#nvimlsp#error_symbol = ' '
 let airline#extensions#nvimlsp#warning_symbol = ' '
-"let g:airline_section_warning = airline#section#create_right(['lsp_status'])  " replaces the warning section with the lsp status indicator
+let g:airline_section_warning = airline#section#create_right(['lsp_status'])  " replaces the warning section with the lsp status indicator
 
 let g:airline#extensions#tabline#buffer_idx_mode = 1
 let g:airline#extensions#tabline#buffer_idx_format = {
@@ -412,75 +416,66 @@ syntax sync minlines=2000
 "let g:jedi#use_tabs_not_buffers = 0
 
 
-
 " neovim builtin language client
 lua << EOF
 require('plugins')
 require('lang_config')
 require('treesitter_workaround')
 require('rainbow_delimiters')
+require("theme")
 vim.cmd([[
   augroup packer_user_config
     autocmd!
     autocmd BufWritePost plugins.lua source <afile> | PackerCompile
   augroup end
 ]])
-EOF
-
-" Configure Gitsigns
-lua << EOF
-require("gitsigns").setup()
-EOF
-
-" Fancy indent lines for languages that use spaces
-"lua << EOF
-"vim.opt.list = true
-"vim.opt.listchars:append("multispace:⋅")
-"--require("ibl").setup {}
-"EOF
-
-lua << EOF
 vim.o.timeout = true
 vim.o.timeoutlen = 1000
 require("which-key").setup({})
 EOF
 
+" hs-lens search highlighting
+hi default link HlSearchNear IncSearch
+hi default link HlSearchLens WildMenu
+hi default link HlSearchLensNear IncSearch
+"
 " LSP diagnostic highlighting
 highlight! link DiagnosticUnderlineError CocErrorHighlight
 highlight! link DiagnosticUnderlineHint CocHintHighlight
 highlight! link DiagnosticUnderlineInfo CocInfoHighlight
 highlight! link DiagnosticUnderlineWarn CocWarningHighlight
-highlight! link DiagnosticError CocErrorSign
-highlight! link DiagnosticDefaultError CocErrorSign
-highlight! link DiagnosticWarn CocWarningSign
-highlight! link DiagnosticDefaultWarning CocWarningSign
-highlight! link DiagnosticHint CocHintSign
-highlight! link DiagnosticDefaultHint CocHintSign
-highlight! link DiagnosticInformation CocInformationSign
-highlight! link DiagnosticDefaultInformation CocInformationSign
-highlight! link DiagnosticSignError CocErrorSign
-highlight! link DiagnosticSignHint CocHintSign
-highlight! link DiagnosticSignInfo CocInfoSign
-highlight! link DiagnosticSignWarn CocWarningSign
-highlight! link DiagnosticSignWarning CocWarningSign
-highlight! link DiagnosticVirtualTextError DiagnosticSignError
-highlight! link DiagnosticVirtualTextHint DiagnosticSignHint
-highlight! link DiagnosticVirtualTextInfo DiagnosticSignInfo
-highlight! link DiagnosticVirtualTextWarn DiagnosticSignWarning
+"highlight! link DiagnosticError CocErrorSign
+"highlight! link DiagnosticDefaultError CocErrorSign
+"highlight! link DiagnosticWarn CocWarningSign
+"highlight! link DiagnosticDefaultWarning CocWarningSign
+"highlight! link DiagnosticHint CocHintSign
+"highlight! link DiagnosticDefaultHint CocHintSign
+"highlight! link DiagnosticInformation CocInformationSign
+"highlight! link DiagnosticDefaultInformation CocInformationSign
+"highlight! link DiagnosticSignError CocErrorSign
+"highlight! link DiagnosticSignHint CocHintSign
+"highlight! link DiagnosticSignInfo CocInfoSign
+"highlight! link DiagnosticSignWarn CocWarningSign
+"highlight! link DiagnosticSignWarning CocWarningSign
+"highlight! link DiagnosticVirtualTextError DiagnosticSignError
+"highlight! link DiagnosticVirtualTextHint DiagnosticSignHint
+"highlight! link DiagnosticVirtualTextInfo DiagnosticSignInfo
+"highlight! link DiagnosticVirtualTextWarn DiagnosticSignWarning
 "highlight! link LspReferenceRead CocHighlightRead
 "highlight! link LspReferenceText CocHighlightText
 "highlight! link LspReferenceWrite CocHighlightWrite
+
 """ Errors in Red
 "hi DiagnosticUnderline gui=undercurl cterm=undercurl term=undercurl
 "hi DiagnosticUnderlineError gui=undercurl cterm=undercurl term=undercurl guisp=Red
 """ Warnings in Yellow
-""hi LspDiagnosticsVirtualTextWarning guifg=Yellow ctermfg=Yellow
+"hi LspDiagnosticsVirtualTextWarning guifg=Yellow ctermfg=Yellow
 "hi LspDiagnosticsUnderlineWarning gui=undercurl term=undercurl cterm=undercurl guisp=Yellow
 """ Info and Hints in White
-""hi LspDiagnosticsVirtualTextInformation guifg=White ctermfg=White
-"hi LspDiagnosticsUnderlineInformation gui=undercurl cterm=undercurl term=undercurl guisp=White
-""hi LspDiagnosticsVirtualTextHint guifg=White ctermfg=White
-"hi LspDiagnosticsUnderlineHint gui=undercurl cterm=undercurl term=undercurl guisp=White
+hi LspDiagnosticsVirtualTextInformation guifg=White ctermfg=White
+hi LspDiagnosticsUnderlineInformation gui=undercurl cterm=undercurl term=undercurl guisp=White
+hi LspDiagnosticsVirtualTextHint guifg=White ctermfg=White
+hi LspDiagnosticsUnderlineHint gui=undercurl cterm=undercurl term=undercurl guisp=White
 
 
 "augroup LSPConfig
@@ -558,7 +553,7 @@ EOF
 noremap <silent> <leader>e :TroubleToggle document_diagnostics<CR>
 nnoremap <silent> <leader>we :TroubleToggle workspace_diagnostics<CR>
 
-nnoremap <silent> <leader>d :Gitsigns setqflist<CR>
+nnoremap <silent> <leader>c :Gitsigns setqflist<CR>
 nnoremap <silent> <leader>A :HFccToggleAutoSuggest<CR>
 
 "    find cursor word definition and references

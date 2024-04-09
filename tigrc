@@ -1,0 +1,14 @@
+# Override the default terminal colors to white on black.
+#color default	white	black
+color cursor   default default  bold reverse
+color title-focus white default bold
+color title-blur black cyan reverse
+color search-result yellow default bold
+
+# Diff colors
+color diff-header	default	default
+color diff-index	blue	default
+color diff-chunk	magenta	default
+color "Reported-by:"	green	default
+# View-specific color
+color tree.date		black	cyan	bold

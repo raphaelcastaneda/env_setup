@@ -8,7 +8,7 @@ k9s:
     logoless: false
     crumbsless: false
     reactive: false
-    skin: nightfox
+    skin: catppuccin-mocha
   noExitOnCtrlC: false
   noIcons: false
   skipLatestRevCheck: false

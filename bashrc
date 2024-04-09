@@ -46,6 +46,8 @@ if [ -x "$(command -v nvim)" ]; then
   export EDITOR=nvim
   alias vim='nvim'
 fi
+alias devcluster='colima start --arch aarch64 --vm-type=vz --vz-rosetta --kubernetes'
+
 alias ssh="TERM=xterm-256color ssh"
 # if this is kitty, set up image previewing
 if [[ $KITTY_WINDOW_ID ]]; then
