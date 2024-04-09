@@ -172,6 +172,7 @@ cmp.setup({
     }
   },
   formatting = {
+    expandable_indicator = true,
     fields = { "kind", "abbr", "menu" },
     format = function(entry, vim_item)
       local kind = require("lspkind").cmp_format({
@@ -295,6 +296,7 @@ setmetatable(kind_labels, kind_labels_mt)
 lsp_status.register_progress()
 lsp_status.config({
   kind_labels = kind_labels,
+  current_function = false,
   indicator_errors = " ",
   indicator_warnings = " ",
   indicator_info = " ",
@@ -537,6 +539,7 @@ local null_ls_sources = {
       virtual_text = false,
     },
   }),
+  formatting.buf,
   formatting.black.with({
     diagnostic_config = {
       extra_args = { "--line-length", "88" },

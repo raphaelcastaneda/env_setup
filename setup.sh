@@ -104,7 +104,11 @@ curl -L https://github.com/catppuccin/k9s/archive/main.tar.gz | tar xz -C "$OUT"
 
 curl -L "https://raw.githubusercontent.com/derailed/k9s/master/skins/nightfox.yaml" -o "$OUT/nightfox.yaml"
 
-  #source ./helm-dev-osx.sh # Install helm and terraform tools
+# Local cloud development
+source ./helm-dev-osx.sh # Install helm and terraform tools
+zsh ./colima-dev-macos.sh
+brew install skaffold
+skaffold config set --global collect-metrics false
 
   #-------------- END MacOs section-----------------------
 

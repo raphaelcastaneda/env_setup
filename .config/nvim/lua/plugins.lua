@@ -64,7 +64,7 @@ return require('packer').startup(function(use)
   })
   use({ "HiPhish/rainbow-delimiters.nvim" }) -- Color-coded parens, brackets etc.
   use({ "tpope/vim-fugitive" })
-  use({ "kyazdani42/nvim-tree.lua" })
+  use({ "nvim-tree/nvim-tree.lua" })
   use({ "folke/which-key.nvim" }) --Lua autocompletion for nvim api
   use({
     "ThePrimeagen/refactoring.nvim",
@@ -164,7 +164,9 @@ return require('packer').startup(function(use)
   -- Mason - LSP server installer/manager
   use({ "williamboman/mason.nvim" })
   use({ "williamboman/mason-lspconfig.nvim" })
-  use({ "mfussenegger/nvim-dap" }) -- Debuggers for LSP use({ "jay-babu/mason-nvim-dap.nvim" })
+  use({ "mfussenegger/nvim-dap" }) -- Debuggers for LSP 
+  use({ "jay-babu/mason-nvim-dap.nvim" })
+  
   -- Markdown
   use({ "vimwiki/vimwiki" })
   use({ "tpope/vim-markdown", ft = "markdown" })

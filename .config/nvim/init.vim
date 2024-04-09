@@ -149,7 +149,7 @@ filetype off
 "   PlugInstall
 " endif
 
-" Apperance options
+" Appearance options
 set termguicolors
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
@@ -196,7 +196,8 @@ let g:airline#extensions#tabline#show_tabs = 1
 let g:airline#extensions#tabline#tab_nr_show = 1
 let g:airline#extensions#tabline#tab_nr_type = 1
 "let g:airline#extensions#tabline#formatter = 'default'
-let g:airline_theme = 'hybridline'
+let g:airline_theme = 'catppuccin'
+"let g:airline_theme = 'hybridline'
 "let g:airline#extensions#ale#enabled = 1
 let g:airline#extensions#branch#displayed_head_limit = 30
 let g:airline#extensions#nvimlsp#enabled = 1
@@ -433,6 +434,11 @@ vim.o.timeout = true
 vim.o.timeoutlen = 1000
 require("which-key").setup({})
 EOF
+
+" gitsigns highlight
+highlight! link GitSignsAdd diffAdded
+highlight! link GitSignsChange diffChanged
+highlight! link GitSignsDelete diffRemoved
 
 " hs-lens search highlighting
 hi default link HlSearchNear IncSearch
