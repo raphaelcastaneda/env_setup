@@ -18,7 +18,7 @@ return require('packer').startup(function(use)
   use({ "nvim-lua/plenary.nvim" })               -- Prereq for telescope, null-ls, and refactoring
   use({ "mfussenegger/nvim-jdtls" })             --Extensions for built-in LSP
   use({ "lukas-reineke/indent-blankline.nvim" }) -- Indentation guides to enhance listchars
-  use({ "dstein64/vim-startuptime"}) -- vim startup profiler
+  use({ "dstein64/vim-startuptime" })            -- vim startup profiler
 
   -- Finders and Search
   use({
@@ -35,9 +35,36 @@ return require('packer').startup(function(use)
   use({ "simrat39/symbols-outline.nvim" })
   use({ "scrooloose/nerdcommenter" })
   use({ "lewis6991/gitsigns.nvim" })
-  use({"HiPhish/rainbow-delimiters.nvim"})  -- Color-coded parens, brackets etc.
+  use({
+    "kevinhwang91/nvim-hlslens",
+    config = function()
+      require("hlslens").setup({
+        build_position_cb = function(plist, _, _, _)
+          require("scrollbar.handlers.search").handler.show(plist.start_pos)
+        end,
+      })
+
+      vim.cmd([[
+        augroup scrollbar_search_hide
+            autocmd!
+            autocmd CmdlineLeave : lua require('scrollbar.handlers.search').handler.hide()
+        augroup END
+    ]])
+    end,
+  })
+  use({
+    "petertriho/nvim-scrollbar",
+    requires = { 'kevinhwang91/nvim-hlslens' },
+    config = function()
+      require('scrollbar').setup()
+      require("scrollbar.handlers.search").setup()
+      require('gitsigns').setup()
+      require("scrollbar.handlers.gitsigns").setup()
+    end,
+  })
+  use({ "HiPhish/rainbow-delimiters.nvim" }) -- Color-coded parens, brackets etc.
   use({ "tpope/vim-fugitive" })
-  use({ "kyazdani42/nvim-tree.lua" })
+  use({ "nvim-tree/nvim-tree.lua" })
   use({ "folke/which-key.nvim" }) --Lua autocompletion for nvim api
   use({
     "ThePrimeagen/refactoring.nvim",
@@ -62,7 +89,7 @@ return require('packer').startup(function(use)
   use({ "onsails/lspkind.nvim" })
   use({
     "nvimdev/lspsaga.nvim",
-    commit = "2198c07124bef27ef81335be511c8abfd75db933",
+    --commit = "2198c07124bef27ef81335be511c8abfd75db933",
     after = 'nvim-lspconfig',
     config = function()
       require("lspsaga").setup({
@@ -79,7 +106,7 @@ return require('packer').startup(function(use)
         },
         finder = {
           keys = {
-            toggle_or_open = {'<CR>', '<space>'},
+            toggle_or_open = { '<CR>', '<space>' },
             vsplit = 's',
             split = 'i',
             quit = { 'q', '<Esc>' }, -- quit can be a table
@@ -98,7 +125,8 @@ return require('packer').startup(function(use)
   -- use({ "raphaelcastaneda/lspsaga.nvim", {"branch": "feature/finder-jump-by-number"} })
   -- use({ "tami5/lspsaga.nvim"  "A fork of lspsaga that is actually being maintained })
   use({ "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" }) -- Install and update Treesitter
-  use({ "jose-elias-alvarez/null-ls.nvim" })                    -- Allows lsp support for prettier
+  -- use({ "jose-elias-alvarez/null-ls.nvim" })                    -- Allows lsp support for non-lsp sources
+  use({ "nvimtools/none-ls.nvim" })                             -- Community-maintained fork of null-ls
 
   -- CUSTOM PLUGINS - install things that we don't want in the dotfiles repo
   -- local private_plugins = require('private_plugins')
@@ -108,9 +136,9 @@ return require('packer').startup(function(use)
 
   -- use({ "martinda/Jenkinsfile-vim-syntax"})
   -- use({ "hashivim/vim-terraform" })
-  use({ "puremourning/vimspector" })   -- Debugger based on json configs (like VSCode)
-  use({ "sagi-z/vimspectorpy", ft="python", run = function() vim.fn['vimspectorpy#update'](0) end })   -- Debugger based on json configs (like VSCode)
-  use({ "MunifTanjim/prettier.nvim" }) -- Formatter for JS etc.
+  use({ "puremourning/vimspector" })                                                                   -- Debugger based on json configs (like VSCode)
+  use({ "sagi-z/vimspectorpy", ft = "python", run = function() vim.fn['vimspectorpy#update'](0) end }) -- Debugger based on json configs (like VSCode)
+  use({ "MunifTanjim/prettier.nvim" })                                                                 -- Formatter for JS etc.
   use({ "tpope/vim-dotenv" })
 
   --  Completion and snippets
@@ -136,28 +164,30 @@ return require('packer').startup(function(use)
   -- Mason - LSP server installer/manager
   use({ "williamboman/mason.nvim" })
   use({ "williamboman/mason-lspconfig.nvim" })
-  use({ "mfussenegger/nvim-dap" }) -- Debuggers for LSP
+  use({ "mfussenegger/nvim-dap" }) -- Debuggers for LSP 
   use({ "jay-babu/mason-nvim-dap.nvim" })
-
+  
   -- Markdown
   use({ "vimwiki/vimwiki" })
-  use({ "tpope/vim-markdown", ft="markdown" })
+  use({ "tpope/vim-markdown", ft = "markdown" })
   use({ "tools-life/taskwiki" })
-  use({ "farseer90718/vim-taskwarrior", ft="vimwiki" })
+  use({ "farseer90718/vim-taskwarrior", ft = "vimwiki" })
   use({ "sotte/presenting.vim" })
   use({ "vim-scripts/DrawIt" })
   use({
     "iamcco/markdown-preview.nvim",
-    ft={ "markdown", "vimwiki" },
+    ft = { "markdown", "vimwiki" },
     run = function() vim.fn["mkdp#util#install"]() end,
   })
 
   -- Appearance
-  use({ "micke/vim-hybrid" }) -- theme
+  use { "daschw/leaf.nvim" }                   --alt-theme
+  use { "catppuccin/nvim", as = "catppuccin" } --alt-theme
+  use({ "micke/vim-hybrid" })                  -- theme
   use({ "junegunn/goyo.vim" })
   use({ "junegunn/limelight.vim" })
   use({ "nvim-tree/nvim-web-devicons" })
-  use({ "folke/lsp-colors.nvim" })
+  use({ "folke/lsp-colors.nvim"})
   use({ "folke/trouble.nvim" })
   use({ "vim-airline/vim-airline" })
   use({ "vim-airline/vim-airline-themes" })

@@ -24,3 +24,5 @@ iterm2
 pudb/saved-breakpoints*
 pudb/*history.*
 yarn
+
+gh/hosts.yml

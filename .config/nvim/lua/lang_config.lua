@@ -8,7 +8,7 @@ lspconfig.util.default_config = vim.tbl_extend(
 vim.diagnostic.config({
   virtual_text = false,
   underline = true,
- virtual_lines = false,
+  virtual_lines = false,
 })
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
@@ -172,6 +172,7 @@ cmp.setup({
     }
   },
   formatting = {
+    expandable_indicator = true,
     fields = { "kind", "abbr", "menu" },
     format = function(entry, vim_item)
       local kind = require("lspkind").cmp_format({
@@ -242,6 +243,7 @@ cmp.setup.cmdline(':', {
   completion = {
     autocomplete = {}
   },
+  mapping = my_mapping,
   sources = cmp.config.sources({
     { name = 'cmdline' },
     { name = 'path' }
@@ -294,6 +296,7 @@ setmetatable(kind_labels, kind_labels_mt)
 lsp_status.register_progress()
 lsp_status.config({
   kind_labels = kind_labels,
+  current_function = false,
   indicator_errors = " ",
   indicator_warnings = " ",
   indicator_info = " ",
@@ -323,7 +326,7 @@ local on_attach = function(client, bufnr)
   if vim.bo.filetype == "NerdTree" then
     vim.lsp.buf_detach_client(bufnr, client)
   end
- --  print("LSP server attached: " .. client.name)
+  --  print("LSP server attached: " .. client.name)
 
 
   lsp_status.on_attach(client)
@@ -429,7 +432,21 @@ require("symbols-outline").setup({
     Event = { icon = "", hl = "TSType" },
     Operator = { icon = " ", hl = "TSOperator" },
     TypeParameter = { icon = "𝙏", hl = "TSParameter" }
-  }
+  },
+  keymaps = { -- These keymaps can be a string or a table for multiple keys
+    close = { "<Esc>", "q", "o" },
+    goto_location = "<Cr>",
+    focus_location = "<space>",
+    hover_symbol = "K",
+    toggle_preview = "P",
+    rename_symbol = "r",
+    code_actions = "a",
+    fold = { "h", "x" },
+    unfold = {"e", "l" },
+    fold_all = "X",
+    unfold_all = "E",
+    fold_reset = "R",
+  },
 })
 require("lsp_lines").setup()
 
@@ -470,16 +487,16 @@ local null_ls_sources = {
       virtual_text = false,
     },
   }),
-  diagnostics.flake8.with {
-    extra_args = {
-      "--ignore=E126,D100,D101,D102,D103,D205,D400,D401",
-      "--max-line-length=160",
-      "--max-complexity=10",
-    },
-    diagnostic_config = {
-      virtual_text = false,
-    },
-  },
+  --diagnostics.flake8.with {
+  --  extra_args = {
+  --    "--ignore=E126,D100,D101,D102,D103,D205,D400,D401",
+  --    "--max-line-length=160",
+  --    "--max-complexity=10",
+  --  },
+  --  diagnostic_config = {
+  --    virtual_text = false,
+  --  },
+  --},
   -- diagnostics.pylint.with {
   --   diagnostic_config = {
   --     virtual_text = false,
@@ -512,16 +529,17 @@ local null_ls_sources = {
   --      },
   --  }),
   null_ls.builtins.diagnostics.protolint,
-  diagnostics.shellcheck.with({
-      diagnostic_config = {
-          virtual_text = false,
-      },
-  }),
+  -- diagnostics.shellcheck.with({
+  --     diagnostic_config = {
+  --         virtual_text = false,
+  --     },
+  -- }),
   diagnostics.yamllint.with({
     diagnostic_config = {
       virtual_text = false,
     },
   }),
+  formatting.buf,
   formatting.black.with({
     diagnostic_config = {
       extra_args = { "--line-length", "88" },
@@ -604,20 +622,20 @@ local servers = {
     }
   },
   golangci_lint_ls = {
-    root_dir = util.root_pattern('go.mod','.git'),
+    root_dir = util.root_pattern('go.mod', '.git'),
     handlers = {
-    -- stops an out-of-range column error when viewing diagnostics with Trouble.nvim
-    ["textDocument/publishDiagnostics"] = function(_, result, ctx, config)
-      for idx, diag in ipairs(result.diagnostics) do
-        for position, value in pairs(diag.range) do
-          if value.character == -1 then
-            result.diagnostics[idx].range[position].character = 0
+      -- stops an out-of-range column error when viewing diagnostics with Trouble.nvim
+      ["textDocument/publishDiagnostics"] = function(_, result, ctx, config)
+        for idx, diag in ipairs(result.diagnostics) do
+          for position, value in pairs(diag.range) do
+            if value.character == -1 then
+              result.diagnostics[idx].range[position].character = 0
+            end
           end
         end
-      end
 
-      return on_publish_diagnostics(_, result, ctx, config)
-    end,
+        return on_publish_diagnostics(_, result, ctx, config)
+      end,
     }
   },
   html = {},
@@ -703,7 +721,7 @@ local servers = {
 -- if jcan then
 --   local configs = require "lspconfig.configs"
 --   configs["jcan_ls"] = jcan
--- 
+--
 --   lspconfig.jcan_ls.setup({
 --     on_attach = on_attach,
 --     capabilities = capabilities
@@ -739,12 +757,12 @@ require("mason-lspconfig").setup_handlers({
 require("mason-nvim-dap").setup()
 
 
--- null_ls.setup({
---   debug = false,
---   on_attach = on_attach,
---   sources = null_ls_sources,
---   capabilities = capabilities,
--- })
+null_ls.setup({
+  debug = false,
+  on_attach = on_attach,
+  sources = null_ls_sources,
+  capabilities = capabilities,
+})
 
 -- Automatically handle configuring servers called out above
 -- for servername, sconfig in pairs(servers) do
@@ -754,44 +772,3 @@ require("mason-nvim-dap").setup()
 -- end
 --
 
--- Customization for cmp autocomplete menu
-vim.api.nvim_set_hl(0, "PmenuSel", { bg = "#5C6069", fg = "NONE" })
-vim.api.nvim_set_hl(0, "Pmenu", { fg = "#C5CDD9", bg = "#22252A" })
-
-vim.api.nvim_set_hl(0, "CmpItemAbbrDeprecated", { fg = "#7E8294", bg = "NONE", strikethrough = true })
-vim.api.nvim_set_hl(0, "CmpItemAbbrMatch", { fg = "#82AAFF", bg = "NONE", bold = true })
-vim.api.nvim_set_hl(0, "CmpItemAbbrMatchFuzzy", { fg = "#82AAFF", bg = "NONE", bold = true })
-vim.api.nvim_set_hl(0, "CmpItemMenu", { fg = "#C792EA", bg = "NONE", italic = true })
-
-vim.api.nvim_set_hl(0, "CmpItemKindField", { fg = "#EED8DA", bg = "#B5585F" })
-vim.api.nvim_set_hl(0, "CmpItemKindProperty", { fg = "#EED8DA", bg = "#B5585F" })
-vim.api.nvim_set_hl(0, "CmpItemKindEvent", { fg = "#EED8DA", bg = "#B5585F" })
-
-vim.api.nvim_set_hl(0, "CmpItemKindText", { fg = "#C3E88D", bg = "#9FBD73" })
-vim.api.nvim_set_hl(0, "CmpItemKindEnum", { fg = "#C3E88D", bg = "#9FBD73" })
-vim.api.nvim_set_hl(0, "CmpItemKindKeyword", { fg = "#C3E88D", bg = "#9FBD73" })
-
-vim.api.nvim_set_hl(0, "CmpItemKindConstant", { fg = "#FFE082", bg = "#D4BB6C" })
-vim.api.nvim_set_hl(0, "CmpItemKindConstructor", { fg = "#FFE082", bg = "#D4BB6C" })
-vim.api.nvim_set_hl(0, "CmpItemKindReference", { fg = "#FFE082", bg = "#D4BB6C" })
-
-vim.api.nvim_set_hl(0, "CmpItemKindFunction", { fg = "#EADFF0", bg = "#A377BF" })
-vim.api.nvim_set_hl(0, "CmpItemKindStruct", { fg = "#EADFF0", bg = "#A377BF" })
-vim.api.nvim_set_hl(0, "CmpItemKindClass", { fg = "#EADFF0", bg = "#A377BF" })
-vim.api.nvim_set_hl(0, "CmpItemKindModule", { fg = "#EADFF0", bg = "#A377BF" })
-vim.api.nvim_set_hl(0, "CmpItemKindOperator", { fg = "#EADFF0", bg = "#A377BF" })
-
-vim.api.nvim_set_hl(0, "CmpItemKindVariable", { fg = "#C5CDD9", bg = "#7E8294" })
-vim.api.nvim_set_hl(0, "CmpItemKindFile", { fg = "#C5CDD9", bg = "#7E8294" })
-
-vim.api.nvim_set_hl(0, "CmpItemKindUnit", { fg = "#F5EBD9", bg = "#D4A959" })
-vim.api.nvim_set_hl(0, "CmpItemKindSnippet", { fg = "#F5EBD9", bg = "#D4A959" })
-vim.api.nvim_set_hl(0, "CmpItemKindFolder", { fg = "#F5EBD9", bg = "#D4A959" })
-
-vim.api.nvim_set_hl(0, "CmpItemKindMethod", { fg = "#DDE5F5", bg = "#6C8ED4" })
-vim.api.nvim_set_hl(0, "CmpItemKindValue", { fg = "#DDE5F5", bg = "#6C8ED4" })
-vim.api.nvim_set_hl(0, "CmpItemKindEnumMember", { fg = "#DDE5F5", bg = "#6C8ED4" })
-
-vim.api.nvim_set_hl(0, "CmpItemKindInterface", { fg = "#D8EEEB", bg = "#58B5A8" })
-vim.api.nvim_set_hl(0, "CmpItemKindColor", { fg = "#D8EEEB", bg = "#58B5A8" })
-vim.api.nvim_set_hl(0, "CmpItemKindTypeParameter", { fg = "#D8EEEB", bg = "#58B5A8" })

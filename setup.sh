@@ -18,7 +18,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 fi
 
 if "$osx"; then
-  #----------- START OSX section----------------------------
+  #----------- START MacOS section----------------------------
   # Homebrew stuff
   if test ! "$(which brew)"
   then
@@ -87,6 +87,7 @@ if "$osx"; then
   brew tap isen-ng/dotnet-sdk-versions
   brew install dotnet-sdk3-1-300
   brew install lua-language-server # LSP server for LUA (helps with neovim configs)
+  brew install trash  # Helper that moves target to MacOs trash
   
   # Install fancy programming fonts
   brew tap homebrew/cask-fonts
@@ -96,10 +97,20 @@ if "$osx"; then
   # Make sure ycm can compile against this python
   export PYTHON_CONFIGURE_OPTS="--enable-framework"  
 
+# Install K9s theme
+OUT="${XDG_CONFIG_HOME:-$HOME/Library/Application Support}/k9s/skins"
+mkdir -p "$OUT"
+curl -L https://github.com/catppuccin/k9s/archive/main.tar.gz | tar xz -C "$OUT" --strip-components=2 k9s-main/dist
 
-  #source ./helm-dev-osx.sh # Install helm and terraform tools
+curl -L "https://raw.githubusercontent.com/derailed/k9s/master/skins/nightfox.yaml" -o "$OUT/nightfox.yaml"
 
-  #-------------- END OSX section-----------------------
+# Local cloud development
+source ./helm-dev-osx.sh # Install helm and terraform tools
+zsh ./colima-dev-macos.sh
+brew install skaffold
+skaffold config set --global collect-metrics false
+
+  #-------------- END MacOs section-----------------------
 
 else
   #----------- START Ubuntu section----------------------------
@@ -144,7 +155,7 @@ fi
 
 
 # File symlinks
-for file in "bashrc" "bash_profile" "tmux.conf" "tmux.conf.sh" "Xresources" "vimrc"; do
+for file in "bashrc" "bash_profile" "tmux.conf" "tmux.conf.sh" "Xresources" "vimrc" ".tigrc"; do
   rm -rf "$HOME/.$file"
   ln -s "$env_setup/$file" "$HOME/.$file"
 done
@@ -155,8 +166,9 @@ if [ -d "$HOME/.config" ]; then
   mv "$HOME/.config" "$HOME/.config-backup"
 fi
 ln -s "$env_setup/.config" "$HOME/.config"
-
-
+#
+# Symlink bin folder
+ln -s "$env_setup/bin" "$HOME/bin"
 # File copies
 if [ ! -f "$HOME/.vim/colors/hybrid.vim" ]; then
   cp "$env_setup/vim/hybrid.vim" "$HOME/.vim/colors/hybrid.vim"
