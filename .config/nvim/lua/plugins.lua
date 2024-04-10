@@ -184,6 +184,11 @@ return require('packer').startup(function(use)
   use { "daschw/leaf.nvim" }                   --alt-theme
   use { "catppuccin/nvim", as = "catppuccin" } --alt-theme
   use({ "micke/vim-hybrid" })                  -- theme
+  use({"norcalli/nvim-colorizer.lua",
+    config=function()
+      require("colorizer").setup()
+    end
+  })
   use({ "junegunn/goyo.vim" })
   use({ "junegunn/limelight.vim" })
   use({ "nvim-tree/nvim-web-devicons" })
