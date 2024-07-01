@@ -20,7 +20,7 @@ fi
 # - https://docs.docker.com/buildx/working-with-buildx/#manual-download
 # - https://cli.github.com/manual/gh_release_download
 gh auth status
-if [ $? != 0 ] ; then;
+if [ $? != 0 ] ; then
     gh auth login
 fi
 RELEASE_FILE_SUFFIX='darwin-arm64'

@@ -80,7 +80,7 @@ if "$osx"; then
   brew install --cask foxitreader
   brew install --cask gimp
   brew install --cask diffmerge
-  brew install --cask postman
+  brew install --cask insomnium  # postman replacement-replacement
   brew install --cask dotnet-sdk
   brew install --cask joshjon-nocturnal  # sets nightshift to also affect external display
   brew install --cask cyberduck  # cloud server browser (ftp, amazon s3 etc)
@@ -220,13 +220,13 @@ git clone --depth 1 https://github.com/junegunn/fzf.git "$HOME"/.fzf
 "$HOME"/.fzf/install --all
 wget https://raw.githubusercontent.com/bonnefoa/kubectl-fzf/main/shell/kubectl_fzf.bash -O ~/.kubectl_fzf.bash
 go install github.com/bonnefoa/kubectl-fzf/v3/cmd/kubectl-fzf-completion@main
-go install github.com/bonnefoa/kubectl-fzf/v3/cmd/kubectl-fzf-server@main#
+go install github.com/bonnefoa/kubectl-fzf/v3/cmd/kubectl-fzf-server@main
 
 # Install go environment manager
 git clone https://github.com/go-nv/goenv.git ~/.goenv
 
 # Install neovim plugins
-if [ -d "$HOME/local/share/nvim/site/pack/packer" ]; then
+if [ -d "$HOME/.local/share/nvim/site/pack/packer" ]; then
   git clone --depth 1 https://github.com/wbthomason/packer.nvim\
    "$HOME/.local/share/nvim/site/pack/packer/start/packer.nvim"
 fi
