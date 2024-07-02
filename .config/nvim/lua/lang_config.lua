@@ -183,16 +183,16 @@ cmp.setup({
           entries = { name = "custom", selection_order = "near_cursor" }
 
         },
-       --  menu = ({
-       --    buffer = "[Buffer]",
-       --    nvim_lsp_signature_help = "[Sig]",
-       --    nvim_lsp_document_symbol = "[Doc]",
-       --    treesitter = "[Tree]",
-       --    nvim_lsp = "[LSP]",
-       --    luasnip = "[LuaSnip]",
-       --    nvim_lua = "[Lua]",
-       --    latex_symbols = "[Latex]",
-       --  }),
+        --  menu = ({
+        --    buffer = "[Buffer]",
+        --    nvim_lsp_signature_help = "[Sig]",
+        --    nvim_lsp_document_symbol = "[Doc]",
+        --    treesitter = "[Tree]",
+        --    nvim_lsp = "[LSP]",
+        --    luasnip = "[LuaSnip]",
+        --    nvim_lua = "[Lua]",
+        --    latex_symbols = "[Latex]",
+        --  }),
       })(entry, vim_item)
       local strings = vim.split(kind.kind, "%s", { trimempty = true })
       kind.kind = " " .. (strings[1] or "") .. " "
@@ -451,6 +451,30 @@ require("symbols-outline").setup({
   },
 })
 require("lsp_lines").setup()
+
+-- Telescope finder config
+require("telescope").setup({
+  defaults = {
+    file_ignore_patterns = {
+      ".git/",
+      "node_modules/",
+      ".cache/",
+      "venv/",
+      ".venv/",
+      "__pycache__/",
+      ".pytest_cache/",
+      ".mypy_cache/",
+      ".vscode/",
+      ".conda/",
+      ".codeium/",
+      ".colima",
+      ".docker",
+      "go/bin/",
+      "go/pkg/",
+      "miniforge3/"
+    },
+  },
+})
 
 -- Configure language servers
 
