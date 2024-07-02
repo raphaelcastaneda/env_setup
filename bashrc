@@ -121,6 +121,12 @@ source "$HOME/env_setup/completion/git.sh"
 #source $HOME/env_setup/completion/hub.sh
 
 
+# Colima (docker runtime for mac)
+if command -v colima &> /dev/null; then
+    source <(colima completion bash)
+fi
+
+
 # Kube
 source <(kubectl completion bash)
 alias k='kubectl'

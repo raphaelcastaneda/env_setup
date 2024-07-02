@@ -560,8 +560,7 @@ require("trouble").setup {
         },
     }
 EOF
-noremap <silent> <leader>e :TroubleToggle document_diagnostics<CR>
-nnoremap <silent> <leader>we :TroubleToggle workspace_diagnostics<CR>
+noremap <silent> <leader>e :Trouble toggle diagnostics<CR>
 
 nnoremap <silent> <leader>c :Gitsigns setqflist<CR>
 nnoremap <silent> <leader>A :HFccToggleAutoSuggest<CR>

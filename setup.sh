@@ -50,6 +50,7 @@ if "$osx"; then
   brew install ranger  # terminal file manager with vim bindings
   brew install the_silver_searcher 
   brew install ripgrep  # used with fzf-vim-commands for awesome find-in-files text search
+  brew install eza # fork of exa, which is a modern replacement for ls
   brew install fd  # like silver searcher but for find instead of grep
   brew install bat # github.com/sharkdp/bat syntax highlighted previews for fzf, git diff and others
   brew install task tasksh # taskwarrior - better task management
@@ -70,11 +71,11 @@ if "$osx"; then
   brew install jq # command line json parser
   brew install kitty  # terminal emulator with powerful font support
   brew install imagemagick  # command line image tool, allows kitty to display images
-  brew install --cask hyperswitch
-  brew install --cask hyperdock 
+  #brew install --cask hyperswitch
+  #brew install --cask hyperdock 
   brew install --cask slack
-  brew install --cask ferdium  #  all-in-one chat app for browser-based chat
-  brew install --cask skitch
+  #brew install --cask ferdium  #  all-in-one chat app for browser-based chat
+  #brew install --cask skitch
   brew install --cask sublime-text
   brew install --cask beardedspice  # mac os media key forwarder (for spotify)
   brew install --cask foxitreader
@@ -87,6 +88,7 @@ if "$osx"; then
   brew tap isen-ng/dotnet-sdk-versions
   brew install dotnet-sdk3-1-300
   brew install lua-language-server # LSP server for LUA (helps with neovim configs)
+  brew install write-good # linter for grammar and stronger written voice
   brew install trash  # Helper that moves target to MacOs trash
   brew install yamlfmt
   brew install insomnium  # Insomnia replacement REST API client
