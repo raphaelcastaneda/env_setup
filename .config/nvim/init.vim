@@ -435,6 +435,10 @@ vim.o.timeoutlen = 1000
 require("which-key").setup({})
 EOF
 
+" highlight matching parenthesis
+highlight! link MatchParen TermCursor
+"highlight! MatchParen cterm=bold gui=bold guifg=#222222 guibg=#dddddd
+
 " gitsigns highlight
 highlight! link GitSignsAdd diffAdded
 highlight! link GitSignsChange diffChanged

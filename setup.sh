@@ -88,6 +88,8 @@ if "$osx"; then
   brew install dotnet-sdk3-1-300
   brew install lua-language-server # LSP server for LUA (helps with neovim configs)
   brew install trash  # Helper that moves target to MacOs trash
+  brew install yamlfmt
+  brew install insomnium  # Insomnia replacement REST API client
   
   # Install fancy programming fonts
   brew tap homebrew/cask-fonts

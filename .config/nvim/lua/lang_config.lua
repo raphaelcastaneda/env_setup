@@ -178,20 +178,21 @@ cmp.setup({
       local kind = require("lspkind").cmp_format({
         mode = "symbol_text",
         maxwidth = 50,
+        -- symbol_map = { Codeium = "", },
         view = {
           entries = { name = "custom", selection_order = "near_cursor" }
 
         },
-        menu = ({
-          buffer = "[Buffer]",
-          nvim_lsp_signature_help = "[Sig]",
-          nvim_lsp_document_symbol = "[Doc]",
-          treesitter = "[Tree]",
-          nvim_lsp = "[LSP]",
-          luasnip = "[LuaSnip]",
-          nvim_lua = "[Lua]",
-          latex_symbols = "[Latex]",
-        }),
+       --  menu = ({
+       --    buffer = "[Buffer]",
+       --    nvim_lsp_signature_help = "[Sig]",
+       --    nvim_lsp_document_symbol = "[Doc]",
+       --    treesitter = "[Tree]",
+       --    nvim_lsp = "[LSP]",
+       --    luasnip = "[LuaSnip]",
+       --    nvim_lua = "[Lua]",
+       --    latex_symbols = "[Latex]",
+       --  }),
       })(entry, vim_item)
       local strings = vim.split(kind.kind, "%s", { trimempty = true })
       kind.kind = " " .. (strings[1] or "") .. " "
@@ -202,6 +203,7 @@ cmp.setup({
   },
   sources = cmp.config.sources({
     { name = 'nvim_lsp_signature_help' },
+    --{ name = 'codeium' }, -- AI suggestions
     { name = 'nvim_lsp' },
     -- { name = 'vsnip' }, -- For vsnip users.
     { name = 'luasnip' }, -- For luasnip users.
@@ -442,7 +444,7 @@ require("symbols-outline").setup({
     rename_symbol = "r",
     code_actions = "a",
     fold = { "h", "x" },
-    unfold = {"e", "l" },
+    unfold = { "e", "l" },
     fold_all = "X",
     unfold_all = "E",
     fold_reset = "R",
@@ -518,11 +520,11 @@ local null_ls_sources = {
       return utils.root_has_file({ "readme.md", "README.md", "index.md" })
     end,
   }),
-  -- diagnostics.codespell.with({
-  --   diagnostic_config = {
-  --     virtual_text = false,
-  --   },
-  -- }),
+  diagnostics.codespell.with({
+    diagnostic_config = {
+      virtual_text = false,
+    },
+  }),
   -- diagnostics.eslint_d.with({
   --      diagnostic_config = {
   --          virtual_text = false,
@@ -679,9 +681,9 @@ local servers = {
   markdownlint = {
     filetypes = { "markdown", "vimwiki" }
   },
-  marksman = {
-    filetypes = { "markdown", "vimwiki" }
-  },
+  -- marksman = {
+  --   filetypes = { "markdown" }
+  -- },
   tsserver = {},
   jdtls = {
     root_dir = util.root_pattern({
@@ -771,4 +773,3 @@ null_ls.setup({
 --   lsp_config[servername].setup(sconfig)
 -- end
 --
-

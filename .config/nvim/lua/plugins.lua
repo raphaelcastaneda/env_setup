@@ -142,7 +142,7 @@ return require('packer').startup(function(use)
   use({ "tpope/vim-dotenv" })
 
   --  Completion and snippets
-  use({ "hrsh7th/nvim-cmp" })
+  use({ "hrsh7th/nvim-cmp", })
   use({ "hrsh7th/cmp-cmdline" })
   use({ "hrsh7th/cmp-buffer" })
   use({ "hrsh7th/cmp-path" })
@@ -164,9 +164,9 @@ return require('packer').startup(function(use)
   -- Mason - LSP server installer/manager
   use({ "williamboman/mason.nvim" })
   use({ "williamboman/mason-lspconfig.nvim" })
-  use({ "mfussenegger/nvim-dap" }) -- Debuggers for LSP 
+  use({ "mfussenegger/nvim-dap" }) -- Debuggers for LSP
   use({ "jay-babu/mason-nvim-dap.nvim" })
-  
+
   -- Markdown
   use({ "vimwiki/vimwiki" })
   use({ "tpope/vim-markdown", ft = "markdown" })
@@ -184,18 +184,34 @@ return require('packer').startup(function(use)
   use { "daschw/leaf.nvim" }                   --alt-theme
   use { "catppuccin/nvim", as = "catppuccin" } --alt-theme
   use({ "micke/vim-hybrid" })                  -- theme
-  use({"norcalli/nvim-colorizer.lua",
-    config=function()
+  use({
+    "norcalli/nvim-colorizer.lua",
+    config = function()
       require("colorizer").setup()
     end
   })
   use({ "junegunn/goyo.vim" })
   use({ "junegunn/limelight.vim" })
   use({ "nvim-tree/nvim-web-devicons" })
-  use({ "folke/lsp-colors.nvim"})
+  use({ "folke/lsp-colors.nvim" })
   use({ "folke/trouble.nvim" })
   use({ "vim-airline/vim-airline" })
   use({ "vim-airline/vim-airline-themes" })
+
+  -- I for one welcome our AI overlords
+  use {
+    'Exafunction/codeium.vim',
+
+    config = function()
+      vim.g.codeium_manual = 0
+      vim.g.codeium_disable_bindings = 1
+      vim.keymap.set('n', '<A-j>', function() return vim.fn['codeium#Chat']() end, { expr = true, silent = true })
+      vim.keymap.set('i', '<A-l>', function() return vim.fn['codeium#Accept']() end, { expr = true, silent = true })
+      vim.keymap.set('i', '<A-j>', function() return vim.fn['codeium#CycleOrComplete']() end, { expr = true, silent = true })
+      vim.keymap.set('i', '<A-k>', function() return vim.fn['codeium#CycleCompletions'](-1) end, { expr = true, silent = true })
+      vim.keymap.set('i', '<A-h>', function() return vim.fn['codeium#Clear']() end, { expr = true, silent = true })
+    end
+  }
 
   if packer_bootstrap then
     require('packer').sync()
