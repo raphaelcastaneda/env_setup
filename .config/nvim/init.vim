@@ -181,93 +181,22 @@ let g:limelight_conceal_ctermfg = 'DarkGray'
 let g:limelight_conceal_guifg = 'black'
 let g:limelight_priority = -1
 
-" LSP Statusline
-function! LspStatus() abort
-  let status = luaeval("require('lsp-status').status()")
-  return trim(status)
-endfunction
 
-" Airline setup
-call airline#parts#define_function('lsp_status', 'LspStatus')
-call airline#parts#define_condition('lsp_status', 'luaeval("#vim.lsp.buf_get_clients() > 0")')
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#show_tabs = 1
-let g:airline#extensions#tabline#tab_nr_show = 1
-let g:airline#extensions#tabline#tab_nr_type = 1
-"let g:airline#extensions#tabline#formatter = 'default'
-let g:airline_theme = 'catppuccin'
-"let g:airline_theme = 'hybridline'
-"let g:airline#extensions#ale#enabled = 1
-let g:airline#extensions#branch#displayed_head_limit = 30
-let g:airline#extensions#nvimlsp#enabled = 1
-let airline#extensions#nvimlsp#error_symbol = ' '
-let airline#extensions#nvimlsp#warning_symbol = ' '
-let g:airline_section_warning = airline#section#create_right(['lsp_status'])  " replaces the warning section with the lsp status indicator
-
-let g:airline#extensions#tabline#buffer_idx_mode = 1
-let g:airline#extensions#tabline#buffer_idx_format = {
-      \ '0': '0 ',
-      \ '1': '1 ',
-      \ '2': '2 ',
-      \ '3': '3 ',
-      \ '4': '4 ',
-      \ '5': '5 ',
-      \ '6': '6 ',
-      \ '7': '7 ',
-      \ '8': '8 ',
-      \ '9': '9 '
-      \}
-
-nmap <leader>1 <Plug>AirlineSelectTab1
-nmap <leader>2 <Plug>AirlineSelectTab2
-nmap <leader>3 <Plug>AirlineSelectTab3
-nmap <leader>4 <Plug>AirlineSelectTab4
-nmap <leader>5 <Plug>AirlineSelectTab5
-nmap <leader>6 <Plug>AirlineSelectTab6
-nmap <leader>7 <Plug>AirlineSelectTab7
-nmap <leader>8 <Plug>AirlineSelectTab8
-nmap <leader>9 <Plug>AirlineSelectTab9
-nmap <leader>0 <Plug>AirlineSelectTab0
+nmap <leader>1 :LualineBuffersJump 1<CR>
+nmap <leader>2 :LualineBuffersJump 2<CR>
+nmap <leader>3 :LualineBuffersJump 3<CR>
+nmap <leader>4 :LualineBuffersJump 4<CR>
+nmap <leader>5 :LualineBuffersJump 5<CR>
+nmap <leader>6 :LualineBuffersJump 6<CR>
+nmap <leader>7 :LualineBuffersJump 7<CR>
+nmap <leader>8 :LualineBuffersJump 8<CR>
+nmap <leader>9 :LualineBuffersJump 9<CR>
+nmap <leader>0 :LualineBuffersJump 0<CR>
 
 " Syntax highlighting, filetype indentation rules.
 filetype plugin indent on
 
 syntax on
-"let g:semshi#simplify_markup = get(g:, 'semshi#simplify_markup', v:false)
-"let g:pymode = 1
-"let g:pymode_breakpoint = 1
-"let g:pymode_breakpoint_bind = 'B'
-"let g:pymode_doc = 1
-""let pymode_doc_bind = 'K'
-"let g:pymode_folding = 0
-"let g:pymode_indent = 1
-"let g:pymode_lint = 0
-"let g:pymode_lint_checkers = [] " 'pyflakes', 'pep8', 'pep257', 'mccabe', 'pylint']
-"let g:pymode_lint_cwindow = 1
-"let g:pymode_lint_message = 1
-"let g:pymode_lint_on_fly = 0
-"let g:pymode_lint_on_write = 0
-"let g:pymode_lint_select = ''
-"let g:pymode_lint_signs = 1
-"let g:pymode_motion = 1
-"let g:pymode_options = 1
-"
-"let g:pymode_quickfix_maxheight = 6
-"let g:pymode_quickfix_minheight = 3
-"let g:pymode_rope = 0
-"let pymode_run = 1
-"let pymode_run_bind = 'r'
-"let g:pymode_trim_whitespaces = 1
-"let g:pymode_virtualenv = 1
-"let g:pymode_virtualenv_enabled = ''
-"let g:pymode_virtualenv_path = $VIRTUAL_ENV
-"let g:pymode_options_max_line_length=120
-"let g:pymode_lint_ignore = ['E126', 'D100', 'D101', 'D102', 'D103', 'D205', 'D400', 'D401']
-"let g:pymode_lint_options_pep8 = {'max-line-length': g:pymode_options_max_line_length}
-"let g:pymode_lint_options_pylint = {'max-line-length': g:pymode_options_max_line_length}
-"let g:pymode_lint_options_pep257 = {'ignore': 'D100,D101,D102,D103,D205,D400,D401'}
-"
 " Vimspector settings
 let g:vimspector_enable_mappings = 'HUMAN'
 let g:vimspector_install_gadgets = [ 'vscode-go' ]
@@ -411,28 +340,11 @@ set nocursorcolumn
 syntax sync minlines=2000
 "set re=1
 
-" jedi-vim configuration
-"let g:jedi#completions_enabled = 0
-"let g:jedi#usages_command = '<leader>u'
-"let g:jedi#use_tabs_not_buffers = 0
-
-
-" neovim builtin language client
+" Use Lazy.nvim to load plugins
 lua << EOF
-require('plugins')
-require('lang_config')
-require('treesitter_workaround')
-require('rainbow_delimiters')
-require("theme")
-vim.cmd([[
-  augroup packer_user_config
-    autocmd!
-    autocmd BufWritePost plugins.lua source <afile> | PackerCompile
-  augroup end
-]])
+require('lazy_bootstrap')
 vim.o.timeout = true
 vim.o.timeoutlen = 1000
-require("which-key").setup({})
 EOF
 
 " highlight matching parenthesis
@@ -488,43 +400,11 @@ hi LspDiagnosticsVirtualTextHint guifg=White ctermfg=White
 hi LspDiagnosticsUnderlineHint gui=undercurl cterm=undercurl term=undercurl guisp=White
 
 
-"augroup LSPConfig
-"  autocmd!
-"  autocmd Filetype dockerfile setlocal omnifunc=v:lua.vim.lsp.omnifunc
-"  autocmd Filetype python setlocal omnifunc=v:lua.vim.lsp.omnifunc
-"  autocmd Filetype yaml setlocal omnifunc=v:lua.vim.lsp.omnifunc
-"  autocmd Filetype go setlocal omnifunc=v:lua.vim.lsp.omnifunc
-"  autocmd Filetype proto setlocal omnifunc=v:lua.vim.lsp.omnifunc
-"augroup END
 let g:diagnostic_enable_virtual_text = 0
 let g:diagnostic_enable_underline = 1
 "autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()
 "autocmd CursorHold * lua require'lspsaga.hover'.render_hover_doc()
 
-" Treesitter Config
-lua <<EOF
-require'nvim-treesitter.configs'.setup {
-  -- ensure_installed = "all", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
-  ensure_installed = { "go", "python", "lua", "vim", "vimdoc", "yaml" },
-  ignore_install = {"vimwiki"}, -- List of parsers to ignore installing
-  symbol_in_winbar = {
-      enable = false
-
-  },
-  highlight = {
-    enable = true,              -- false will disable the whole extension
-    --disable = { "c", "rust" },  -- list of language that will be disabled
-    disable = function(lang, buf)
-        local max_filesize = 100 * 1024 -- 100 KB
-        local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
-        if ok and stats and stats.size > max_filesize then
-            return true
-        end
-    end,
-    additional_vim_regex_highlighting = false,
-  },
-}
-EOF
 set nofoldenable
 
 " Treesitter alias highlights
