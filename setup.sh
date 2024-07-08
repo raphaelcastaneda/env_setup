@@ -75,7 +75,7 @@ if "$osx"; then
   #brew install --cask hyperdock 
   brew install --cask slack
   #brew install --cask ferdium  #  all-in-one chat app for browser-based chat
-  #brew install --cask skitch
+  brew install --cask shottr # screenshot capture and annotation replaces skitch
   brew install --cask sublime-text
   brew install --cask beardedspice  # mac os media key forwarder (for spotify)
   brew install --cask foxitreader
