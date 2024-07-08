@@ -15,10 +15,12 @@ return require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'
   -- Prereqs and helpers
   use({ "inkarkat/vim-ingo-library" })
-  use({ "nvim-lua/plenary.nvim" })               -- Prereq for telescope, null-ls, and refactoring
-  use({ "mfussenegger/nvim-jdtls" })             --Extensions for built-in LSP
-  use({ "lukas-reineke/indent-blankline.nvim" }) -- Indentation guides to enhance listchars
-  use({ "dstein64/vim-startuptime" })            -- vim startup profiler
+  use({ "nvim-lua/plenary.nvim" })   -- Prereq for telescope, null-ls, and refactoring
+  use({ "mfussenegger/nvim-jdtls" }) --Extensions for built-in LSP
+  use({
+    "lukas-reineke/indent-blankline.nvim",
+  })                                  -- Indentation guides to enhance listchars
+  use({ "dstein64/vim-startuptime" }) -- vim startup profiler
 
   -- Finders and Search
   use({
@@ -136,11 +138,73 @@ return require('packer').startup(function(use)
 
   -- use({ "martinda/Jenkinsfile-vim-syntax"})
   -- use({ "hashivim/vim-terraform" })
-  use({ "puremourning/vimspector" })                                                                   -- Debugger based on json configs (like VSCode)
-  use({ "sagi-z/vimspectorpy", ft = "python", run = function() vim.fn['vimspectorpy#update'](0) end }) -- Debugger based on json configs (like VSCode)
-  use({ "MunifTanjim/prettier.nvim" })                                                                 -- Formatter for JS etc.
+  use({ "puremourning/vimspector" })   -- Debugger based on json configs (like VSCode)
+  --use({ "sagi-z/vimspectorpy", ft = "python", run = function() vim.fn['vimspectorpy#update'](0) end }) -- Debugger based on json configs (like VSCode)
+  use({ "MunifTanjim/prettier.nvim" }) -- Formatter for JS etc.
   use({ "tpope/vim-dotenv" })
+  use {
+    "nvim-neotest/neotest",
+    requires = {
+      "nvim-neotest/nvim-nio",
+      "nvim-neotest/neotest-python",
+      "nvim-neotest/neotest-go",
+      "nvim-lua/plenary.nvim",
+      "antoinemadec/FixCursorHold.nvim",
+      "nvim-treesitter/nvim-treesitter"
+    },
+    config = function()
+      -- get neotest namespace (api call creates or returns namespace)
+      local neotest_ns = vim.api.nvim_create_namespace("neotest")
+      vim.diagnostic.config({
+        virtual_text = {
+          format = function(diagnostic)
+            local message =
+                diagnostic.message:gsub("\n", " "):gsub("\t", " "):gsub("%s+", " "):gsub("^%s+", "")
+            return message
+          end,
+        },
+      }, neotest_ns)
+      require("neotest").setup({
+        -- your neotest config here
+        summary = {
+          mappings = {
+            attach = "a",
+            clear_marked = "M",
+            clear_target = "T",
+            debug = "d",
+            debug_marked = "D",
+            expand = { "<CR>", "<2-LeftMouse>" },
+            expand_all = "e",
+            help = "?",
+            jumpto = "i",
+            mark = "m",
+            next_failed = "J",
+            output = "o",
+            prev_failed = "K",
+            run = "r",
+            run_marked = "R",
+            short = "O",
+            stop = "u",
+            target = "t",
+            watch = "w"
 
+          }
+        },
+        adapters = {
+          require("neotest-go"),
+          require("neotest-python")(
+            {
+              args = { "--log-level", "DEBUG", '-v' },
+              runner = "pytest",
+              python = "python3",
+              pytest_discover_instances = true,
+
+            }
+          ),
+        },
+      })
+    end,
+  }
   --  Completion and snippets
   use({ "hrsh7th/nvim-cmp", })
   use({ "hrsh7th/cmp-cmdline" })
@@ -177,7 +241,7 @@ return require('packer').startup(function(use)
   use({
     "iamcco/markdown-preview.nvim",
     ft = { "markdown", "vimwiki" },
-    run = function() vim.fn["mkdp#util#install"]() end,
+    run = function() vim.fn["mkdp#util#install"]() end
   })
 
   -- Appearance

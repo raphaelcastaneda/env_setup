@@ -772,6 +772,17 @@ noremap <leader>nf :NvimTreeFindFile<CR>
 
 "noremap <leader>tb :TagbarToggle<CR>
 
+" Neotest
+noremap <leader>tt :Neotest summary<CR>
+noremap <leader>to :Neotest output-panel<CR>
+noremap <leader>tr :Neotest run<CR>  
+noremap <leader>tR :lua require("neotest").run.run({strategy = "dap"})<CR>  
+noremap <leader>ts :Neotest stop<CR>  
+noremap <leader>ta :Neotest attach<CR>  
+" show output of test under cursor in a floating window
+noremap <leader>tk :Neotest output<CR>  
+
+
 " Telescope finder shortcuts
 nnoremap <leader>f <cmd>lua require('telescope.builtin').find_files()<cr>
 nnoremap <leader>F <cmd>lua require('telescope.builtin').live_grep()<cr>
