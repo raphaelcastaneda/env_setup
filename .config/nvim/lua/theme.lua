@@ -35,6 +35,7 @@ require("catppuccin").setup({
         nvimtree = true,
         treesitter = true,
         notify = true,
+        mason = true,
         markdown = true,
         vimwiki = true,
         which_key = true,
