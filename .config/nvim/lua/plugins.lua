@@ -78,6 +78,7 @@ return require('packer').startup(function(use)
   use({ "tpope/vim-obsession" })                    -- Save and restore vim sessions
   use({ "tpope/vim-tbone" })                        -- Integration with tmux
   use({ "tpope/vim-surround" })                     -- Add, replace, change surrounds (quotes, brackets, etc)
+  use({ "tpope/vim-sleuth" })                       -- Auto-detect tabstop and shiftwidth
   use({ "windwp/nvim-autopairs" })                  -- Insert closure when inserting an opener
   --use({ "jmcantrell/vim-virtualenv" })
   use({ "inkarkat/vim-SyntaxRange" })               -- Fenced syntax highlighting

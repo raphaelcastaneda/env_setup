@@ -307,14 +307,15 @@ let g:go_highlight_build_constraints=1
 "       \ 'go': ['gopls'],
 "       \}
 
-autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
-autocmd BufNewFile,BufRead *.lua setlocal expandtab tabstop=2 shiftwidth=2
-autocmd BufNewFile,BufRead *.js setlocal expandtab tabstop=2 shiftwidth=2
-autocmd BufNewFile,BufRead *.tsx setlocal expandtab tabstop=2 shiftwidth=2
-autocmd BufNewFile,BufRead *.ts setlocal expandtab tabstop=2 shiftwidth=2
-autocmd BufNewFile,BufRead *.json setlocal expandtab tabstop=4 shiftwidth=4
-autocmd BufNewFile,BufRead *.yaml setlocal expandtab tabstop=2 shiftwidth=2
-autocmd BufNewFile,BufRead *.proto setlocal expandtab tabstop=2 shiftwidth=2
+" autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
+" autocmd BufNewFile,BufRead *.py setlocal noexpandtab tabstop=2 shiftwidth=2
+" autocmd BufNewFile,BufRead *.lua setlocal expandtab tabstop=2 shiftwidth=2
+" autocmd BufNewFile,BufRead *.js setlocal expandtab tabstop=2 shiftwidth=2
+" autocmd BufNewFile,BufRead *.tsx setlocal expandtab tabstop=2 shiftwidth=2
+" autocmd BufNewFile,BufRead *.ts setlocal expandtab tabstop=2 shiftwidth=2
+" autocmd BufNewFile,BufRead *.json setlocal expandtab tabstop=4 shiftwidth=4
+" autocmd BufNewFile,BufRead *.yaml setlocal expandtab tabstop=2 shiftwidth=2
+" autocmd BufNewFile,BufRead *.proto setlocal expandtab tabstop=2 shiftwidth=2
 "autocmd FileType go nnoremap <buffer> <leader>u :GoReferrers<CR>
 "autocmd FileType go nnoremap <buffer> <leader>c :GoCallers<CR>
 "autocmd FileType go nnoremap <buffer> <leader>d :GoDef<CR>
