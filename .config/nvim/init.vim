@@ -82,6 +82,7 @@ set showcmd
 
 " Swap , and \ for leader.
 let mapleader=" "
+let maplocalleader="\\"
 
 " Centralize swaps in one folder
 set backupdir=~/.vim/backups directory=~/.vim/swaps//
@@ -95,13 +96,13 @@ set updatetime=250
 " But no no backups for crontab
 autocmd filetype crontab setlocal nobackup nowritebackup
 
-" Use silver searcher for vim :grep
-if executable('ag')
+" Faster grep
+if executable('rg')
   " Use ag over grep
-  set grepprg=ag\ --nogroup\ --nocolor
+  set grepprg=rg\ --no-heading
 
   " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+  let g:ctrlp_user_command = 'rg %s -l --no-heading -g ""'
 
   " ag is fast enough that CtrlP doesn't need to cache
   let g:ctrlp_use_caching = 0
@@ -244,10 +245,6 @@ autocmd BufNewFile,BufRead *.ts setlocal expandtab tabstop=2 shiftwidth=2
 autocmd BufNewFile,BufRead *.json setlocal expandtab tabstop=4 shiftwidth=4
 autocmd BufNewFile,BufRead *.yaml setlocal expandtab tabstop=2 shiftwidth=2
 autocmd BufNewFile,BufRead *.proto setlocal expandtab tabstop=2 shiftwidth=2
-"autocmd FileType go nnoremap <buffer> <leader>u :GoReferrers<CR>
-"autocmd FileType go nnoremap <buffer> <leader>c :GoCallers<CR>
-"autocmd FileType go nnoremap <buffer> <leader>d :GoDef<CR>
-"autocmd FileType go nnoremap <buffer> <leader>e :GoMetaLinter<CR>
 
 " Close hidden buffers
 function! DeleteHiddenBuffers()
@@ -281,57 +278,6 @@ set diffopt+=vertical
 
 " NERDCommenter
 let g:NERDCreateDefaultMappings = 0
-
-"DevIcons config
-"let g:webdevicons_enable_nerdtree = 1
-"let g:webdevicons_enable_ctrlp = 1
-"augroup my-glyph-palette
-"  "autocmd! *
-"  autocmd FileType nerdtree call glyph_palette#apply()
-"augroup END
-
-"NerdTree Config
-"let NERDTreeIgnore = ['\.pyc$', '__pycache__$']
-"let NERDTreeDirArrows = 1
-"autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-"
-" Check if NERDTree is open or active
-"function! IsNERDTreeOpen()
-"  return exists("t:NERDTreeBufName") && (bufwinnr(t:NERDTreeBufName) != -1)
-"endfunction
-
-" Call NERDTreeFind iff NERDTree is active, current window contains a modifiable
-" file, and we're not in vimdiff
-"function! SyncTree()
-"  if &modifiable && IsNERDTreeOpen() && strlen(expand('%')) > 0 && !&diff
-"    NERDTreeFind
-"    wincmd p
-"  endif
-"endfunction
-
-" Keep NERDTree in sync when toggling
-"function! ToggleAndSyncTree()
-"  if !IsNERDTreeOpen()
-"    NERDTreeFind
-"  else
-"    NERDTreeToggle
-"  endif
-"endfunction
-
-"autocmd vimenter * NERDTree | NERDTreeClose "Automatically open and close NT on launch to avoid double window error
-"autocmd BufEnter * if &modifiable && IsNERDTreeOpen() && &ft !="nerdtree" | call SyncTree()
-"
-"let g:NERDTreeGitStatusIndicatorMapCustom = {
-"      \ "Modified"  : "𝝙",
-"      \ "Staged"    : "✚",
-"      \ "Untracked" : "✭",
-"      \ "Renamed"   : "➜",
-"      \ "Unmerged"  : "═",
-"      \ "Deleted"   : "✖",
-"      \ "Dirty"     : "✗",
-"      \ "Clean"     : "✔︎",
-"      \ "Unknown"   : "?"
-"      \ }
 
 " Speed improvements
 set nocursorcolumn
@@ -415,157 +361,11 @@ hi @constant.builtin cterm=italic gui=italic ctermfg=224 guifg=Orange
 " highlight link LspSagaDiagnosticBorder NonText
 " highlight link LspSagaDiagnosticTruncateLine Comment
 
-" lsp diagnostics icons and color fallback
-lua << EOF
-require("lsp-colors").setup({
-  Error = "#db4b4b",
-  Warning = "#e0af68",
-  Information = "#0db9d7",
-  Hint = "#10B981"
-})
-require("trouble").setup {
-    multiline = true, -- render multi-line messages
-    indent_lines = true, -- add an indent guide below the fold icons
-    win_config = { border = "single" }, -- window configuration for floating windows. See |nvim_open_win()|.
-    auto_open = false, -- automatically open the list when you have diagnostics
-    auto_close = false, -- automatically close the list when you have no diagnostics
-    auto_preview = true, -- automatically preview the location of the diagnostic. <esc> to close preview and go back to last window
-    auto_fold = false, -- automatically fold a file trouble list at creation 
-    signs = {
-        error = " ",
-        warning = " ",
-        hint = " ",
-        information = " " ,
-        other = "󱐋 "
-        },
-    }
-EOF
+
 noremap <silent> <leader>e :Trouble toggle diagnostics<CR>
 
 nnoremap <silent> <leader>c :Gitsigns setqflist<CR>
 nnoremap <silent> <leader>A :HFccToggleAutoSuggest<CR>
-
-"    find cursor word definition and references
-"nnoremap <silent> gh <cmd>lua require'lspsaga.provider'.lsp_finder()<CR>
-"    code actions
-"nnoremap <silent> <leader>a <cmd>lua require('lspsaga.codeaction').code_action()<CR>
-"vnoremap <silent> <leader>a :<C-U>lua require('lspsaga.codeaction').range_code_action()<CR>
-"    hover
-"nnoremap <silent> K <cmd>lua require('lspsaga.hover').render_hover_doc()<CR>
-"nnoremap <silent> <C-f> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(1)<CR>
-"nnoremap <silent> <C-b> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<CR>
-"    signature help
-"nnoremap <silent> s <cmd>lua require('lspsaga.signaturehelp').signature_help()<CR>
-"   rename
-"nnoremap <leader>r <cmd>lua require('lspsaga.rename').rename()<CR>
-"   preview definition
-"nnoremap <silent> gd :Lspsaga preview_definition<CR>
-"    diagnostics
-"nnoremap <silent><leader>cd <cmd>lua require'lspsaga.diagnostic'.show_line_diagnostics()<CR>
-"nnoremap <silent> <leader>x <cmd>lua require'lspsaga.diagnostic'.show_line_diagnostics()<CR>
-
-"nnoremap <leader>cb :call DeleteHiddenBuffers()<CR>
-" LanguageClient
-"let g:LanguageClient_serverCommands = {
-"    \ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
-"    \ 'javascript.jsx': ['tcp://127.0.0.1:2089'],
-"    \ 'python': ['pyls'],
-"    \ 'go': ['$GOPATH/bin/go-langserver'],
-"    \ }
-"nmap <F3> <Plug>(lcn-menu)
-"" Or map each action separately
-"nmap <silent>K <Plug>(lcn-hover)
-"nmap <silent> gd <Plug>(lcn-definition)
-"nmap <silent> <F2> <Plug>(lcn-rename)
-
-" Deoplete
-"let g:deoplete#enable_at_startup=1
-
-" Nvim completion
-"set completeopt-=preview
-"set completeopt=longest,menuone
-"set completeopt=menuone,noinsert,noselect
-"let g:completion_enable_auto_hover = 1
-"let g:completion_enable_auto_popup = 1
-"let g:completion_auto_change_source = 0
-"let g:completion_menu_length = 3
-"let g:completion_trigger_keyword_length = 1
-"let g:completion_enable_auto_signature = 1
-"let g:completion_sorting = "none"
-"let g:completion_matching_smart_case = 1
-"let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy', 'all']
-"let g:completion_trigger_character = ['.', '::']
-"let g:completion_enable_snippet = 'UltiSnips'
-"let g:completion_menu_length = 40
-"imap <tab> <Plug>(completion_smart_tab)
-"imap <s-tab> <Plug>(completion_smart_s_tab)
-
-" ultisnips config
-"let g:UltiSnipsExpandTrigger="<C-j>"
-"let g:UltiSnipsJumpForwardTrigger="<C-l>"
-"let g:UltiSnipsJumpBackwardTrigger="<C-h>"
-"let g:UltiSnipsExpandTrigger = '<Plug>(ultisnips_expand)'
-"let g:UltiSnipsJumpForwardTrigger = '<Plug>(ultisnips_jump_forward)'
-"let g:UltiSnipsJumpBackwardTrigger = '<Plug>(ultisnips_jump_backward)'
-"let g:UltiSnipsListSnippets = '<c-x><c-s>'
-"let g:UltiSnipsRemoveSelectModeMappings = 0
-"vim-vsnip config
-
-" Expand or jump
-" imap <expr> <C-j>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-j>'
-" smap <expr> <C-j>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-j>'
-"
-" " Jump forward or backward
-" imap <expr> <C-l>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<C-l>'
-" smap <expr> <C-l>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<C-l>'
-" imap <expr> <C-h> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<C-h>'
-" smap <expr> <C-h> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<C-h>'
-"
-" " Select or cut text to use as $TM_SELECTED_TEXT in the next snippet.
-" " See https://github.com/hrsh7th/vim-vsnip/pull/50
-" nmap        s   <Plug>(vsnip-select-text)
-" xmap        s   <Plug>(vsnip-select-text)
-" nmap        S   <Plug>(vsnip-cut-text)
-" xmap        S   <Plug>(vsnip-cut-text)
-
-" YouCompleteMe Configuration
-"let g:ycm_autoclose_preview_window_after_completion=1
-"let g:ycm_server_python_interpreter = 'python3'
-"let g:ycm_python_binary_path = 'python3'
-"let g:ycm_python_intepreter_path = ''
-"let g:ycm_python_sys_path = []
-"let g:ycm_extra_conf_vim_data = [
-"  \  'g:ycm_python_interpreter_path',
-"  \  'g:ycm_python_sys_path'
-"  \]
-"let g:ycm_global_ycm_extra_conf = '$HOME/.config/nvim/ycm_global_extra_conf.py'
-
-" Other Lua Plugins config
-lua << EOF
-require("nvim-autopairs").setup {}
-require("nvim-web-devicons").setup {
-    color_icons = true;
-    -- override_by_extension = {
-    -- ["go"] = {
-    --     icon = "",
-    --     color = "#34c0eb",
-    --     name = "Go"
-    --     }
-    -- };
-}
-require("telescope").setup {}
-require("nvim-tree").setup {  
-    update_cwd          = false,
-    update_focused_file = {
-        enable      = true,
-        update_cwd  = false,
-        ignore_list = {},
-     },
-}
-require('telescope').load_extension('fzf')
-vim.g.bufonly_delete_non_modifiable = false -- Don't close nerdtree and other non-editable buffers
-vim.api.nvim_set_keymap('n', '<leader>cb', ':BufOnly<CR>', { noremap = true, silent = true })
-EOF
 
 " FZF configuration
 " Mapping selecting mappings
@@ -659,35 +459,21 @@ nnoremap <leader>be <cmd>lua require('telescope.builtin').buffers()<cr>
 nnoremap <leader>h <cmd>lua require('telescope.builtin').help_tags()<cr>
 nnoremap <leader>G <cmd>lua require('telescope.builtin').git_files()<cr>
 
-"noremap <leader>be :Buffers<CR>
-"noremap <leader>f :Files<CR>
-"noremap <leader>F :Rg<CR>
-"noremap <leader>G :GitFiles<CR>
 
 noremap <leader>ss :set spell<CR>
 noremap <leader>sns :set nospell<CR>
 noremap <leader>sp :set paste<CR>
 noremap <leader>snp :set nopaste<CR>
 "
-" Location list navigation
-"noremap <leader>l :<C-u>call ToggleLocation()<CR>
-"noremap <leader>j :lnext<CR>
-"noremap <leader>k :lprev<CR>
 
 " Quickfix navigation
 noremap <leader>q :ccl<CR>
 noremap <leader>j :cnext<CR>
 noremap <leader>k :cprevious<CR>
 
-"noremap <leader>pl :PymodeLint<CR>
-"noremap <leader>e :<C-u>call ToggleErrors()<CR>
-
 autocmd User GoyoEnter Limelight
 autocmd User GoyoLeave Limelight!
 nnoremap <Leader>z :Goyo<CR>
-
-"noremap <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
-"noremap <leader>u  :YcmCompleter GoToReferences<CR>
 
 let g:bufExplorerShowRelativePath=1
 "autocmd BufNewFile,BufRead *.md setlocal spell
@@ -708,10 +494,6 @@ imap <Up> <NOP>
 imap <Down> <NOP>
 imap <Left> <NOP>
 imap <Right> <NOP>
-
-" dispatch config
-"autocmd FileType python noremap <F9> :Dispatch<CR>
-"autocmd FileType python let b:dispatch = 'tox'
 
 " tbone config
 noremap <leader><Down> :Twrite .last<CR> :Tmux last-pane<CR>
