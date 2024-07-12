@@ -218,8 +218,9 @@ cmp.setup({
 })
 
 -- Use buffer source for `/`.
-cmp.setup.cmdline('/', {
+cmp.setup.cmdline({'/', '?'}, {
   completion = {
+    mapping = cmp.mapping.preset.cmdline(),
     autocomplete = {}
   },
   sources = cmp.config.sources({
@@ -245,11 +246,14 @@ cmp.setup.cmdline(':', {
   completion = {
     autocomplete = {}
   },
-  mapping = my_mapping,
+  mapping = cmp.mapping.preset.cmdline(),
   sources = cmp.config.sources({
     { name = 'cmdline' },
     { name = 'path' }
-  }),
+  }
+  ),
+
+  matching = { disallow_symbol_nonprefix_matching = false },
 })
 
 -- Configure autopairs to work with cmp
@@ -584,8 +588,7 @@ local null_ls_sources = {
 }
 
 
-local capabilities = {}
-require('cmp_nvim_lsp').default_capabilities()
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
 capabilities = vim.tbl_extend('keep', capabilities or {}, lsp_status.capabilities)
 
 -- local null_ls = require("null-ls")
@@ -783,12 +786,12 @@ require("mason-lspconfig").setup_handlers({
 require("mason-nvim-dap").setup()
 
 
-null_ls.setup({
-  debug = false,
-  on_attach = on_attach,
-  sources = null_ls_sources,
-  capabilities = capabilities,
-})
+-- null_ls.setup({
+--   debug = false,
+--   on_attach = on_attach,
+--   sources = null_ls_sources,
+--   capabilities = capabilities,
+-- })
 
 -- Automatically handle configuring servers called out above
 -- for servername, sconfig in pairs(servers) do

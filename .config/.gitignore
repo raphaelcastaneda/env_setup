@@ -26,3 +26,5 @@ pudb/*history.*
 yarn
 
 gh/hosts.yml
+gcloud/
+nats/

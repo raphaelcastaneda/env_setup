@@ -30,4 +30,10 @@ gh release download --repo 'github.com/docker/buildx' --pattern "*.$RELEASE_FILE
 mkdir -p ~/.docker/cli-plugins
 mv -f *.$RELEASE_FILE_SUFFIX ~/.docker/cli-plugins/docker-buildx
 chmod +x ~/.docker/cli-plugins/docker-buildx
+
+# Link docker compose plugin - REFERENCE https://github.com/abiosoft/colima/discussions/874
+mkdir -p ~/.docker/cli-plugins
+ln -sfn $HOMEBREW_PREFIX/opt/docker-compose/bin/docker-compose ~/.docker/cli-plugins/docker-compose
+
+
 docker buildx version # verify installation

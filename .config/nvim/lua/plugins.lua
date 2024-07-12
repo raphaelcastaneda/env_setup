@@ -266,7 +266,10 @@ return require('packer').startup(function(use)
   -- I for one welcome our AI overlords
   use {
     'Exafunction/codeium.vim',
-
+    requires = {
+            "nvim-lua/plenary.nvim",
+            "hrsh7th/nvim-cmp",
+        },
     config = function()
       vim.g.codeium_manual = 0
       vim.g.codeium_disable_bindings = 1

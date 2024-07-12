@@ -273,13 +273,14 @@ let g:vimspector_enable_mappings = 'HUMAN'
 let g:vimspector_install_gadgets = [ 'vscode-go' ]
 let g:vimspector_variables_display_mode = 'full'
 let g:vimspector_base_dir=expand('$HOME/.local/share/nvim/site/pack/packer/start/vimspector')
+let g:vimspector_terminal_minwidth = 160
 
 " for normal mode - the word under the cursor
 nmap <leader>vl :call vimspector#Launch()<CR>
 nmap <leader>vr :VimspectorReset<CR>
 nmap <leader>ve :VimspectorEval
 nmap <leader>vw :VimspectorWatch
-nmap <leader>vo :VimspectorShowOutput
+nmap <leader>vo :VimspectorShowOutput stderr<CR>
 nmap <leader>vi <Plug>VimspectorBalloonEval
 xmap <leader>vi <Plug>VimspectorBalloonEval
 "
