@@ -64,6 +64,7 @@ if "$osx"; then
   brew install node
   brew install rust
   brew install lnav
+  brew install btop  # better top
   brew install cmake
   brew install watch
   brew install figlet # used to render text into ascii text e.g. in presenting.vim
@@ -215,7 +216,7 @@ pyenv global 3.9.16
 
 # Install python packages
 python -m pip install --upgrade pip
-python -m pip install virtualenv pynvim pudb bpytop
+python -m pip install virtualenv pynvim pudb
 python -m pip install tasklib taskwarrior packaging # for taskwarrior integration with vimwiki
 
 # Install virtualenvwrapper pyenv plugin

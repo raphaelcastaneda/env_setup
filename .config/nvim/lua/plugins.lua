@@ -140,7 +140,7 @@ return require('packer').startup(function(use)
   -- use({ "martinda/Jenkinsfile-vim-syntax"})
   -- use({ "hashivim/vim-terraform" })
   use({ "puremourning/vimspector" })   -- Debugger based on json configs (like VSCode)
-  --use({ "sagi-z/vimspectorpy", ft = "python", run = function() vim.fn['vimspectorpy#update'](0) end }) -- Debugger based on json configs (like VSCode)
+  use({ "sagi-z/vimspectorpy", ft = "python", run = function() vim.fn['vimspectorpy#update'](0) end }) -- Debugger based on json configs (like VSCode)
   use({ "MunifTanjim/prettier.nvim" }) -- Formatter for JS etc.
   use({ "tpope/vim-dotenv" })
   use {
@@ -150,7 +150,7 @@ return require('packer').startup(function(use)
       "nvim-neotest/neotest-python",
       "nvim-neotest/neotest-go",
       "nvim-lua/plenary.nvim",
-      "antoinemadec/FixCursorHold.nvim",
+      -- antoinemadec/FixCursorHold.nvim",  -- supposedly no longer needed because nvim fixed the bug
       "nvim-treesitter/nvim-treesitter"
     },
     config = function()
@@ -195,10 +195,11 @@ return require('packer').startup(function(use)
           require("neotest-go"),
           require("neotest-python")(
             {
-              args = { "--log-level", "DEBUG", '-v' },
+              args = { "--log-level", "DEBUG", "-vv"},
+              dap = { justMyCode = false },
               runner = "pytest",
               python = "python3",
-              pytest_discover_instances = true,
+              -- pytest_discover_instances = true, -- this is experimental and probably slow
 
             }
           ),
@@ -230,6 +231,11 @@ return require('packer').startup(function(use)
   use({ "williamboman/mason.nvim" })
   use({ "williamboman/mason-lspconfig.nvim" })
   use({ "mfussenegger/nvim-dap" }) -- Debuggers for LSP
+  use({ "mfussenegger/nvim-dap-python",
+    config = function()
+      require('dap-python').setup('python3')
+    end
+    })
   use({ "jay-babu/mason-nvim-dap.nvim" })
 
   -- Markdown

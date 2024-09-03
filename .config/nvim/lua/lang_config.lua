@@ -626,6 +626,12 @@ local on_publish_diagnostics = vim.lsp.handlers["textDocument/publishDiagnostics
 local util = require 'lspconfig.util'
 local servers = {
   bashls = {},
+  buf = {
+    filetypes = { 'proto' }
+  },
+  clangd = {
+    filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda' }
+  },
   dockerls = {},
   --flow = {},
   -- golangci_lint_ls = {
@@ -786,12 +792,12 @@ require("mason-lspconfig").setup_handlers({
 require("mason-nvim-dap").setup()
 
 
--- null_ls.setup({
---   debug = false,
---   on_attach = on_attach,
---   sources = null_ls_sources,
---   capabilities = capabilities,
--- })
+null_ls.setup({
+  debug = false,
+  on_attach = on_attach,
+  sources = null_ls_sources,
+  capabilities = capabilities,
+})
 
 -- Automatically handle configuring servers called out above
 -- for servername, sconfig in pairs(servers) do

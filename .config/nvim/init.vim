@@ -90,7 +90,7 @@ set backupdir=~/.vim/backups directory=~/.vim/swaps//
 set noswapfile
 
 " Set faster updatetime to speed up cursorhold events
-set updatetime=250
+"set updatetime=250
 
 " But no no backups for crontab
 autocmd filetype crontab setlocal nobackup nowritebackup

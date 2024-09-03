@@ -74,7 +74,7 @@ alias grb='rebase-branch'
 #alias asp='ansible-playbook --ask-vault-pass -v '
 
 # Handy shortcuts
-alias vimwiki="cd $HOME/.vimwiki && vim -c VimwikiIndex"
+alias wiki="cd $HOME/vimwiki && vim -c VimwikiIndex"
 
 #####
 # Shell PS1 line & base dir & .env
