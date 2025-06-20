@@ -19,6 +19,7 @@ return require('packer').startup(function(use)
   use({ "mfussenegger/nvim-jdtls" }) --Extensions for built-in LSP
   use({
     "lukas-reineke/indent-blankline.nvim",
+    tag = "v3.8.1",
   })                                  -- Indentation guides to enhance listchars
   use({ "dstein64/vim-startuptime" }) -- vim startup profiler
 
@@ -73,7 +74,12 @@ return require('packer').startup(function(use)
     requires = {
       { "nvim-lua/plenary.nvim" },
       { "nvim-treesitter/nvim-treesitter" }
-    }
+    },
+    config = function()
+      require("refactoring").setup({
+        show_success_message = true,
+      })
+    end
   })
   use({ "tpope/vim-obsession" })                    -- Save and restore vim sessions
   use({ "tpope/vim-tbone" })                        -- Integration with tmux
@@ -140,7 +146,7 @@ return require('packer').startup(function(use)
   -- use({ "martinda/Jenkinsfile-vim-syntax"})
   -- use({ "hashivim/vim-terraform" })
   use({ "puremourning/vimspector" })   -- Debugger based on json configs (like VSCode)
-  use({ "sagi-z/vimspectorpy", ft = "python", run = function() vim.fn['vimspectorpy#update'](0) end }) -- Debugger based on json configs (like VSCode)
+  --use({ "sagi-z/vimspectorpy", ft = "python", run = function() vim.fn['vimspectorpy#update'](0) end }) -- Debugger based on json configs (like VSCode)
   use({ "MunifTanjim/prettier.nvim" }) -- Formatter for JS etc.
   use({ "tpope/vim-dotenv" })
   use {
@@ -195,7 +201,7 @@ return require('packer').startup(function(use)
           require("neotest-go"),
           require("neotest-python")(
             {
-              args = { "--log-level", "DEBUG", "-vv"},
+              args = { "--log-level", "DEBUG", "-vv" },
               dap = { justMyCode = false },
               runner = "pytest",
               python = "python3",
@@ -226,16 +232,17 @@ return require('packer').startup(function(use)
   --use({ "honza/vim-snippets" })
   --use({ "hrsh7th/vim-vsnip" })
   --use({ "hrsh7th/vim-vsnip-integ" })
-
-  -- Mason - LSP server installer/manager
   use({ "williamboman/mason.nvim" })
   use({ "williamboman/mason-lspconfig.nvim" })
+  use({ "WhoIsSethDaniel/mason-tool-installer.nvim" })
+
   use({ "mfussenegger/nvim-dap" }) -- Debuggers for LSP
-  use({ "mfussenegger/nvim-dap-python",
+  use({
+    "mfussenegger/nvim-dap-python",
     config = function()
       require('dap-python').setup('python3')
     end
-    })
+  })
   use({ "jay-babu/mason-nvim-dap.nvim" })
 
   -- Markdown
@@ -273,12 +280,13 @@ return require('packer').startup(function(use)
   use {
     'Exafunction/codeium.vim',
     requires = {
-            "nvim-lua/plenary.nvim",
-            "hrsh7th/nvim-cmp",
-        },
+      "nvim-lua/plenary.nvim",
+      "hrsh7th/nvim-cmp",
+    },
     config = function()
-      vim.g.codeium_manual = 0
+      --vim.g.codeium_manual = 0
       vim.g.codeium_disable_bindings = 1
+      vim.g.codeium_workspace_root_hints = { '.bzr', '.git', '.hg', '.svn', '_FOSSIL_', 'package.json', 'pyproject.toml' }
       vim.keymap.set('n', '<A-j>', function() return vim.fn['codeium#Chat']() end, { expr = true, silent = true })
       vim.keymap.set('i', '<A-l>', function() return vim.fn['codeium#Accept']() end, { expr = true, silent = true })
       vim.keymap.set('i', '<A-j>', function() return vim.fn['codeium#CycleOrComplete']() end,

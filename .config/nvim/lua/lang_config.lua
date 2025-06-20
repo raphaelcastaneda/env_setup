@@ -9,6 +9,7 @@ vim.diagnostic.config({
   virtual_text = false,
   underline = true,
   virtual_lines = false,
+  severity_sort = true,
 })
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
@@ -360,7 +361,7 @@ local on_attach = function(client, bufnr)
   -- map('n', '<leader>ao', '<cmd>lua vim.lsp.buf.outgoing_calls()<CR>')
 
   -- map('n', 'tb', '<cmd>SymbolsOutline<CR>')
-  map('n', '<leader>o', '<cmd>SymbolsOutline<CR>')
+  map('n', '<leader>o', '<cmd>Trouble toggle symbols win.type=split win.relative=win position=right focus=true<CR>')
 
   map('n', 'ej', '<cmd>Lspsaga diagnostic_jump_next<CR>')
   map('n', 'ek', '<cmd>Lspsaga diagnostic_jump_prev<CR>')
@@ -570,11 +571,6 @@ local null_ls_sources = {
     },
   }),
   formatting.buf,
-  formatting.black.with({
-    diagnostic_config = {
-      extra_args = { "--line-length", "88" },
-    }
-  }),
   formatting.isort,
   formatting.prettierd,
   -- formatting.prettierd.with({
@@ -626,9 +622,13 @@ local on_publish_diagnostics = vim.lsp.handlers["textDocument/publishDiagnostics
 local util = require 'lspconfig.util'
 local servers = {
   bashls = {},
-  buf = {
-    filetypes = { 'proto' }
-  },
+  -- buf_ls = {
+  --   cmd = { "buf", "beta", "lsp", "--timeout=0", "--log-format=text" },
+  --   env = {
+  --     BUF_BETA_SUPPRESS_WARNINGS = 1
+  --   },
+  --   filetypes = { 'proto' }
+  -- },
   clangd = {
     filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda' }
   },
@@ -656,6 +656,7 @@ local servers = {
       }
     }
   },
+  blackdclient = {},
   golangci_lint_ls = {
     root_dir = util.root_pattern('go.mod', '.git'),
     handlers = {
@@ -789,15 +790,14 @@ require("mason-lspconfig").setup_handlers({
   end,
 
 })
-require("mason-nvim-dap").setup()
+require("mason-nvim-dap").setup();
 
-
-null_ls.setup({
-  debug = false,
-  on_attach = on_attach,
-  sources = null_ls_sources,
-  capabilities = capabilities,
-})
+-- null_ls.setup({
+--   debug = false,
+--   on_attach = on_attach,
+--   sources = null_ls_sources,
+--   capabilities = capabilities,
+-- })
 
 -- Automatically handle configuring servers called out above
 -- for servername, sconfig in pairs(servers) do

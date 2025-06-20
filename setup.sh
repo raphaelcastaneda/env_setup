@@ -95,6 +95,7 @@ if "$osx"; then
   brew install trash  # Helper that moves target to MacOs trash
   brew install yamlfmt
   brew install insomnium  # Insomnia replacement REST API client
+  brew install linearmouse # fine-grained control of mouse/trackpad speed and acceleration
   
   # Install fancy programming fonts
   brew tap homebrew/cask-fonts
@@ -162,7 +163,7 @@ fi
 
 
 # File symlinks
-for file in "bashrc" "bash_profile" "tmux.conf" "tmux.conf.sh" "Xresources" "vimrc" ".tigrc"; do
+for file in "bashrc" "bash_profile" "tmux.conf" "tmux.conf.sh" "Xresources" "vimrc" "tigrc"; do
   rm -rf "$HOME/.$file"
   ln -s "$env_setup/$file" "$HOME/.$file"
 done
@@ -210,9 +211,9 @@ touch ~/.bin/tmuxinator.bash
 source ~/.bashrc
 
 # Set up pyenv
-pyenv install --skip-existing 3.9.16
+pyenv install --skip-existing 3.11.9
 #pyenv install --skip-existing 2.7.17  # python is dead! long live python!
-pyenv global 3.9.16
+pyenv global 3.11.9
 
 # Install python packages
 python -m pip install --upgrade pip

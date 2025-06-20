@@ -4,6 +4,14 @@
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
   eval $(/opt/homebrew/bin/brew shellenv)
+  export PATH=/opt/homebrew/bin:$PATH
+
+  # use homebrew installed llvm clang instead of system provided clang
+#  export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+#  export CC="/opt/homebrew/opt/llvm/bin/clang"
+#  export CXX="$CC++"
+#  export LDFLAGS="$LDFLAGS -L/opt/homebrew/opt/llvm/lib"
+#  export CPPFLAGS="$CPPFLAGS -I/opt/homebrew/opt/llvm/include"
 fi
 
 source "$HOME/.bashrc"
@@ -52,3 +60,18 @@ if [ -f '/Users/raphael/Downloads/google-cloud-sdk/path.bash.inc' ]; then . '/Us
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/raphael/Downloads/google-cloud-sdk/completion.bash.inc' ]; then . '/Users/raphael/Downloads/google-cloud-sdk/completion.bash.inc'; fi
+
+##
+# Your previous /Users/raphael/.bash_profile file was backed up as /Users/raphael/.bash_profile.macports-saved_2024-12-16_at_13:33:20
+##
+
+# MacPorts Installer addition on 2024-12-16_at_13:33:20: adding an appropriate PATH variable for use with MacPorts.
+export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
+# Finished adapting your PATH environment variable for use with MacPorts.
+
+
+export STM32_PRG_PATH=/Applications/STMicroelectronics/STM32Cube/STM32CubeProgrammer/STM32CubeProgrammer.app/Contents/MacOs/bin
+
+# Added by OrbStack: command-line tools and integration
+# This won't be added again if you remove it.
+source ~/.orbstack/shell/init.bash 2>/dev/null || :

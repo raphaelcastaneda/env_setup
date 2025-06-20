@@ -7,3 +7,5 @@ node_modules
 # duplicate lnav configs
 .config/lnav/configs/installed/
 .config/lnav/formats/installed/
+.config/colima/_lima
+.config/colima/ssh_config
