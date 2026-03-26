@@ -1,0 +1,6 @@
+dist
+dist.run_commands
+dist.run_commands.__code__
+print(dist.run_commands.__code__)
+self.commands
+sources

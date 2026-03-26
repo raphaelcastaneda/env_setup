@@ -1,7 +1,23 @@
 {
-  "$schema" : "https:\/\/schema.linearmouse.app\/0.10.0",
+  "$schema" : "https:\/\/schema.linearmouse.app\/0.10.1",
   "schemes" : [
     {
+      "buttons" : {
+        "universalBackForward" : false
+      },
+      "if" : {
+        "device" : {
+          "category" : "trackpad",
+          "productID" : "0x0",
+          "productName" : "Apple Internal Keyboard \/ Trackpad",
+          "vendorID" : "0x0"
+        }
+      },
+      "pointer" : {
+        "acceleration" : 0.85,
+        "disableAcceleration" : false,
+        "speed" : 0.085
+      },
       "scrolling" : {
         "acceleration" : {
           "vertical" : 1
@@ -12,22 +28,21 @@
         "speed" : {
           "vertical" : 0
         }
-      },
-      "buttons" : {
-        "universalBackForward" : false
-      },
+      }
+    },
+    {
       "if" : {
         "device" : {
-          "productID" : "0x0",
-          "productName" : "Apple Internal Keyboard \/ Trackpad",
           "category" : "trackpad",
-          "vendorID" : "0x0"
+          "productID" : "0x265",
+          "productName" : "Raphael Castaneda’s Trackpad",
+          "serialNumber" : "64:B0:A6:E5:D9:96",
+          "vendorID" : "0x4c"
         }
       },
       "pointer" : {
-        "disableAcceleration" : false,
-        "acceleration" : 0.85,
-        "speed" : 0.085
+        "acceleration" : 1,
+        "speed" : 0.08
       }
     }
   ]

@@ -1,13 +1,13 @@
 k9s:
-  refreshRate: 2
+  refreshRate: 4
   maxConnRetry: 5
   readOnly: false
   ui:
-    enableMouse: false
+    enableMouse: true
     headless: false
     logoless: false
     crumbsless: false
-    reactive: false
+    reactive: true
     skin: catppuccin-mocha
   noExitOnCtrlC: false
   noIcons: false
@@ -16,7 +16,7 @@ k9s:
     tail: 500
     buffer: 5000
     sinceSeconds: -1
-    fullScreenLogs: false
+    fullScreenLogs: true
     textWrap: false
     showTime: true
   thresholds:

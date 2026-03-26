@@ -50,7 +50,9 @@ export FZF_PREVIEW_LINES=60
 
  if [ -f "$HOME/.fzf.bash" ]; then
      source "$HOME/.fzf.bash"
-    _fzf_setup_completion path nvim open cat bat cp mv rm dir tree cd ls vim
+    if command -v _fzf_setup_completion &>/dev/null; then
+        _fzf_setup_completion path nvim open cat bat cp mv rm dir tree cd ls vim
+    fi
 fi
 #set +x
 #exec 2>&3 3>&-

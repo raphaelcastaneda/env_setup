@@ -68,7 +68,9 @@ alias gco='git checkout'
 alias gcl='git checkout -'
 alias gcm='git checkout main'
 alias gdel='git push origin --delete'
-alias rebase-branch='git rebase -i `git merge-base main HEAD^^`'
+alias rebase-branch='git fetch && git rebase -i `git merge-base main HEAD^^`'
+alias rebase-main='git fetch && git rebase -i main'
+alias grm='rebase-main'
 alias grb='rebase-branch'
 alias gmp='git pull --recurse-submodules'
 alias gsu='git submodule update --init --recursive'
@@ -118,6 +120,7 @@ elif [[ -e "/etc/bash_completion" ]]; then
 fi
 
 # Brew completions
+export PATH="/opt/homebrew/bin:$PATH"
 #if type brew &>/dev/null; then
 #  HOMEBREW_PREFIX='$(brew --prefix)'
 #  if [[ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]]; then
@@ -144,6 +147,16 @@ if command -v kubectl &>/dev/null; then
 	alias k='kubectl'
 	complete -o default -F __start_kubectl k
 fi
+
+# Completion for makefiles
+complete -W "$(if [ -f Makefile ]; then grep -oE '^[a-zA-Z0-9_-]+:([^=]|$)' Makefile | sed 's/[^a-zA-Z0-9_-]*$//'; elif [ -f makefile ]; then grep -oE '^[a-zA-Z0-9_-]+:([^=]|$)' makefile | sed 's/[^a-zA-Z0-9_-]*$//'; fi)" make
+
+# fzf-help https://github.com/BartSte/fzf-help#installation
+source $HOME/.local/share/fzf-help/fzf-help.bash
+if [[ $- == *i* ]]; then
+	bind -x '"\C-h": fzf-help-widget'
+fi
+export FZF_HELP_SYNTAX='help'
 
 # Use fd (https://github.com/sharkdp/fd) instead of the default find
 # command for listing path candidates.
@@ -181,8 +194,10 @@ source "$HOME"/env_setup/completion/tmux.sh
 source "$HOME"/env_setup/completion/terraform.sh
 
 # Set alias for thefuck if the command exists
-if command -v thefuck &>/dev/null; then
-	eval "$(thefuck --alias oops)"
+if [[ $- == *i* ]]; then
+	if command -v thefuck &>/dev/null; then
+		eval "$(thefuck --alias oops || true)"
+	fi
 fi
 
 [ "${PATH#*$HOME/.yarn/bin:}" == "$PATH" ] && export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"

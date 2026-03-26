@@ -1,10 +1,49 @@
 -- lspconfig global config
-local lspconfig = require 'lspconfig'
-lspconfig.util.default_config = vim.tbl_extend(
-  "force",
-  lspconfig.util.default_config,
-  { log_level = vim.lsp.protocol.MessageType.Error }
-)
+-- local lspconfig = require 'lspconfig'
+-- lspconfig.util.default_config = vim.tbl_extend(
+--   "force",
+--   lspconfig.util.default_config,
+--   { log_level = vim.lsp.protocol.MessageType.Error }
+-- )
+--
+require("nvim-treesitter.configs").setup({
+  ensure_installed = {
+    "bash",
+    "c",
+    "cpp",
+    "css",
+    "go",
+    "html",
+    "javascript",
+    "json",
+    "lua",
+    "markdown",
+    "markdown_inline",
+    "python",
+    "regex",
+    "tsx",
+    "typescript",
+    "vim",
+    "yaml"
+  },
+  ignore_install = { "phpdoc" },
+  sync_install = false,
+  auto_install = true,
+  highlight = {
+    enable = true,
+    additional_vim_regex_highlighting = false,
+  },
+  incremental_selection = {
+    enable = true,
+    keymaps = {
+      init_selection = "vn",
+      node_incremental = "v,",
+      scope_incremental = "v]",
+      node_decremental = "v<",
+    },
+  },
+})
+
 vim.diagnostic.config({
   virtual_text = false,
   underline = true,
@@ -219,7 +258,7 @@ cmp.setup({
 })
 
 -- Use buffer source for `/`.
-cmp.setup.cmdline({'/', '?'}, {
+cmp.setup.cmdline({ '/', '?' }, {
   completion = {
     mapping = cmp.mapping.preset.cmdline(),
     autocomplete = {}
@@ -314,22 +353,36 @@ lsp_status.config({
 })
 
 -- Declare Diagnostic Symbols
-local signs = {
-  Error = " ",
-  Warn = " ",
-  Warning = " ",
-  Hint = " ",
-  Info = " ",
-  Information = " ",
-  Other = " "
-}
-for type, icon in pairs(signs) do
-  local hl = "DiagnosticSign" .. type
-  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
-end
+-- local signs = {
+--   Error = " ",
+--   Warn = " ",
+--   Warning = " ",
+--   Hint = " ",
+--   Info = " ",
+--   Information = " ",
+--   Other = " "
+-- }
+vim.diagnostic.config({
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = " ",
+      [vim.diagnostic.severity.WARN] = " ",
+      [vim.diagnostic.severity.INFO] = " ",
+      [vim.diagnostic.severity.HINT] = " ",
+    },
+    linehl = {
+      [vim.diagnostic.severity.ERROR] = "Error",
+      [vim.diagnostic.severity.WARN] = "Warn",
+      [vim.diagnostic.severity.INFO] = "Info",
+      [vim.diagnostic.severity.HINT] = "Hint",
+    },
+  },
+})
 
 -- Create custom on_attach function
-local on_attach = function(client, bufnr)
+local custom_on_attach = function(client, bufnr)
+  -- log to make sure we know we got here
+  print("LSP server attached: " .. client.name)
   if vim.bo.filetype == "NerdTree" then
     vim.lsp.buf_detach_client(bufnr, client)
   end
@@ -394,21 +447,6 @@ local on_attach = function(client, bufnr)
   --        augroup END
   --      ]], false)
   --  end
-
-  -- Hack to disable auto formatting from tsserver
-  if client.name == "tsserver" then
-    client.server_capabilities.documentFormattingProvider = false
-    --  elseif client.name == "null-ls" or client.server_capabilities.document_formatting then
-    --    --if client.server_capabilities.document_formatting then
-    --    print("enable null_ls formatting")
-    --    client.server_capabilities.documentRangeFormattingProvider = true
-    --    client.server_capabilities.documentFormattingProvider = true
-    --    vim.api.nvim_exec([[
-    --      augroup lsp_format_on_write
-    --        autocmd BufWritePre <buffer> lua vim.lsp.buf.format({timeout_ms=5000})
-    --      augroup END
-    --      ]], false)
-  end
 end
 
 require("symbols-outline").setup({
@@ -584,8 +622,18 @@ local null_ls_sources = {
 }
 
 
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
-capabilities = vim.tbl_extend('keep', capabilities or {}, lsp_status.capabilities)
+-- local capabilities = require('cmp_nvim_lsp').default_capabilities()
+-- capabilities = vim.tbl_extend('keep', capabilities, lsp_status.capabilities)
+
+
+-- Use an autocommand to call the function when an LSP client attaches to a buffer
+vim.api.nvim_create_autocmd('LspAttach', {
+  callback = function(args)
+    local bufnr = args.buf
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    custom_on_attach(client, bufnr)
+  end,
+})
 
 -- local null_ls = require("null-ls")
 -- local prettier = require("prettier")
@@ -617,7 +665,6 @@ capabilities = vim.tbl_extend('keep', capabilities or {}, lsp_status.capabilitie
 
 require("neodev").setup({})
 
-local lsp_config = require 'lspconfig'
 local on_publish_diagnostics = vim.lsp.handlers["textDocument/publishDiagnostics"]
 local util = require 'lspconfig.util'
 local servers = {
@@ -629,6 +676,7 @@ local servers = {
   --   },
   --   filetypes = { 'proto' }
   -- },
+  buf_ls = {},
   clangd = {
     filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda' }
   },
@@ -656,7 +704,7 @@ local servers = {
       }
     }
   },
-  blackdclient = {},
+  ruff = {},
   golangci_lint_ls = {
     root_dir = util.root_pattern('go.mod', '.git'),
     handlers = {
@@ -676,7 +724,7 @@ local servers = {
   },
   html = {},
   pyright = {
-    cmd = { "pyright-langserver", "--stdio", "-v", "$VIRTUAL_ENV" },
+    cmd = { "pyright-langserver", "--stdio", "-v", os.getenv("VIRTUAL_ENV") },
     root_dir = util.root_pattern({
       "setup.py",
       "setup.cfg",
@@ -712,13 +760,10 @@ local servers = {
       }
     }
   },
-  markdownlint = {
+  marksman = {
     filetypes = { "markdown", "vimwiki" }
   },
-  -- marksman = {
-  --   filetypes = { "markdown" }
-  -- },
-  tsserver = {},
+  ts_ls = {},
   jdtls = {
     root_dir = util.root_pattern({
       "gradlew",
@@ -752,17 +797,6 @@ local servers = {
     }
   }
 }
--- Add custom lsp via lspconfig
--- local jcan = require("jcan_ls")
--- if jcan then
---   local configs = require "lspconfig.configs"
---   configs["jcan_ls"] = jcan
---
---   lspconfig.jcan_ls.setup({
---     on_attach = on_attach,
---     capabilities = capabilities
---   })
--- end
 
 require("mason").setup({
   ui = {
@@ -774,22 +808,31 @@ require("mason").setup({
   }
 })
 
-require("mason-lspconfig").setup_handlers({
-  function(server_name) -- default handler
-    if servers[server_name] ~= nil and server_name ~= "null-ls"
-    then
-      servers[server_name]['capabilities'] = capabilities
-      servers[server_name]['on_attach'] = on_attach
-      lsp_config[server_name].setup(servers[server_name])
-    else
-      lsp_config[server_name].setup({
-        capabilities = capabilities,
-        on_attach = on_attach,
-      })
-    end
-  end,
 
+-- new mason-lspconfig 2.0 doesn't do handlers, so we have to loop over each server and configure it
+
+-- Broadcast cmp capabilities globally
+vim.lsp.config('*', {
+  capabilities = require('cmp_nvim_lsp').default_capabilities()
 })
+
+local default_configs = require('lspconfig.configs')
+
+
+for servername, sconfig in pairs(servers) do
+  local default_config = default_configs[servername]
+  if default_config then
+    local final_config = vim.tbl_deep_extend('force', default_config.default_config, sconfig)
+    vim.lsp.config(servername, final_config)
+  end
+  vim.lsp.enable(servername)
+end
+
+require("mason-lspconfig").setup({
+  ensure_installed = vim.tbl_keys(servers),
+  automatic_enable = false
+})
+
 require("mason-nvim-dap").setup();
 
 -- null_ls.setup({
@@ -799,10 +842,3 @@ require("mason-nvim-dap").setup();
 --   capabilities = capabilities,
 -- })
 
--- Automatically handle configuring servers called out above
--- for servername, sconfig in pairs(servers) do
---   sconfig['capabilities'] = capabilities
---   sconfig['on_attach'] = on_attach
---   lsp_config[servername].setup(sconfig)
--- end
---

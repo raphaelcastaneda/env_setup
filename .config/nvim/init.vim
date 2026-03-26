@@ -423,9 +423,9 @@ syntax sync minlines=2000
 lua << EOF
 require('plugins')
 require('lang_config')
-require('treesitter_workaround')
-require('rainbow_delimiters')
+--require('treesitter_workaround')
 require("theme")
+--require('custom_decorations')
 vim.cmd([[
   augroup packer_user_config
     autocmd!

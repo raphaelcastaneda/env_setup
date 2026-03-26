@@ -17,10 +17,6 @@ return require('packer').startup(function(use)
   use({ "inkarkat/vim-ingo-library" })
   use({ "nvim-lua/plenary.nvim" })   -- Prereq for telescope, null-ls, and refactoring
   use({ "mfussenegger/nvim-jdtls" }) --Extensions for built-in LSP
-  use({
-    "lukas-reineke/indent-blankline.nvim",
-    tag = "v3.8.1",
-  })                                  -- Indentation guides to enhance listchars
   use({ "dstein64/vim-startuptime" }) -- vim startup profiler
 
   -- Finders and Search
@@ -65,7 +61,22 @@ return require('packer').startup(function(use)
       require("scrollbar.handlers.gitsigns").setup()
     end,
   })
-  use({ "HiPhish/rainbow-delimiters.nvim" }) -- Color-coded parens, brackets etc.
+  use(
+      {
+        "lukas-reineke/indent-blankline.nvim",
+      }
+    )
+  use({
+    "HiPhish/rainbow-delimiters.nvim",
+    --event = { "BufReadPost", "BufNewFile" },
+    config = function()
+      require("custom_decorations")
+    end,
+    requires = {
+      { "nvim-treesitter/nvim-treesitter" },
+      {"lukas-reineke/indent-blankline.nvim"},
+    }
+  }) -- Color-coded parens, brackets etc.
   use({ "tpope/vim-fugitive" })
   use({ "nvim-tree/nvim-tree.lua" })
   use({ "folke/which-key.nvim" }) --Lua autocompletion for nvim api
@@ -276,9 +287,32 @@ return require('packer').startup(function(use)
   use({ "vim-airline/vim-airline" })
   use({ "vim-airline/vim-airline-themes" })
 
+  -- CSV / TSV
+  use({
+    "hat0uma/csvview.nvim",
+    config = function()
+      require("csvview").setup({
+        parser = { comments = { "#", "//" } },
+        keymaps = {
+          -- Text objects for selecting fields
+          textobject_field_inner = { "if", mode = { "o", "x" } },
+          textobject_field_outer = { "af", mode = { "o", "x" } },
+          -- Excel-like navigation:
+          -- Use <Tab> and <S-Tab> to move horizontally between fields.
+          -- Use <Enter> and <S-Enter> to move vertically between rows and place the cursor at the end of the field.
+          -- Note: In terminals, you may need to enable CSI-u mode to use <S-Tab> and <S-Enter>.
+          jump_next_field_end = { "<Tab>", mode = { "n", "v" } },
+          jump_prev_field_end = { "<S-Tab>", mode = { "n", "v" } },
+          jump_next_row = { "<Enter>", mode = { "n", "v" } },
+          jump_prev_row = { "<S-Enter>", mode = { "n", "v" } },
+        }
+      })
+    end
+  })
+
   -- I for one welcome our AI overlords
   use {
-    'Exafunction/codeium.vim',
+    'Exafunction/windsurf.vim',
     requires = {
       "nvim-lua/plenary.nvim",
       "hrsh7th/nvim-cmp",
