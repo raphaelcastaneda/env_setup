@@ -70,10 +70,3 @@ if [ -f '/Users/raphael/Downloads/google-cloud-sdk/completion.bash.inc' ]; then 
 # MacPorts Installer addition on 2024-12-16_at_13:33:20: adding an appropriate PATH variable for use with MacPorts.
 export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
 # Finished adapting your PATH environment variable for use with MacPorts.
-
-
-export STM32_PRG_PATH=/Applications/STMicroelectronics/STM32Cube/STM32CubeProgrammer/STM32CubeProgrammer.app/Contents/MacOs/bin
-
-# Added by OrbStack: command-line tools and integration
-# This won't be added again if you remove it.
-source ~/.orbstack/shell/init.bash 2>/dev/null || :
