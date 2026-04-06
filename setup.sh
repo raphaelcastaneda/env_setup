@@ -96,6 +96,7 @@ if "$osx"; then
   brew install yamlfmt
   brew install insomnium  # Insomnia replacement REST API client
   brew install linearmouse # fine-grained control of mouse/trackpad speed and acceleration
+  brew install ccache # faster builds
   
   # Install fancy programming fonts
   brew tap homebrew/cask-fonts
@@ -149,6 +150,7 @@ else
   curl https://sh.rustup.rs -sSf | sh -s -- -y
   sudo apt-get install -y lnav
   sudo apt-get install -y bash-completion
+  sudo apt-get install -y ccache
 
   # Install tmux from source
   source ./tmux_build_from_source.sh

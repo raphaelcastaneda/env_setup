@@ -119,6 +119,10 @@ elif [[ -e "/etc/bash_completion" ]]; then
 	source "/etc/bash_completion"
 fi
 
+# Tell cmake to use the cache
+export CMAKE_C_COMPILER_LAUNCHER=ccache
+export CMAKE_CXX_COMPILER_LAUNCHER=ccache
+
 # Brew completions
 export PATH="/opt/homebrew/bin:$PATH"
 #if type brew &>/dev/null; then
@@ -246,3 +250,4 @@ function fix_ssh_agent {
 		export SSH_AUTH_SOCK=$(find /tmp/ssh-* -name agent.*)
 	fi
 }
+export PATH="$HOME/.local/bin:$PATH"
