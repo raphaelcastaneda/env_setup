@@ -218,8 +218,15 @@ compdef _dev dev
 # Keybindings
 # ---------------------------------------------------------------------------
 
+# Enable vi mode. Starship's [character] module shows vicmd_symbol when
+# the keymap switches to vicmd (after pressing ESC).
+bindkey -v
+# Make ESC -> vicmd snappy (default 0.4s).
+KEYTIMEOUT=15
+
 # History substring search on arrow keys (plugin is deferred, but bindings
-# are picked up once the widget is available)
+# are picked up once the widget is available). After `bindkey -v` the main
+# keymap is viins, so these apply in insert mode.
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 bindkey '^ ' autosuggest-accept

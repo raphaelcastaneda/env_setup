@@ -73,6 +73,7 @@ format = 'buf $version($style)'
 [character]
 success_symbol = '[✓](green)'
 error_symbol = '[✗](red)'
+vicmd_symbol = '[ ](bold yellow)'
 
 [palettes.catppuccin_mocha]
 rosewater = "#f5e0dc"
