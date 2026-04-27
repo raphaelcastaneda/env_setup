@@ -36,6 +36,11 @@ if "$osx"; then
   # Install OSX 10.14 headers
   #sudo installer -pkg /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg -target /
 
+  # Shell and prompt
+  brew install zsh
+  brew install antidote
+  brew install starship
+
   # Install homebrew packages
   brew install python
   brew install temurin  # java runtime
@@ -69,7 +74,7 @@ if "$osx"; then
   brew install watch
   brew install figlet # used to render text into ascii text e.g. in presenting.vim
   brew install mono # used for building omnisharp for C# completion in YCM
-  brew install bash-completion@2
+  #brew install bash-completion@2  # replaced by zsh compinit
   brew install ncdu  # powerful disk usage tool
   brew install jq # command line json parser
   brew install kitty  # terminal emulator with powerful font support
@@ -152,6 +157,15 @@ else
   sudo apt-get install -y bash-completion
   sudo apt-get install -y ccache
 
+  # Shell and prompt
+  sudo apt-get install -y zsh
+  if [ ! -d "$HOME/.antidote" ]; then
+    git clone --depth=1 https://github.com/mattmc3/antidote.git "$HOME/.antidote"
+  fi
+  if ! command -v starship >/dev/null; then
+    curl -sS https://starship.rs/install.sh | sh -s -- -y
+  fi
+
   # Install tmux from source
   source ./tmux_build_from_source.sh
   
@@ -165,10 +179,18 @@ fi
 
 
 # File symlinks
-for file in "bashrc" "bash_profile" "tmux.conf" "tmux.conf.sh" "Xresources" "vimrc" "tigrc"; do
+for file in "zshrc" "zshenv" "zprofile" "zsh_plugins.txt" "tmux.conf" "tmux.conf.sh" "Xresources" "vimrc" "tigrc"; do
   rm -rf "$HOME/.$file"
   ln -s "$env_setup/$file" "$HOME/.$file"
 done
+
+# Optionally symlink bash files for systems that still use bash
+if [[ "$1" == "--with-bash" ]]; then
+  for file in "bashrc" "bash_profile"; do
+    rm -rf "$HOME/.$file"
+    ln -s "$env_setup/$file" "$HOME/.$file"
+  done
+fi
 
 # Symlink .config folder
 if [ -d "$HOME/.config" ]; then
@@ -209,8 +231,8 @@ touch "$HOME"/.env
 mkdir -p ~/.bin
 touch ~/.bin/tmuxinator.bash
 
-# Use our new bashrc
-source ~/.bashrc
+# Zsh config is sourced on next shell start
+echo "Restart your shell or run: exec zsh"
 
 # Set up pyenv
 pyenv install --skip-existing 3.11.9
@@ -243,8 +265,17 @@ fi
 nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 
 
-# Switch to brew-installed bash
-sudo bash -c 'echo "$(which bash)" >> /etc/shells'
-chsh -s "$(which bash)"
+# Set zsh as default shell
+if "$osx"; then
+  zsh_path="$(brew --prefix)/bin/zsh"
+else
+  zsh_path="$(command -v zsh)"
+fi
+if [ -n "$zsh_path" ] && [ -x "$zsh_path" ]; then
+  if ! grep -q "$zsh_path" /etc/shells; then
+    sudo bash -c "echo '$zsh_path' >> /etc/shells"
+  fi
+  chsh -s "$zsh_path"
+fi
 
 echo "All done!"
