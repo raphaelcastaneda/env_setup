@@ -23,7 +23,12 @@ setopt PUSHD_IGNORE_DUPS
 # ---------------------------------------------------------------------------
 
 autoload -Uz compinit
-compinit
+# Skip security audit if zcompdump is younger than 24h.
+if [[ -n ${HOME}/.zcompdump(#qNmh-24) ]]; then
+  compinit -C
+else
+  compinit
+fi
 
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 zstyle ':completion:*' menu select
@@ -107,14 +112,29 @@ alias wiki="cd $HOME/vimwiki && vim -c VimwikiIndex"
 # Tool Completions
 # ---------------------------------------------------------------------------
 
-if (( $+commands[colima] )); then
-  source <(colima completion zsh)
-fi
+_zsh_cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
+[[ -d $_zsh_cache_dir ]] || mkdir -p $_zsh_cache_dir
 
+# Cache `<tool> completion zsh` output to avoid spawning a subprocess each
+# shell. stderr suppressed because cobra-generated scripts emit a harmless
+# "can't change option: zle" warning.
+_cache_tool_completion() {
+  local name=$1 bin
+  bin=$(whence -p $name) || return
+  local cache=$_zsh_cache_dir/${name}_completion.zsh
+  if [[ ! -s $cache || $bin -nt $cache ]]; then
+    $name completion zsh > $cache 2>/dev/null
+  fi
+  source $cache 2>/dev/null
+}
+
+(( $+commands[colima] )) && _cache_tool_completion colima
 if (( $+commands[kubectl] )); then
-  source <(kubectl completion zsh)
+  _cache_tool_completion kubectl
   alias k='kubectl'
 fi
+unfunction _cache_tool_completion
+unset _zsh_cache_dir
 
 # ---------------------------------------------------------------------------
 # FZF
