@@ -4,7 +4,7 @@
 
 palette = "catppuccin_mocha"
 format = """
-$time  [$username@$hostname](teal)   $directory ( $git_branch(\\[$git_status\\]))$fill($git_state )(\\[ $git_metrics\\] )($python )($go )($buf )($container )($docker_context )($jobs )($cmd_duration )
+$time  [$username@$hostname](teal)   $directory ( $git_branch(\\[$git_status\\]))$fill($git_state )(\\[ $git_metrics\\] )($python )($go )($buf )($container )($docker_context )($jobs )(| $cmd_duration )
 $character"""
 
 [fill]
@@ -19,7 +19,7 @@ format = "[$user]($style)"
 [hostname]
 style="teal"
 ssh_only = false
-aliases = {"Raphael-Castanedas-Work-Laptop" = " "}
+aliases = {"Raphael-Castanedas-Work-Laptop" = " ", "1beb114c-4ab3-4f87-85b9-beb93e4f1a7f" = " "}
 format = "[$hostname]($style)"
 
 
