@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "poetry-instance"
-version = "2.3.2"
+version = "2.3.3"
 description = ""
 authors = []
 license = ""
@@ -8,9 +8,9 @@ package-mode = false
 
 [tool.poetry.dependencies]
 python = "3.11.9"
-poetry = "2.3.2"
+poetry = "2.3.3"
 
 [dependency-groups]
 additional = [
-    "poethepoet[poetry-plugin] (>=0.42.1,<0.43.0)"
+    "poethepoet[poetry-plugin] (>=0.44.0,<0.45.0)"
 ]
