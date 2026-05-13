@@ -89,6 +89,12 @@ set backupdir=~/.vim/backups directory=~/.vim/swaps//
 " No swap files
 set noswapfile
 
+" Don't persist working directory in view files. Taskwiki calls mkview/loadview
+" on every vimwiki buffer enter; with curdir in viewoptions, a stale lcd from a
+" prior session ends up baked into ~/.local/state/nvim/view/* and gets replayed
+" on open, dragging cwd off to wherever you happened to be last time.
+set viewoptions-=curdir
+
 " Set faster updatetime to speed up cursorhold events
 "set updatetime=250
 
@@ -734,11 +740,13 @@ require("nvim-web-devicons").setup {
     -- };
 }
 require("telescope").setup {}
-require("nvim-tree").setup {  
-    update_cwd          = false,
+require("nvim-tree").setup {
+    sync_root_with_cwd  = false,
+    respect_buf_cwd     = false,
+    prefer_startup_root = true,
     update_focused_file = {
         enable      = true,
-        update_cwd  = false,
+        update_root = false,
         ignore_list = {},
      },
 }
