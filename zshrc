@@ -79,10 +79,50 @@ if [[ $KITTY_WINDOW_ID ]]; then
   alias icat='kitten icat'
 fi
 
-# Poetry
-alias rmpoetry='poetry env remove'
-alias activateenv='eval "$(poetry env activate)"'
-alias pea='activateenv'
+ # uv
+rmvenv() {
+  local dir="$PWD"
+  while [ "$dir" != "/" ]; do
+    if [ -d "$dir/.venv" ]; then
+      # If the venv we're about to remove is the currently-active one,
+      # deactivate first so PATH / VIRTUAL_ENV don't end up pointing at
+      # a deleted dir.
+      if [ -n "${VIRTUAL_ENV:-}" ] && [ "$VIRTUAL_ENV" = "$dir/.venv" ]; then
+        echo "Deactivating $VIRTUAL_ENV first"
+        deactivate 2>/dev/null || {
+          # `deactivate` is only defined in the shell that sourced
+          # activate. If we got here some other way, fall back to a
+          # manual unwind.
+          PATH="$(echo "$PATH" | tr ':' '\n' | grep -v "^${VIRTUAL_ENV}/" | paste -sd: -)"
+          unset VIRTUAL_ENV
+          hash -r 2>/dev/null
+        }
+      fi
+      echo "Removing $dir/.venv"
+      rm -rf "$dir/.venv"
+      return 0
+    fi
+    dir="$(dirname "$dir")"
+  done
+  echo "rmvenv: no .venv found from $PWD up to /" >&2
+  return 1
+}
+
+rmpoetry() {
+  echo "⚠ rmpoetry is deprecated; use rmvenv (uv migration)." >&2
+  rmvenv "$@"
+}
+
+_find_venv() {
+  local dir="$PWD"
+  while [ "$dir" != "/" ]; do
+    [ -d "$dir/.venv" ] && { echo "$dir/.venv"; return 0; }
+    dir="$(dirname "$dir")"
+  done
+  return 1
+}
+alias activate='source "$(_find_venv)/bin/activate"'
+alias pea='activate'
 
 # Docker / Kubernetes
 alias devcluster='colima start --arch aarch64 --vm-type=vz --vz-rosetta --kubernetes'
