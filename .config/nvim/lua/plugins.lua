@@ -15,7 +15,8 @@ return require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'
   -- Prereqs and helpers
   use({ "inkarkat/vim-ingo-library" })
-  use({ "nvim-lua/plenary.nvim" })   -- Prereq for telescope, null-ls, and refactoring
+  use({ "nvim-lua/plenary.nvim" })   -- Prereq for telescope, null-ls
+  use({ "lewis6991/async.nvim" })    -- Prereq for refactoring
   use({ "mfussenegger/nvim-jdtls" }) --Extensions for built-in LSP
   use({ "dstein64/vim-startuptime" }) -- vim startup profiler
 
@@ -235,7 +236,6 @@ return require('packer').startup(function(use)
   use({ "folke/neodev.nvim" }) --Lua autocompletion for nvim api
   use({ "hrsh7th/cmp-nvim-lsp-signature-help" })
   use({ "hrsh7th/cmp-nvim-lsp-document-symbol" })
-  use({ "nvim-lua/lsp-status.nvim" })
   use({ "rafamadriz/friendly-snippets" }) -- Snippet definitions
   use({ "saadparwaiz1/cmp_luasnip" })     -- Snipppet completion source
   use({ "L3MON4D3/LuaSnip" })             -- Snippet Engine
@@ -284,8 +284,7 @@ return require('packer').startup(function(use)
   use({ "nvim-tree/nvim-web-devicons" })
   use({ "folke/lsp-colors.nvim" })
   use({ "folke/trouble.nvim" })
-  use({ "vim-airline/vim-airline" })
-  use({ "vim-airline/vim-airline-themes" })
+  use({ "nvim-lualine/lualine.nvim", requires = { "nvim-tree/nvim-web-devicons" } })
 
   -- CSV / TSV
   use({

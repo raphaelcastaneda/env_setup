@@ -332,26 +332,6 @@ cmp.event:on(
 --   inoremap <C-x><C-s> <Cmd>lua vimrc.cmp.snippet()<CR>
 -- ]])
 --
--- LSP server status
-local lsp_status = require('lsp-status')
--- use LSP SymbolKinds themselves as the kind labels
-local kind_labels_mt = { __index = function(_, k) return k end }
-local kind_labels = {}
-setmetatable(kind_labels, kind_labels_mt)
-
-lsp_status.register_progress()
-lsp_status.config({
-  kind_labels = kind_labels,
-  current_function = false,
-  indicator_errors = " ",
-  indicator_warnings = " ",
-  indicator_info = " ",
-  indicator_hint = " ",
-  -- the default is a wide codepoint which breaks absolute and relative
-  -- line counts if placed before airline's Z section
-  status_symbol = ""
-})
-
 -- Declare Diagnostic Symbols
 -- local signs = {
 --   Error = " ",
@@ -389,7 +369,6 @@ local custom_on_attach = function(client, bufnr)
   --  print("LSP server attached: " .. client.name)
 
 
-  lsp_status.on_attach(client)
 
   local map = function(type, key, value)
     vim.api.nvim_buf_set_keymap(bufnr, type, key, value, { noremap = true, silent = true });
@@ -522,16 +501,16 @@ require("telescope").setup({
 -- Configure language servers
 
 -- treesitter based refactoring
-local refactoring = require('refactoring')
-require("telescope").load_extension("refactoring")
-refactoring.setup({})
-vim.keymap.set(
-  { "n", "x" },
-  "<leader>R",
-  function() require('telescope').extensions.refactoring.refactors() end
-)
-vim.keymap.set({ "n" }, "<leader>p", function() refactoring.debug.print_var({}) end)
-vim.keymap.set({ "n" }, "<leader>P", function() refactoring.debug.cleanup({}) end)
+-- local refactoring = require('refactoring')
+-- require("telescope").load_extension("refactoring")
+-- refactoring.setup({})
+-- vim.keymap.set(
+--   { "n", "x" },
+--   "<leader>R",
+--   function() require('telescope').extensions.refactoring.refactors() end
+-- )
+-- vim.keymap.set({ "n" }, "<leader>p", function() refactoring.debug.print_var({}) end)
+-- vim.keymap.set({ "n" }, "<leader>P", function() refactoring.debug.cleanup({}) end)
 
 -- null-ls
 local null_ls = require("null-ls")
@@ -623,7 +602,6 @@ local null_ls_sources = {
 
 
 -- local capabilities = require('cmp_nvim_lsp').default_capabilities()
--- capabilities = vim.tbl_extend('keep', capabilities, lsp_status.capabilities)
 
 
 -- Use an autocommand to call the function when an LSP client attaches to a buffer
