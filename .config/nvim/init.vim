@@ -187,54 +187,20 @@ let g:limelight_conceal_ctermfg = 'DarkGray'
 let g:limelight_conceal_guifg = 'black'
 let g:limelight_priority = -1
 
-" LSP Statusline
-function! LspStatus() abort
-  let status = luaeval("require('lsp-status').status()")
-  return trim(status)
-endfunction
+" Statusline (lualine) handles the mode indicator; hide the native one
+set noshowmode
 
-" Airline setup
-call airline#parts#define_function('lsp_status', 'LspStatus')
-call airline#parts#define_condition('lsp_status', 'luaeval("#vim.lsp.buf_get_clients() > 0")')
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#show_tabs = 1
-let g:airline#extensions#tabline#tab_nr_show = 1
-let g:airline#extensions#tabline#tab_nr_type = 1
-"let g:airline#extensions#tabline#formatter = 'default'
-let g:airline_theme = 'catppuccin'
-"let g:airline_theme = 'hybridline'
-"let g:airline#extensions#ale#enabled = 1
-let g:airline#extensions#branch#displayed_head_limit = 30
-let g:airline#extensions#nvimlsp#enabled = 1
-let airline#extensions#nvimlsp#error_symbol = ' '
-let airline#extensions#nvimlsp#warning_symbol = ' '
-let g:airline_section_warning = airline#section#create_right(['lsp_status'])  " replaces the warning section with the lsp status indicator
-
-let g:airline#extensions#tabline#buffer_idx_mode = 1
-let g:airline#extensions#tabline#buffer_idx_format = {
-      \ '0': '0 ',
-      \ '1': '1 ',
-      \ '2': '2 ',
-      \ '3': '3 ',
-      \ '4': '4 ',
-      \ '5': '5 ',
-      \ '6': '6 ',
-      \ '7': '7 ',
-      \ '8': '8 ',
-      \ '9': '9 '
-      \}
-
-nmap <leader>1 <Plug>AirlineSelectTab1
-nmap <leader>2 <Plug>AirlineSelectTab2
-nmap <leader>3 <Plug>AirlineSelectTab3
-nmap <leader>4 <Plug>AirlineSelectTab4
-nmap <leader>5 <Plug>AirlineSelectTab5
-nmap <leader>6 <Plug>AirlineSelectTab6
-nmap <leader>7 <Plug>AirlineSelectTab7
-nmap <leader>8 <Plug>AirlineSelectTab8
-nmap <leader>9 <Plug>AirlineSelectTab9
-nmap <leader>0 <Plug>AirlineSelectTab0
+" Jump to buffers by ordinal index in the lualine tabline
+nnoremap <leader>1 <Cmd>LualineBuffersJump 1<CR>
+nnoremap <leader>2 <Cmd>LualineBuffersJump 2<CR>
+nnoremap <leader>3 <Cmd>LualineBuffersJump 3<CR>
+nnoremap <leader>4 <Cmd>LualineBuffersJump 4<CR>
+nnoremap <leader>5 <Cmd>LualineBuffersJump 5<CR>
+nnoremap <leader>6 <Cmd>LualineBuffersJump 6<CR>
+nnoremap <leader>7 <Cmd>LualineBuffersJump 7<CR>
+nnoremap <leader>8 <Cmd>LualineBuffersJump 8<CR>
+nnoremap <leader>9 <Cmd>LualineBuffersJump 9<CR>
+nnoremap <leader>0 <Cmd>LualineBuffersJump $<CR>
 
 " Syntax highlighting, filetype indentation rules.
 filetype plugin indent on
@@ -431,6 +397,7 @@ require('plugins')
 require('lang_config')
 --require('treesitter_workaround')
 require("theme")
+require("statusline")
 --require('custom_decorations')
 vim.cmd([[
   augroup packer_user_config
