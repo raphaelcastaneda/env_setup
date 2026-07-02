@@ -119,15 +119,9 @@ let g:ctrlp_working_path_mode = 'ra'
 "set laststatus=2
 
 if has('nvim')
-" Figure out the system Python for Neovim.
-  if exists("$VIRTUAL_ENV")
-      let g:python3_host_prog=substitute(system("which python3"), "\n", '', 'g')
-      "let g:python3_host_prog=substitute(system("which -a python3 | head -n2 | tail -n1"), "\n", '', 'g')
-  else
-      let g:python3_host_prog=substitute(system("which python3"), "\n", '', 'g')
-  endif
-  "let g:python_host_prog  = 'python2'
-  "let g:python3_host_prog = 'python'
+  " Pin the python3 provider to a dedicated venv so it never resolves to a
+  " project .venv or a brew python that lacks pynvim (see setup.sh).
+  let g:python3_host_prog = expand('~/.local/share/nvim/py3nvim/bin/python3')
 endif
 
 filetype off

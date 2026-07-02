@@ -244,6 +244,12 @@ python -m pip install --upgrade pip
 python -m pip install virtualenv pynvim pudb
 python -m pip install tasklib taskwarrior packaging # for taskwarrior integration with vimwiki
 
+# Dedicated python3 provider venv for neovim (pynvim + taskwiki deps).
+# Kept separate so it is never shadowed by a project .venv or a brew python.
+python -m venv ~/.local/share/nvim/py3nvim
+~/.local/share/nvim/py3nvim/bin/pip install --upgrade pip
+~/.local/share/nvim/py3nvim/bin/pip install pynvim tasklib six packaging
+
 # Install virtualenvwrapper pyenv plugin
 git clone https://github.com/pyenv/pyenv-virtualenvwrapper.git "$(pyenv root)"/plugins/pyenv-virtualenvwrapper
 
