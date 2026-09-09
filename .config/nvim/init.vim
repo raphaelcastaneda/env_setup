@@ -89,6 +89,9 @@ set backupdir=~/.vim/backups directory=~/.vim/swaps//
 " No swap files
 set noswapfile
 
+" Persist undo history across sessions; recovers content of closed or deleted files
+set undofile
+
 " Don't persist working directory in view files. Taskwiki calls mkview/loadview
 " on every vimwiki buffer enter; with curdir in viewoptions, a stale lcd from a
 " prior session ends up baked into ~/.local/state/nvim/view/* and gets replayed
